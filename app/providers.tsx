@@ -21,18 +21,18 @@ const galileo = {
     symbol: 'A0GI', // Testnet token
   },
   rpcUrls: {
-    public: { http: ['https://rpc-testnet.0g.ai'] },
-    default: { http: ['https://rpc-testnet.0g.ai'] },
+    public: { http: ['https://evmrpc-testnet.0g.ai'] },
+    default: { http: ['https://evmrpc-testnet.0g.ai'] },
   },
   blockExplorers: {
-    default: { name: '0G Scan', url: 'https://scan-testnet.0g.ai' },
+    default: { name: '0G Scan', url: 'https://chainscan-galileo.0g.ai' },
   },
 } as const;
 
 const config = getDefaultConfig({
   appName: 'MemoryOS',
-  projectId: 'ee8bdf88651a5c2826a761e1141ef366', // WalletConnect Cloud Project ID
-  chains: [galileo, mainnet, sepolia],
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'ee8bdf88651a5c2826a761e1141ef366', // Add your own WC project ID to .env.local to avoid 403 limits
+  chains: [galileo],
   ssr: true,
 });
 
