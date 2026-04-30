@@ -39,7 +39,7 @@ export function HeroSection() {
 
       {/* CTAs */}
       <div
-        className="opacity-0 animate-blur-in mt-12 flex flex-col sm:flex-row items-center gap-4"
+        className="opacity-0 animate-blur-in mt-12 flex flex-col sm:flex-row items-center gap-4 justify-center w-full"
         style={{ animationDelay: '0.8s' }}
       >
         <Link
@@ -49,6 +49,13 @@ export function HeroSection() {
           <span className="relative z-10">Launch Dashboard</span>
           <ArrowRight size={18} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
           <div className="absolute inset-0 bg-[#5E7D7E] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
+        </Link>
+
+        <Link
+          href="/docs"
+          className="px-8 py-4 rounded-full text-base font-bold text-[#F4F1EE] border border-[#3D4540] hover:border-[#5E7D7E] bg-[rgba(244,241,238,0.03)] hover:bg-[rgba(94,125,126,0.08)] transition-all duration-300 w-full sm:w-auto justify-center flex"
+        >
+          Zero Coding Docs
         </Link>
 
         <Link

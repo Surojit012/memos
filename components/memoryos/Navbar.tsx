@@ -27,6 +27,7 @@ export function Navbar() {
             <Link href="#features" className="text-sm font-medium text-[#8A9490] hover:text-[#F4F1EE] transition-colors">Features</Link>
             <Link href="#agents" className="text-sm font-medium text-[#8A9490] hover:text-[#F4F1EE] transition-colors">Agents</Link>
             <Link href="#technology" className="text-sm font-medium text-[#8A9490] hover:text-[#F4F1EE] transition-colors">Technology</Link>
+            <Link href="/docs" className="text-sm font-medium text-[#8A9490] hover:text-[#F4F1EE] transition-colors">Docs</Link>
           </div>
 
           {/* Logo CENTERED */}
@@ -59,6 +60,7 @@ export function Navbar() {
           <Link href="#features" onClick={() => setIsOpen(false)} className="text-base font-medium text-[#8A9490] hover:text-[#5E7D7E]">Features</Link>
           <Link href="#agents" onClick={() => setIsOpen(false)} className="text-base font-medium text-[#8A9490] hover:text-[#5E7D7E]">Agents</Link>
           <Link href="#technology" onClick={() => setIsOpen(false)} className="text-base font-medium text-[#8A9490] hover:text-[#5E7D7E]">Technology</Link>
+          <Link href="/docs" onClick={() => setIsOpen(false)} className="text-base font-medium text-[#8A9490] hover:text-[#5E7D7E]">Docs</Link>
           <hr className="border-[rgba(244,241,238,0.05)]" />
           <Link href="/playground" onClick={() => setIsOpen(false)} className="text-base font-medium text-[#8A9490] hover:text-[#5E7D7E]">Playground</Link>
           <Link href="/skills" onClick={() => setIsOpen(false)} className="text-base font-bold text-[#5E7D7E]">Skill Marketplace →</Link>
