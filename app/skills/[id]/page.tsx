@@ -343,7 +343,7 @@ export default function SkillDetailPage() {
                     >
                       <div style={{ textAlign: 'left' }}>
                         <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: '#F4F1EE', wordBreak: 'break-all' }}>
-                          {p.provider.slice(0, 8)}...{p.provider.slice(-6)}
+                          {p.provider?.slice(0, 8)}...{p.provider?.slice(-6)}
                         </div>
                         <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: '#5A6460', marginTop: 2 }}>
                           {p.model}
@@ -434,7 +434,7 @@ export default function SkillDetailPage() {
                     {/* 0G Compute Specific */}
                     {meta.zgProviderAddress && (
                       <span style={{ fontFamily: 'var(--mono)', fontSize: 10 }}>
-                        Provider: {meta.zgProviderAddress.slice(0, 8)}...{meta.zgProviderAddress.slice(-4)}
+                        Provider: {meta.zgProviderAddress?.slice(0, 8)}...{meta.zgProviderAddress?.slice(-4)}
                       </span>
                     )}
                     {meta.zgVerified !== undefined && (

@@ -286,7 +286,7 @@ export default function Home() {
                         <div style={{paddingTop:8,borderTop:'1px solid var(--border)'}}>
                           {m.storageHash?.startsWith('0x') ? (
                             <a href={`${PUBLIC_0G.storageExplorerBase}/${m.storageHash}`} target='_blank' rel='noreferrer' className='hash-live'>
-                              ⬡ {m.storageHash.slice(0,26)}... ↗
+                              ⬡ {m.storageHash?.slice(0,26)}... ↗
                             </a>
                           ) : (
                             <span className='hash-pending'>⬡ uploading to 0G Storage...</span>
@@ -320,7 +320,7 @@ export default function Home() {
                         <div style={{fontSize:13,color:'var(--text)',lineHeight:1.6}}>{m.content}</div>
                         {m.storageHash?.startsWith('0x') ? (
                             <a href={`${PUBLIC_0G.storageExplorerBase}/${m.storageHash}`} target='_blank' rel='noreferrer' className='hash-live'>
-                              ⬡ {m.storageHash.slice(0,26)}... ↗
+                              ⬡ {m.storageHash?.slice(0,26)}... ↗
                             </a>
                           ) : (
                             <span className='hash-pending'>⬡ uploading to 0G Storage...</span>

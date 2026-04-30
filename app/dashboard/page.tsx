@@ -200,10 +200,10 @@ function MemoryStudioTab({ agents }: { agents: AgentIdentity[] }) {
                      <td className="p-4 text-gray-300 font-medium truncate max-w-[200px]">{m.content}</td>
                      <td className="p-4">
                         <div className="flex flex-wrap gap-1">
-                          {m.tags.slice(0, 2).map((t, i) => (
+                          {(m.tags || []).slice(0, 2).map((t, i) => (
                              <span key={i} className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-[#3d4f63]/30 text-gray-400">{t}</span>
                           ))}
-                          {m.tags.length > 2 && <span className="text-[10px] text-gray-500">+{m.tags.length - 2}</span>}
+                          {(m.tags || []).length > 2 && <span className="text-[10px] text-gray-500">+{(m.tags || []).length - 2}</span>}
                         </div>
                      </td>
                      <td className="p-4">
@@ -601,7 +601,7 @@ function BrainSnapshotsTab({ agents }: { agents: AgentIdentity[] }) {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-xs font-mono bg-[#5E7D7E]/5 hover:bg-[#5E7D7E]/10 text-[#5E7D7E] px-2 py-1 rounded transition-colors border border-[#5E7D7E]/20"
                     >
-                      {s.snapshotHash.slice(0, 8)}...{s.snapshotHash.slice(-6)}
+                      {s.snapshotHash?.slice(0, 8)}...{s.snapshotHash?.slice(-6)}
                       <ExternalLink size={10} />
                     </a>
                   </td>
@@ -802,7 +802,7 @@ function InferenceLabTab() {
               >
                 <div>
                   <div className="text-xs font-mono text-gray-300">
-                    {p.provider.slice(0, 10)}...{p.provider.slice(-6)}
+                    {p.provider?.slice(0, 10) || 'Unknown'}...{p.provider?.slice(-6) || ''}
                   </div>
                   <div className="text-[10px] font-mono text-gray-500 mt-0.5">{p.model}</div>
                 </div>
