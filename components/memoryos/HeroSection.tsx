@@ -44,10 +44,10 @@ export function HeroSection() {
       >
         <Link
           href="/dashboard"
-          className="group relative overflow-hidden bg-[#F4F1EE] text-[#0F1210] px-8 py-4 rounded-full text-base font-bold flex items-center gap-2 hover:scale-105 transition-all duration-300 w-full sm:w-auto justify-center"
+          className="group relative overflow-hidden border border-[#3D4540] text-[#F4F1EE] px-8 py-4 rounded-full text-base font-bold flex items-center gap-2 hover:border-[#5E7D7E] hover:scale-105 transition-all duration-300 w-full sm:w-auto justify-center bg-[rgba(244,241,238,0.03)]"
         >
-          <span className="relative z-10 transition-colors duration-300 group-hover:text-[#F4F1EE]">Launch Dashboard</span>
-          <ArrowRight size={18} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#F4F1EE]" />
+          <span className="relative z-10">Launch Dashboard</span>
+          <ArrowRight size={18} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
           <div className="absolute inset-0 bg-[#5E7D7E] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
         </Link>
 
