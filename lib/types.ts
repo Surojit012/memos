@@ -134,7 +134,7 @@ export interface PaymentVerification {
 
 // ── Compute Provider ─────────────────────────────────────────
 
-export type ComputeProvider = 'fireworks' | '0g-compute' | '0g-router' | 'anthropic'
+export type ComputeProvider = 'fireworks' | '0g-compute' | '0g-router'
 
 export interface ZGComputeService {
   provider: string

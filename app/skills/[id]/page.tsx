@@ -25,7 +25,6 @@ const PROVIDER_INFO: Record<ComputeProvider, { label: string; desc: string; colo
   fireworks:    { label: 'Fireworks AI',  desc: 'Centralized · Fast · Low latency',       color: '#F97316', icon: '🔥' },
   '0g-router':  { label: '0G Router',    desc: 'Decentralized · Auto-failover · Simple',  color: '#7A9E8E', icon: '◉' },
   '0g-compute': { label: '0G Direct',    desc: 'Decentralized · TEE Verified · On-chain', color: '#5E7D7E', icon: '⬡' },
-  anthropic:    { label: 'Anthropic',     desc: 'Centralized · Claude Models',             color: '#8B6F66', icon: '◈' },
 }
 
 export default function SkillDetailPage() {
@@ -58,7 +57,7 @@ export default function SkillDetailPage() {
   useEffect(() => {
     fetch('/api/execute', { method: 'OPTIONS' }).catch(() => {})
     // Just set all three as potentially available; the backend will error if not configured
-    setAvailableProviders(['fireworks', '0g-compute', 'anthropic'])
+    setAvailableProviders(['fireworks', '0g-compute'])
   }, [])
 
   // Load 0G providers when user selects 0g-compute

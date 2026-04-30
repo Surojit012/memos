@@ -135,42 +135,7 @@ export async function POST(req: NextRequest) {
       tokensUsed = response.usage?.total_tokens ?? 0
       computeNode = 'fireworks-serverless'
     } else {
-      // ════════════════════════════════════════════════════
-      //  ANTHROPIC (Centralized fallback)
-      // ════════════════════════════════════════════════════
-      const anthropicKey = process.env.ANTHROPIC_API_KEY
-      if (!anthropicKey || anthropicKey === 'your_anthropic_key_here') {
-        return NextResponse.json({
-          error: 'ANTHROPIC_API_KEY is not configured. Add it to .env.local or choose a different compute provider.',
-          computeProvider: 'anthropic',
-        }, { status: 500 })
-      }
-
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': anthropicKey,
-          'anthropic-version': '2023-06-01',
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1024,
-          messages: [
-            { role: 'user', content: `${skill.prompt}\n\n---\n\nUser input:\n${userInput}` },
-          ],
-        }),
-      })
-
-      const data = await response.json()
-      if (!response.ok) {
-        throw new Error(data.error?.message || `Anthropic API error: ${response.status}`)
-      }
-
-      output = data.content?.[0]?.text ?? 'No output'
-      model = data.model || 'claude-sonnet-4-20250514'
-      tokensUsed = (data.usage?.input_tokens ?? 0) + (data.usage?.output_tokens ?? 0)
-      computeNode = 'anthropic-cloud'
+      return NextResponse.json({ error: 'Invalid compute provider selected.' }, { status: 400 })
     }
 
     recordSkillExecution(skillId)
@@ -229,7 +194,7 @@ export async function POST(req: NextRequest) {
  * Priority: explicit request → env preference → auto-detect available.
  */
 function resolveComputeProvider(requested?: string): ComputeProvider {
-  const validProviders: ComputeProvider[] = ['0g-compute', '0g-router', 'fireworks', 'anthropic']
+  const validProviders: ComputeProvider[] = ['0g-compute', '0g-router', 'fireworks']
   if (validProviders.includes(requested as ComputeProvider)) {
     return requested as ComputeProvider
   }
@@ -240,18 +205,15 @@ function resolveComputeProvider(requested?: string): ComputeProvider {
     return envDefault
   }
 
-  // Auto-detect: prefer Router → Fireworks → Anthropic → Direct
+  // Auto-detect: prefer Router → Fireworks → Direct
   const routerKey = process.env.ZG_ROUTER_API_KEY
   if (routerKey && routerKey !== 'sk-your_router_key_here') return '0g-router'
 
   const fireworksKey = process.env.FIREWORKS_API_KEY
   if (fireworksKey && fireworksKey !== 'your_fireworks_key_here') return 'fireworks'
 
-  const anthropicKey = process.env.ANTHROPIC_API_KEY
-  if (anthropicKey && anthropicKey !== 'your_anthropic_key_here') return 'anthropic'
-
   // Final fallback: try 0G direct compute if wallet is configured
   if (process.env.WALLET_PRIVATE_KEY) return '0g-compute'
 
-  return 'anthropic'
+  return 'fireworks'
 }
