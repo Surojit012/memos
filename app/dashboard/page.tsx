@@ -1684,8 +1684,13 @@ export default function Dashboard() {
     const newAgentId = `agent_${uuid().slice(0, 8)}`;
     
     try {
-      // Step 1: Sign a message with the connected wallet to prove ownership
-      const message = `Register agent ${newAgentId} on MemoryOS`;
+      // Step 1: Fetch the next nonce for replay protection
+      const nonceRes = await fetch(`/api/identity/nonce?address=${address}`);
+      const nonceData = await nonceRes.json();
+      const nextNonce = nonceData.nonce || 1;
+
+      // Step 2: Sign a message with the connected wallet to prove ownership
+      const message = `Register agent ${newAgentId} on MemoryOS | nonce: ${nextNonce}`;
       const signature = await signMessageAsync({ message });
 
       // Step 2: Send the signed payload to the API
