@@ -79,7 +79,7 @@ function getHmacSecret(): string {
   if (isDev()) {
     // Only allow default in development — logged so it's obvious
     console.warn('⚠ [AUTH] Using insecure default HMAC secret. Set PLATFORM_HMAC_SECRET in production.')
-    return 'memoryos-dev-secret-' + (process.env.HOSTNAME || 'local')
+    return 'memoryos-dev-secret'
   }
   throw new Error('PLATFORM_HMAC_SECRET or MEMORY_SERVICE_SECRET must be set in production.')
 }
