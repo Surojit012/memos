@@ -258,32 +258,39 @@ export function isStoreSeeded(): boolean {
  * Load seed data into the store.
  * Called by hydration.ts when the registry is empty or as a fallback.
  * Idempotent — safe to call multiple times.
+ * 
+ * Uses deduplication to merge seed data with any items already
+ * present from 0G hydration, so seed items never overwrite real data.
  */
 export function loadSeedData(): void {
   if (_seeded) return
-  if (memories.length === 0) memories = createSeedMemories()
-  if (skills.length === 0) skills = createSeedSkills()
-  if (agents.size === 0) agents = createSeedAgents()
-  _seeded = true
 
   const seedMemories = createSeedMemories()
   const seedSkills = createSeedSkills()
   const seedAgents = createSeedAgents()
 
-  // Only add seed items that aren't already in the store (from hydration)
+  // Merge seed items with existing store (from hydration), never overwriting
+  let memoriesAdded = 0
   for (const m of seedMemories) {
     if (!memories.find(existing => existing.id === m.id)) {
       memories.push(m)
+      memoriesAdded++
     }
   }
+
+  let skillsAdded = 0
   for (const s of seedSkills) {
     if (!skills.find(existing => existing.id === s.id)) {
       skills.push(s)
+      skillsAdded++
     }
   }
+
+  let agentsAdded = 0
   for (const [id, a] of Array.from(seedAgents.entries())) {
     if (!agents.has(id)) {
       agents.set(id, a)
+      agentsAdded++
     }
   }
 
@@ -292,7 +299,7 @@ export function loadSeedData(): void {
   platformRevenue = seedEarnings * 0.05 / 0.95 // Reverse the 95/5 split to get platform cut
 
   _seeded = true
-  console.log(`📦 Seed data loaded: ${seedMemories.length} memories, ${seedSkills.length} skills, ${seedAgents.size} agents`)
+  console.log(`📦 Seed data loaded: +${memoriesAdded} memories, +${skillsAdded} skills, +${agentsAdded} agents (${memories.length} total memories)`)
 }
 
 // ── Memory CRUD ───────────────────────────────────────────────

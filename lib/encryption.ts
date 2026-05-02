@@ -29,8 +29,15 @@ const KEY_LENGTH = 32
  * - No key needs to be stored — it's re-derived on every operation
  */
 export function deriveEncryptionKey(ownerAddress: string, agentId: string): Buffer {
-  const secret = process.env.PLATFORM_HMAC_SECRET || 'default-dev-secret'
-  const material = `${ownerAddress.toLowerCase()}:${agentId}:${secret}`
+  const secret = process.env.PLATFORM_HMAC_SECRET
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('PLATFORM_HMAC_SECRET must be set in production. Encrypted vaults cannot operate without it.')
+    }
+    console.warn('⚠ [ENCRYPTION] Using insecure default secret. Set PLATFORM_HMAC_SECRET in production.')
+  }
+  const effectiveSecret = secret || `dev-only-${ownerAddress.toLowerCase()}`
+  const material = `${ownerAddress.toLowerCase()}:${agentId}:${effectiveSecret}`
   // Double SHA-256 to get a consistent 32-byte key
   const firstHash = createHash('sha256').update(material).digest()
   return createHash('sha256').update(firstHash).digest()

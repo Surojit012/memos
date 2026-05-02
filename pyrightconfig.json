@@ -1,0 +1,5 @@
+{
+  "extraPaths": ["packages/memoryos-py"],
+  "pythonVersion": "3.9",
+  "reportMissingImports": "warning"
+}

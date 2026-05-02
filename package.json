@@ -15,8 +15,8 @@
     "test:e2e": "node scripts/e2e-demo.mjs"
   },
   "dependencies": {
+    "@0gfoundation/0g-compute-ts-sdk": "^0.8.0",
     "@0gfoundation/0g-ts-sdk": "^1.2.1",
-    "@0glabs/0g-serving-broker": "^0.7.5",
     "@base-org/account": "^2.5.3",
     "@coinbase/wallet-sdk": "^4.3.7",
     "@metamask/connect-evm": "^0.9.1",

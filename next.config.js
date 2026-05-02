@@ -3,7 +3,7 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: [
       '@0gfoundation/0g-ts-sdk',
-      '@0glabs/0g-serving-broker',
+      '@0gfoundation/0g-compute-ts-sdk',
     ],
   },
   webpack: (config, { isServer }) => {

@@ -1,4 +1,4 @@
-import { createZGComputeNetworkBroker, createZGComputeNetworkReadOnlyBroker } from '@0glabs/0g-serving-broker'
+import { createZGComputeNetworkBroker, createZGComputeNetworkReadOnlyBroker } from '@0gfoundation/0g-compute-ts-sdk'
 import { ethers } from 'ethers'
 import { get0GNetworkConfig, getPublic0GNetworkConfig } from './0g-network'
 

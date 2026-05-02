@@ -1,20 +1,31 @@
 /**
  * lib/write-queue.ts
  *
- * Resilient write queue for 0G Storage uploads.
+ * Resilient write queue for 0G Storage uploads with disk-backed WAL.
  *
- * If 0G Storage is temporarily unreachable, writes are queued in RAM
- * and flushed when connectivity returns. This ensures zero data loss
- * even during 0G outages.
+ * ── Persistence Architecture ──
+ * The write queue now has a Write-Ahead Log (WAL) backed by a local
+ * JSON file. Every time a job is enqueued, the WAL is flushed to disk.
+ * On server restart, the WAL is loaded and any incomplete writes are
+ * replayed to 0G Storage before normal operation resumes.
+ *
+ * This means the data flow is:
+ *   1. Memory saved to RAM store (instant API response)
+ *   2. Write job enqueued → WAL flushed to disk (sync, ~1ms)
+ *   3. Background loop uploads to 0G Storage
+ *   4. On success → job removed from WAL
+ *   5. On crash/restart → WAL is replayed, nothing is lost
  *
  * Architecture:
  * - Each write operation is a "job" with a type, data, and retry count.
  * - A background loop checks the queue every FLUSH_INTERVAL_MS.
  * - Failed jobs are retried with exponential backoff (max MAX_RETRIES).
- * - Permanently failed jobs are logged and removed after exhausting retries.
+ * - Permanently failed jobs are moved to a dead-letter log.
  */
 
 import { uploadToStorage } from './0g-storage'
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs'
+import { join } from 'path'
 
 export type WriteJobType = 'memory' | 'skill' | 'agent' | 'manifest'
 
@@ -32,7 +43,89 @@ export interface WriteJob {
 type WriteCallback = (job: WriteJob, rootHash: string) => void | Promise<void>
 
 const FLUSH_INTERVAL_MS = 15_000
-const DEFAULT_MAX_RETRIES = 3
+const DEFAULT_MAX_RETRIES = 5 // Increased from 3 for better resilience
+
+// ── WAL (Write-Ahead Log) ─────────────────────────────────────
+// Persists pending writes to disk so they survive server restarts.
+
+const WAL_DIR = join(process.cwd(), 'cache')
+const WAL_PATH = join(WAL_DIR, 'write-queue-wal.json')
+const DEAD_LETTER_PATH = join(WAL_DIR, 'write-queue-dead.json')
+
+function ensureWalDir(): void {
+  if (!existsSync(WAL_DIR)) {
+    mkdirSync(WAL_DIR, { recursive: true })
+  }
+}
+
+/**
+ * Persist the current queue state to disk.
+ * Called after every enqueue/dequeue operation.
+ * Synchronous to guarantee durability before returning.
+ */
+function persistWal(): void {
+  try {
+    ensureWalDir()
+    writeFileSync(WAL_PATH, JSON.stringify(queue, null, 2), 'utf-8')
+  } catch (err: any) {
+    console.error(`⚠ WAL persist failed: ${err.message}`)
+  }
+}
+
+/**
+ * Load pending jobs from the WAL on startup.
+ * Returns the number of recovered jobs.
+ */
+function loadWal(): number {
+  try {
+    if (!existsSync(WAL_PATH)) return 0
+    const raw = readFileSync(WAL_PATH, 'utf-8')
+    const recovered: WriteJob[] = JSON.parse(raw)
+    if (!Array.isArray(recovered) || recovered.length === 0) return 0
+
+    // Merge recovered jobs (don't duplicate)
+    for (const job of recovered) {
+      const exists = queue.find(j => j.id === job.id)
+      if (!exists) {
+        // Reset retry state for recovered jobs — give them fresh attempts
+        job.retries = 0
+        job.lastAttempt = null
+        job.error = null
+        queue.push(job)
+        _totalQueued++
+      }
+    }
+
+    console.log(`📂 WAL: Recovered ${recovered.length} pending write(s) from disk`)
+    return recovered.length
+  } catch (err: any) {
+    console.error(`⚠ WAL load failed: ${err.message}`)
+    return 0
+  }
+}
+
+/**
+ * Append a permanently failed job to the dead-letter log.
+ */
+function appendDeadLetter(job: WriteJob): void {
+  try {
+    ensureWalDir()
+    let existing: WriteJob[] = []
+    if (existsSync(DEAD_LETTER_PATH)) {
+      try {
+        existing = JSON.parse(readFileSync(DEAD_LETTER_PATH, 'utf-8'))
+      } catch { /* corrupted file, start fresh */ }
+    }
+    existing.push({ ...job, lastAttempt: Date.now() })
+    // Keep only last 100 dead letters
+    if (existing.length > 100) existing = existing.slice(-100)
+    writeFileSync(DEAD_LETTER_PATH, JSON.stringify(existing, null, 2), 'utf-8')
+  } catch (err: any) {
+    console.error(`⚠ Dead letter write failed: ${err.message}`)
+  }
+}
+
+// ── Queue State ───────────────────────────────────────────────
 
 let queue: WriteJob[] = []
 let callbacks: Map<WriteJobType, WriteCallback> = new Map()
@@ -43,6 +136,7 @@ let isFlushing = false
 let _totalQueued = 0
 let _totalFlushed = 0
 let _totalFailed = 0
+let _walRecovered = 0
 
 /**
  * Register a callback to be invoked after a successful upload.
@@ -55,6 +149,9 @@ export function onWriteComplete(type: WriteJobType, callback: WriteCallback): vo
 /**
  * Enqueue a write job. The data will be uploaded to 0G Storage
  * either immediately (if connected) or on the next flush cycle.
+ *
+ * The job is persisted to the WAL (disk) before returning,
+ * guaranteeing it survives server crashes.
  */
 export function enqueueWrite(
   id: string,
@@ -82,6 +179,9 @@ export function enqueueWrite(
     _totalQueued++
   }
 
+  // ── WAL: Persist to disk before doing anything else ──
+  persistWal()
+
   // Try to flush immediately (non-blocking)
   void flushQueue()
 }
@@ -99,7 +199,7 @@ async function flushQueue(): Promise<void> {
   for (const job of jobsToProcess) {
     // Exponential backoff: skip if too soon since last attempt
     if (job.lastAttempt) {
-      const backoff = Math.min(30_000, 2_000 * Math.pow(2, job.retries - 1))
+      const backoff = Math.min(60_000, 2_000 * Math.pow(2, job.retries - 1))
       if (Date.now() - job.lastAttempt < backoff) continue
     }
 
@@ -107,8 +207,9 @@ async function flushQueue(): Promise<void> {
       job.lastAttempt = Date.now()
       const rootHash = await uploadToStorage(job.data)
 
-      // Success — remove from queue and invoke callback
+      // Success — remove from queue, persist WAL, invoke callback
       queue = queue.filter(j => j.id !== job.id)
+      persistWal() // Remove from disk WAL
       _totalFlushed++
       job.error = null
 
@@ -125,12 +226,16 @@ async function flushQueue(): Promise<void> {
     } catch (err: any) {
       job.retries++
       job.error = err.message
+      persistWal() // Update retry state on disk
 
       if (job.retries >= job.maxRetries) {
-        // Permanently failed — remove from queue
+        // Permanently failed — move to dead-letter log
         queue = queue.filter(j => j.id !== job.id)
+        persistWal()
+        appendDeadLetter(job)
         _totalFailed++
         console.error(`✗ WriteQueue: ${job.type} ${job.id} permanently failed after ${job.maxRetries} retries: ${err.message}`)
+        console.error(`  → Saved to dead-letter log: ${DEAD_LETTER_PATH}`)
       } else {
         console.warn(`⚠ WriteQueue: ${job.type} ${job.id} failed (attempt ${job.retries}/${job.maxRetries}): ${err.message}`)
       }
@@ -142,9 +247,15 @@ async function flushQueue(): Promise<void> {
 
 /**
  * Start the background flush timer.
+ * Also loads any pending writes from the WAL (disk) that
+ * survived a previous server crash.
  */
 export function startWriteQueue(): void {
   if (flushTimer) return
+
+  // ── WAL Recovery: Load pending writes from previous session ──
+  _walRecovered = loadWal()
+
   flushTimer = setInterval(() => {
     void flushQueue()
   }, FLUSH_INTERVAL_MS)
@@ -154,7 +265,15 @@ export function startWriteQueue(): void {
     flushTimer.unref()
   }
 
-  console.log(`📝 WriteQueue: Background flush started (every ${FLUSH_INTERVAL_MS / 1000}s)`)
+  const recoveryMsg = _walRecovered > 0
+    ? ` (recovered ${_walRecovered} pending writes from WAL)`
+    : ''
+  console.log(`📝 WriteQueue: Background flush started (every ${FLUSH_INTERVAL_MS / 1000}s)${recoveryMsg}`)
+
+  // If we recovered jobs, flush immediately
+  if (_walRecovered > 0) {
+    void flushQueue()
+  }
 }
 
 /**
@@ -176,6 +295,8 @@ export function getWriteQueueStats() {
     totalQueued: _totalQueued,
     totalFlushed: _totalFlushed,
     totalFailed: _totalFailed,
+    walRecovered: _walRecovered,
+    walPath: WAL_PATH,
     jobs: queue.map(j => ({
       id: j.id,
       type: j.type,

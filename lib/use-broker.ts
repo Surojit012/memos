@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useEthersSigner } from './ethers-adapter';
-import { createZGComputeNetworkBroker, ZGComputeNetworkBroker } from '@0glabs/0g-serving-broker';
+import { createZGComputeNetworkBroker, ZGComputeNetworkBroker } from '@0gfoundation/0g-compute-ts-sdk';
 
 export function useComputeBroker() {
   const signer = useEthersSigner();

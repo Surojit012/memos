@@ -11,7 +11,6 @@
  * 4. Starts the background write queue for resilience
  *
  * The manifest itself lives on 0G — no local file dependency.
- * The manifest itself lives on 0G — no local file dependency.
  */
 
 import {

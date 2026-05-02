@@ -37,10 +37,10 @@ export function verifyWalletSignatureWithNonce(
   // Step 2: Extract and validate nonce
   const nonceMatch = message.match(/\| nonce: (\d+)$/)
   if (!nonceMatch) {
-    // Backwards compatibility: allow messages without nonces
-    // but log a warning
-    console.warn(`⚠ Signature from ${address} has no nonce. Replay protection disabled for this request.`)
-    return { valid: true }
+    return {
+      valid: false,
+      error: 'Message must include a nonce for replay protection. Expected format: "... | nonce: <N>"',
+    }
   }
 
   const providedNonce = parseInt(nonceMatch[1], 10)
@@ -64,10 +64,31 @@ export function verifyWalletSignatureWithNonce(
  * This means API keys can be verified without database lookups.
  */
 export function generateHmacApiKey(agentId: string, ownerAddress: string): string {
-  const secret = process.env.PLATFORM_HMAC_SECRET || process.env.MEMORY_SERVICE_SECRET || 'memoryos-dev-secret'
+  const secret = getHmacSecret()
   const payload = `${agentId}:${ownerAddress.toLowerCase()}`
   const hmac = createHmac('sha256', secret).update(payload).digest('hex')
   return `mos_${hmac.slice(0, 32)}`
+}
+
+/**
+ * Resolve the HMAC secret, failing loudly in production if not configured.
+ */
+function getHmacSecret(): string {
+  const secret = process.env.PLATFORM_HMAC_SECRET || process.env.MEMORY_SERVICE_SECRET
+  if (secret) return secret
+  if (isDev()) {
+    // Only allow default in development — logged so it's obvious
+    console.warn('⚠ [AUTH] Using insecure default HMAC secret. Set PLATFORM_HMAC_SECRET in production.')
+    return 'memoryos-dev-secret-' + (process.env.HOSTNAME || 'local')
+  }
+  throw new Error('PLATFORM_HMAC_SECRET or MEMORY_SERVICE_SECRET must be set in production.')
+}
+
+/**
+ * Check if we're running in development mode.
+ */
+function isDev(): boolean {
+  return process.env.NODE_ENV !== 'production'
 }
 
 /**
@@ -111,12 +132,16 @@ export function getNextNonce(walletAddress: string): number {
 
 /**
  * Middleware-like helper to check for the MemoryOS platform secret.
- * Used for demo-level protection on write endpoints.
- * If MEMORY_SERVICE_SECRET is not set, access is allowed (easier local dev).
+ * In production, MEMORY_SERVICE_SECRET MUST be set — requests without it are rejected.
+ * In development (NODE_ENV !== 'production'), access is allowed if secret is not configured.
  */
 export function validatePlatformSecret(req: Request): boolean {
   const secret = req.headers.get('X-MemoryOS-Secret')
   const expected = process.env.MEMORY_SERVICE_SECRET
-  if (!expected) return true // Not configured → allow (local dev)
+  if (!expected) {
+    if (isDev()) return true // Dev mode without secret configured → allow
+    console.error('🔒 [AUTH] MEMORY_SERVICE_SECRET is not set. All write requests are BLOCKED in production.')
+    return false
+  }
   return secret === expected
 }

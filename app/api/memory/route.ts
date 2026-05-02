@@ -5,6 +5,7 @@ import { upsertMemoryManifestRecord } from '@/lib/0g-manifest'
 import { uploadToStorage, getExplorerUrl } from '@/lib/0g-storage'
 import { ensureHydrated } from '@/lib/hydration'
 import { validateAgentApiKey, validatePlatformSecret } from '@/lib/auth'
+import { rateLimit } from '@/lib/rate-limit'
 
 // Intelligence Layer
 import { detectConflict } from '@/lib/intelligence/conflicts'
@@ -35,6 +36,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    // ── Rate Limiting ──
+    const limited = rateLimit(req, { maxRequests: 30, windowMs: 60_000 })
+    if (limited) return limited
+
     await ensureHydrated()
     const body = await req.json()
 

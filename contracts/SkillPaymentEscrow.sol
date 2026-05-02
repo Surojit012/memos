@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-contract SkillPaymentEscrow {
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
+contract SkillPaymentEscrow is ReentrancyGuard {
     error EmptySkillId();
     error InvalidRecipient();
     error InvalidAmount();
@@ -23,7 +25,7 @@ contract SkillPaymentEscrow {
         address publisher,
         address platform,
         uint256 expectedPrice
-    ) external payable {
+    ) external payable nonReentrant {
         if (bytes(skillId).length == 0) revert EmptySkillId();
         if (publisher == address(0) || platform == address(0)) revert InvalidRecipient();
         if (msg.value != expectedPrice) revert InvalidAmount();
