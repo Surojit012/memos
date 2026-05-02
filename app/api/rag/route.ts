@@ -3,7 +3,7 @@ import { searchMemoriesByEmbedding, searchMemories } from '@/lib/store'
 import { embedTextWith0GCompute } from '@/lib/0g-compute'
 import { computeInference } from '@/lib/intelligence/llm'
 import { ensureHydrated } from '@/lib/hydration'
-import { validatePlatformSecret } from '@/lib/auth'
+import { validatePlatformSecret, validateAgentApiKey } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,8 +11,11 @@ export async function POST(req: NextRequest) {
     const { agentId, query } = await req.json()
     if (!agentId || !query?.trim()) return NextResponse.json({ error: 'agentId and query required' }, { status: 400 })
 
-    if (!validatePlatformSecret(req)) {
-      return NextResponse.json({ error: 'Unauthorized — Platform secret missing or invalid.' }, { status: 401 })
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '') || ''
+    const hasValidPlatformSecret = validatePlatformSecret(req)
+    
+    if (!hasValidPlatformSecret && (!authHeader || !validateAgentApiKey(agentId, authHeader))) {
+      return NextResponse.json({ error: 'Unauthorized — Invalid API Key or Platform Secret' }, { status: 401 })
     }
 
     // 1. Try to Embed query for precise search

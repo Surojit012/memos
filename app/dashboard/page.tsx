@@ -1416,10 +1416,14 @@ function RAGChatTab({ agents }: { agents: AgentIdentity[] }) {
     setQuery('');
     setMessages(prev => [...prev, { role: 'user', text: q }]);
     setIsThinking(true);
+    const currentAgent = agents.find(a => a.agentId === selectedAgentId);
     try {
       const res = await fetch('/api/rag', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${currentAgent?.apiKey || ''}`
+        },
         body: JSON.stringify({ agentId: selectedAgentId, query: q }),
       });
       const data = await res.json();
