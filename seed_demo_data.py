@@ -5,24 +5,29 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "packages/memoryos-py")))
 
 try:
-    from memoryos import Client
+    from memoryos import MemoryOS
 except ImportError:
     print("Error: Could not import memoryos. Make sure you are in the project root.")
     sys.exit(1)
 
 # --- Configuration ---
-# Replace this with the API key shown in your MemoryOS Dashboard!
-API_KEY = os.environ.get("MEMORYOS_API_KEY", "YOUR_AGENT_API_KEY_HERE")
+# Replace these with the details shown in your MemoryOS Dashboard!
+AGENT_ID = os.environ.get("MEMORYOS_AGENT_ID", "agent_...")
+API_KEY = os.environ.get("MEMORYOS_API_KEY", "agt_...")
 ENDPOINT = "http://localhost:3000"
 
 def seed_data():
-    if API_KEY == "YOUR_AGENT_API_KEY_HERE":
-        print("❌ ERROR: Please edit this script and add your Agent's API Key!")
-        print("You can find it in the Dashboard -> API Keys tab.")
+    if API_KEY == "agt_...":
+        print("❌ ERROR: Please edit this script and add your Agent's API Key and Agent ID!")
+        print("You can find them in the Dashboard -> API Keys tab.")
         sys.exit(1)
 
     print(f"🔌 Connecting to MemoryOS at {ENDPOINT}...")
-    client = Client(api_key=API_KEY, endpoint=ENDPOINT)
+    client = MemoryOS(
+        api_url=ENDPOINT, 
+        agent_id=AGENT_ID, 
+        headers={"Authorization": f"Bearer {API_KEY}"}
+    )
 
     print("\n🧠 Injecting Demo Memories into 0G Storage...")
 
