@@ -89,19 +89,18 @@ export async function POST(req: NextRequest) {
       timestamp:   new Date().toISOString(),
     }
 
-    // Step 3 — upload identity to 0G Storage in background
-    uploadToStorage(identityRecord)
-      .then(hash => {
-        updateAgentHash(agentId, hash)
-        const hydratedAgent = { ...agent, identityHash: hash }
-        upsertHydratedAgent(hydratedAgent)
-        void upsertAgentManifestRecord(hydratedAgent)
-        console.log(`✓ Agent [${agentId}] identity registered on 0G: ${hash} by ${agent.ownerAddress}`)
-        console.log(`  ${getExplorerUrl(hash)}`)
-      })
-      .catch(err => {
-        console.error(`✗ Agent identity upload failed [${agentId}]:`, err.message)
-      })
+    // Step 3 — upload identity to 0G Storage (must await so Vercel doesn't kill it)
+    try {
+      const hash = await uploadToStorage(identityRecord)
+      updateAgentHash(agentId, hash)
+      const hydratedAgent = { ...agent, identityHash: hash }
+      upsertHydratedAgent(hydratedAgent)
+      await upsertAgentManifestRecord(hydratedAgent)
+      console.log(`✓ Agent [${agentId}] identity registered on 0G: ${hash} by ${agent.ownerAddress}`)
+      console.log(`  ${getExplorerUrl(hash)}`)
+    } catch (err: any) {
+      console.error(`✗ Agent identity upload failed [${agentId}]:`, err.message)
+    }
 
     if (agent.ownerAddress && (!agent.apiKey?.startsWith('mos_') || agent.apiKey?.length !== 36)) {
       agent.apiKey = generateHmacApiKey(agent.agentId, agent.ownerAddress)
