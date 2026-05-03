@@ -1438,7 +1438,7 @@ function RAGChatTab({ agents }: { agents: AgentIdentity[] }) {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-            <Brain size={20} className="text-emerald-400" /> RAG Chat — Ask Your Agent
+            <Brain size={20} className="text-emerald-400" /> Autonomous RAG — Ask Your Agent
           </h2>
           <p className="text-sm text-gray-500 mt-1">Query your agent&apos;s 0G-stored memories using the Autonomous RAG pipeline. 7 distinct 0G operations per message.</p>
         </div>
@@ -1755,34 +1755,10 @@ export default function Dashboard() {
           <Key size={16} /> API Keys
         </button>
         <button 
-          onClick={() => setActiveTab('funding')}
-          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'funding' ? 'bg-[#1A1F1C] text-white' : 'text-gray-400 hover:text-white hover:bg-[#151A17]'}`}
-        >
-          <Layers size={16} /> Compute Funding
-        </button>
-        <button 
           onClick={() => setActiveTab('studio')}
           className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'studio' ? 'bg-[#1A1F1C] text-white' : 'text-gray-400 hover:text-white hover:bg-[#151A17]'}`}
         >
-          <Database size={16} /> Memory Studio
-        </button>
-        <button 
-          onClick={() => setActiveTab('snapshots')}
-          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'snapshots' ? 'bg-[#1A1F1C] text-white' : 'text-gray-400 hover:text-white hover:bg-[#151A17]'}`}
-        >
-          <Camera size={16} /> Brain Snapshots
-        </button>
-        <button 
-          onClick={() => setActiveTab('inference')}
-          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'inference' ? 'bg-[#1A1F1C] text-white' : 'text-gray-400 hover:text-white hover:bg-[#151A17]'}`}
-        >
-          <MessageSquare size={16} /> Inference Lab
-        </button>
-        <button 
-          onClick={() => setActiveTab('manifest')}
-          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'manifest' ? 'bg-[#1A1F1C] text-white' : 'text-gray-400 hover:text-white hover:bg-[#151A17]'}`}
-        >
-          <Cpu size={16} /> 0G Manifest
+          <Database size={16} /> 0G Memory Explorer
         </button>
         <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mt-4 mb-2 px-2">Intelligence</div>
         <button 
@@ -1795,19 +1771,7 @@ export default function Dashboard() {
           onClick={() => setActiveTab('rag')}
           className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'rag' ? 'bg-[#1A1F1C] text-white' : 'text-gray-400 hover:text-white hover:bg-[#151A17]'}`}
         >
-          <Brain size={16} /> RAG Chat
-        </button>
-        <button 
-          onClick={() => setActiveTab('vault')}
-          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'vault' ? 'bg-[#1A1F1C] text-white' : 'text-gray-400 hover:text-white hover:bg-[#151A17]'}`}
-        >
-          <Shield size={16} /> Encrypted Vault
-        </button>
-        <button 
-          onClick={() => setActiveTab('a2a')}
-          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'a2a' ? 'bg-[#1A1F1C] text-white' : 'text-gray-400 hover:text-white hover:bg-[#151A17]'}`}
-        >
-          <Share2 size={16} /> A2A Sharing
+          <Brain size={16} /> Autonomous RAG
         </button>
         <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mt-4 mb-2 px-2">System</div>
         <button 
@@ -2013,30 +1977,14 @@ export default function Dashboard() {
               </div>
             )}
 
-            {/* TAB CONTENT: COMPUTE FUNDING */}
-            {activeTab === 'funding' && (
-              <ComputeFundingTab />
-            )}
+
 
             {/* TAB CONTENT: MEMORY STUDIO */}
             {activeTab === 'studio' && (
               <MemoryStudioTab agents={agents} />
             )}
 
-            {/* TAB CONTENT: BRAIN SNAPSHOTS */}
-            {activeTab === 'snapshots' && (
-              <BrainSnapshotsTab agents={agents} />
-            )}
 
-            {/* TAB CONTENT: 0G INFERENCE LAB */}
-            {activeTab === 'inference' && (
-              <InferenceLabTab />
-            )}
-
-            {/* TAB CONTENT: 0G MANIFEST */}
-            {activeTab === 'manifest' && (
-              <ManifestStatusTab />
-            )}
 
             {/* TAB CONTENT: AGENT DREAMS */}
             {activeTab === 'dreams' && (
@@ -2048,15 +1996,7 @@ export default function Dashboard() {
               <RAGChatTab agents={agents} />
             )}
 
-            {/* TAB CONTENT: ENCRYPTED VAULT */}
-            {activeTab === 'vault' && (
-              <EncryptedVaultTab agents={agents} />
-            )}
 
-            {/* TAB CONTENT: A2A SHARING */}
-            {activeTab === 'a2a' && (
-              <A2ASharingTab agents={agents} />
-            )}
 
             {/* TAB CONTENT: SETTINGS */}
             {activeTab === 'settings' && (
