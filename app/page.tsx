@@ -3,6 +3,7 @@ import { HeroSection } from '@/components/memoryos/HeroSection'
 import { FeatureBento } from '@/components/memoryos/FeatureBento'
 import { ProductGrid } from '@/components/memoryos/ProductGrid'
 import { TestimonialMarquee } from '@/components/memoryos/TestimonialMarquee'
+import { DeveloperShowcase } from '@/components/memoryos/DeveloperShowcase'
 import { CTABanner } from '@/components/memoryos/CTABanner'
 import { NewsletterCapture } from '@/components/memoryos/NewsletterCapture'
 import { Footer } from '@/components/memoryos/Footer'
@@ -20,6 +21,7 @@ export default function Home() {
       <FeatureBento />
       <ProductGrid />
       <TestimonialMarquee />
+      <DeveloperShowcase />
       <CTABanner />
       <NewsletterCapture />
       <Footer />
