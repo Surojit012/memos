@@ -95,14 +95,11 @@ npm run dev
 
 | Tab | What it does |
 |:----|:-------------|
-| **Memory Explorer** | Create/read memories with 3 types, importance scoring, 0G hash links |
-| **Brain INFTs** | Mint ERC-7857 NFTs, clone brains, view on-chain metadata |
+| **0G Memory Explorer** | Create/read memories with 3 types, importance scoring, 0G hash links |
 | **Agent Dreams** | Trigger LLM-powered memory consolidation cycles |
-| **RAG Chat** | Autonomous retrieval-augmented generation from stored memories |
-| **Encrypted Vault** | AES-256-GCM encrypt/decrypt memories on 0G Storage |
-| **A2A Sharing** | Grant cross-agent memory access with revocation |
-| **Inference Lab** | Test all 4 compute providers side-by-side |
-| **Skills Marketplace** | Browse, execute, and pay for agent skills |
+| **Autonomous RAG** | Chat interface with retrieval-augmented generation from stored memories |
+
+*(Note: Advanced features like Encrypted Vaults, A2A Sharing, and Brain INFTs have been hidden from the hackathon UI to keep the pitch focused, but remain fully available via the Developer SDKs. See `FUTURE_FEATURES.md`)*
 
 ## API Reference
 
