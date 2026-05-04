@@ -53,7 +53,10 @@ function MemoryStudioTab({ agents }: { agents: AgentIdentity[] }) {
     if (!selectedAgentId) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/memory?agentId=${selectedAgentId}&limit=100`);
+      const agent = agents.find(a => a.agentId === selectedAgentId);
+      const res = await fetch(`/api/memory?agentId=${selectedAgentId}&limit=100`, {
+        headers: agent?.apiKey ? { Authorization: `Bearer ${agent.apiKey}` } : {}
+      });
       const data = await res.json();
       setMemories(data.memories || []);
     } catch (e) {
@@ -1662,7 +1665,9 @@ export default function Dashboard() {
       const enriched = await Promise.all(
         agentList.map(async (agent) => {
           try {
-            const memRes = await fetch(`/api/memory?agentId=${agent.agentId}&limit=1000`);
+            const memRes = await fetch(`/api/memory?agentId=${agent.agentId}&limit=1000`, {
+              headers: agent.apiKey ? { Authorization: `Bearer ${agent.apiKey}` } : {}
+            });
             if (memRes.ok) {
               const memData = await memRes.json();
               const count = memData.memories?.length || memData.count || 0;
