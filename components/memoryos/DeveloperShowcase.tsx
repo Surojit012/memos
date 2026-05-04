@@ -78,7 +78,19 @@ export function DeveloperShowcase() {
 
             <div className="flex gap-4 items-start">
               <div className="w-10 h-10 rounded-lg bg-[#8B6F66]/10 flex items-center justify-center shrink-0 border border-[#8B6F66]/20">
-                <Database className="text-[#8B6F66]" size={20} />
+                <Terminal className="text-[#8B6F66]" size={20} />
+              </div>
+              <div>
+                <h3 className="font-syne font-bold text-white text-lg mb-1">AI Assistant Ready</h3>
+                <p className="text-[#8A9490] text-sm leading-relaxed">
+                  Download our <code className="text-[#7A9E8E] bg-[#1A1F1C] px-1 rounded">ZERO_CODING_GUIDE.md</code> file. Your AI (Cursor/Windsurf) will read it and instantly know how to build decentralized agents without asking you for complex 0G network configs.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-4 items-start">
+              <div className="w-10 h-10 rounded-lg bg-[#A67B73]/10 flex items-center justify-center shrink-0 border border-[#A67B73]/20">
+                <Database className="text-[#A67B73]" size={20} />
               </div>
               <div>
                 <h3 className="font-syne font-bold text-white text-lg mb-1">Advanced Features</h3>

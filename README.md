@@ -91,6 +91,12 @@ npm run dev
 - **Playground**: `http://localhost:3000/playground`
 - **Skills**: `http://localhost:3000/skills`
 
+## 🤖 Building with AI (Cursor / Windsurf)
+
+If you are using an AI coding assistant to build your project, **do not let it configure 0G RPCs or wallets**. MemoryOS abstracts all of that. 
+
+To help your AI write perfect MemoryOS integrations instantly, we provide an AI System Prompt. Simply copy the `ZERO_CODING_GUIDE.md` into your project root or set it as your `.cursorrules`. Your AI will then know exactly how to use our SDKs without asking you confusing infrastructure questions.
+
 ## Dashboard Tabs
 
 | Tab | What it does |
