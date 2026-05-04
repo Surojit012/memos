@@ -106,15 +106,8 @@ async function performHydration(): Promise<void> {
         `${manifest.skills.length} skills, ${manifest.agents.length} agents`
     )
 
-    // Step 2: Download everything from 0G in parallel (with 5s Vercel limit timeout)
-    const timeoutPromise = new Promise<[any[], any[], any[]]>((resolve) => 
-      setTimeout(() => {
-        console.warn('⚠ Hydration timed out after 5s (Vercel limit) - proceeding with partial data.')
-        resolve([[], [], []])
-      }, 5000)
-    )
-
-    const fetchPromise = Promise.all([
+    // Step 2: Download everything from 0G in parallel
+    const [memories, skills, agents] = await Promise.all([
       hydrateMemoriesFromManifest().catch((err) => {
         console.error('⚠ Memory hydration partially failed:', err.message)
         return []
@@ -128,8 +121,6 @@ async function performHydration(): Promise<void> {
         return []
       }),
     ])
-
-    const [memories, skills, agents] = await Promise.race([fetchPromise, timeoutPromise])
 
     // Step 3: Upsert into RAM store
     memories.forEach(upsertHydratedMemory)

@@ -15,7 +15,7 @@
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { getAgent, getAllAgents, registerOrUpdateAgent, upsertHydratedAgent, updateAgentHash } from '@/lib/store'
-import { upsertAgentManifestRecord } from '@/lib/0g-manifest'
+import { upsertAgentManifestRecord, flushManifest } from '@/lib/0g-manifest'
 import { uploadToStorage, getExplorerUrl } from '@/lib/0g-storage'
 import { ensureHydrated } from '@/lib/hydration'
 import { verifyWalletSignatureWithNonce } from '@/lib/auth'
@@ -109,10 +109,24 @@ export async function POST(req: NextRequest) {
       agent.apiKey = generateHmacApiKey(agent.agentId, agent.ownerAddress)
     }
 
+    // Step 4 — CRITICAL: Flush manifest to 0G immediately!
+    // Without this, the debounced manifest upload (10s delay) gets killed
+    // when Vercel destroys the serverless instance, and the agent is lost forever.
+    try {
+      const manifestHash = await flushManifest()
+      if (manifestHash) {
+        console.log(`✓ Manifest flushed to 0G: ${manifestHash.slice(0, 16)}...`)
+      }
+    } catch (err: any) {
+      console.warn(`⚠ Manifest flush failed (agent still in RAM for this instance):`, err.message)
+    }
+
     return NextResponse.json({
       agent,
-      status: 'registering',
-      message: 'Identity is being stored on 0G. Hash will appear shortly.',
+      status: agent.identityHash ? 'registered' : 'registering',
+      message: agent.identityHash
+        ? `Identity permanently stored on 0G. Hash: ${agent.identityHash}`
+        : 'Agent registered. Identity upload to 0G is pending.',
     }, { status: 201 })
 
   } catch (e: any) {
