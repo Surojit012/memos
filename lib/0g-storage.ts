@@ -10,7 +10,7 @@
  */
 import { get0GNetworkConfig, getStorageExplorerUrl } from './0g-network'
 
-const MAX_RETRIES = 2
+const MAX_RETRIES = 5
 const UPLOAD_TIMEOUT_MS = 90_000
 
 // ─── Upload any object to 0G Storage ──────────────────────────
