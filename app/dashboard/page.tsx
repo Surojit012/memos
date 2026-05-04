@@ -1656,7 +1656,24 @@ export default function Dashboard() {
     try {
       const res = await fetch(`/api/identity?ownerAddress=${address}`);
       const data = await res.json();
-      setAgents(data.agents || []);
+      const agentList: AgentIdentity[] = data.agents || [];
+
+      // Fetch real memory counts for each agent (parallel)
+      const enriched = await Promise.all(
+        agentList.map(async (agent) => {
+          try {
+            const memRes = await fetch(`/api/memory?agentId=${agent.agentId}&limit=1000`);
+            if (memRes.ok) {
+              const memData = await memRes.json();
+              const count = memData.memories?.length || memData.count || 0;
+              return { ...agent, memoryCount: count };
+            }
+          } catch {}
+          return agent;
+        })
+      );
+
+      setAgents(enriched);
     } catch (e) {
       console.error('Failed to fetch agents', e);
     } finally {
