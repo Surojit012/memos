@@ -89,17 +89,26 @@ export async function POST(req: NextRequest) {
       timestamp:   new Date().toISOString(),
     }
 
-    // Step 3 — upload identity to 0G Storage (must await so Vercel doesn't kill it)
+    // Step 3 — upload identity to 0G Storage (timeout after 7s to prevent Vercel 504 Gateway Timeout)
     try {
-      const hash = await uploadToStorage(identityRecord)
-      updateAgentHash(agentId, hash)
-      const hydratedAgent = { ...agent, identityHash: hash }
-      upsertHydratedAgent(hydratedAgent)
-      await upsertAgentManifestRecord(hydratedAgent)
-      console.log(`✓ Agent [${agentId}] identity registered on 0G: ${hash} by ${agent.ownerAddress}`)
-      console.log(`  ${getExplorerUrl(hash)}`)
+      const uploadPromise = async () => {
+        const hash = await uploadToStorage(identityRecord)
+        updateAgentHash(agentId, hash)
+        const hydratedAgent = { ...agent, identityHash: hash }
+        upsertHydratedAgent(hydratedAgent)
+        await upsertAgentManifestRecord(hydratedAgent)
+        console.log(`✓ Agent [${agentId}] identity registered on 0G: ${hash}`)
+        return hash
+      }
+      
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('0G Upload took longer than 7s (Vercel limit)')), 7000)
+      )
+
+      await Promise.race([uploadPromise(), timeoutPromise])
     } catch (err: any) {
-      console.error(`✗ Agent identity upload failed [${agentId}]:`, err.message)
+      console.warn(`⚠ Agent identity upload backgrounded or failed [${agentId}]:`, err.message)
+      // We don't throw! We return success to the UI so it doesn't crash with an HTML error.
     }
 
     if (agent.ownerAddress && (!agent.apiKey?.startsWith('mos_') || agent.apiKey?.length !== 36)) {
