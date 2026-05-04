@@ -181,8 +181,27 @@ export default function DocsPage() {
 
         {/* ═══ § 03 · PROMPT TEMPLATES ═══ */}
         <section className="mb-24">
-          <SectionLabel number="03" title="PROMPT TEMPLATES" />
-          <p className="text-[#8A9490] font-sans mb-8 -mt-6">Copy these prompts to get started quickly with AI coding assistants.</p>
+          <SectionLabel number="03" title="PROMPT TEMPLATES (VIBE CODING)" />
+          <p className="text-[#8A9490] font-sans mb-8 -mt-6">Copy these prompts to get started quickly with AI coding assistants (Cursor, Windsurf).</p>
+          
+          <div className="bg-[#151A17] border border-[#5E7D7E]/50 rounded-2xl p-6 mb-8 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#5E7D7E]/10 to-transparent opacity-50" />
+            <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Terminal className="text-[#5E7D7E]" size={20} />
+                  <h3 className="font-display text-xl font-bold text-[#F4F1EE]">AI Assistant System Prompt</h3>
+                </div>
+                <p className="text-[#8A9490] font-sans text-sm max-w-2xl leading-relaxed">
+                  Before you start vibe coding, make sure your AI understands how to use MemoryOS. Tell your AI to read the <code className="text-[#7A9E8E] bg-[#0F1210] px-1 rounded">ZERO_CODING_GUIDE.md</code> file (or set it as your <code className="text-[#7A9E8E] bg-[#0F1210] px-1 rounded">.cursorrules</code>) so it stops asking you for low-level 0G network configurations.
+                </p>
+              </div>
+              <Link href="https://github.com/0gfoundation/memoryos-v2/blob/main/ZERO_CODING_GUIDE.md" target="_blank" className="shrink-0 px-6 py-2.5 rounded-full bg-[#1A1F1C] border border-[#5E7D7E]/30 text-[#F4F1EE] text-sm font-bold hover:bg-[#5E7D7E] hover:text-[#0F1210] transition-colors flex items-center gap-2">
+                <Code2 size={16} /> View Guide
+              </Link>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <PromptCard title="0G Storage" tags={['Storage', 'TypeScript']}
               prompt="Help me integrate 0G Storage for decentralized file storage. Use @0gfoundation/0g-ts-sdk to upload files with the two-layer architecture (Log for immutable data, KV for mutable). Show me how to get 200 MBPS retrieval speed." />
