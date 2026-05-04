@@ -1,29 +1,26 @@
 /**
  * app/api/identity/route.ts
  *
- * Agent identity registration + lookup.
+ * Agent identity registration + lookup via On-Chain Registry.
  *
- * PERSISTENCE STRATEGY (2-layer):
+ * PERSISTENCE STRATEGY:
  * ┌──────────────────────────────────────────────────────┐
- * │  Layer 1: Vercel KV (Redis)  — FAST, RELIABLE       │
- * │  < 50ms writes, < 10ms reads. Never loses data.     │
+ * │  Layer 1: On-Chain Registry (Galileo Testnet)       │
+ * │  ~10s writes, free fast reads. Fully decentralized. │
  * │  This is the SOURCE OF TRUTH for agent lookups.      │
  * ├──────────────────────────────────────────────────────┤
- * │  Layer 2: 0G Storage — PERMANENT, DECENTRALIZED     │
- * │  15-45s writes. Used for on-chain identity proof.    │
- * │  Runs in background — doesn't block the response.   │
+ * │  Layer 2: 0G Storage — PERMANENT PROOF              │
+ * │  15-45s writes. Used for the actual identity JSON.  │
+ * │  Runs in background, updates contract later.        │
  * └──────────────────────────────────────────────────────┘
- *
- * Security: Wallet signature verification prevents identity hijacking.
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { getAgent, getAllAgents, registerOrUpdateAgent, upsertHydratedAgent, updateAgentHash } from '@/lib/store'
-import { upsertAgentManifestRecord, flushManifest } from '@/lib/0g-manifest'
-import { uploadToStorage, getExplorerUrl } from '@/lib/0g-storage'
+import { uploadToStorage } from '@/lib/0g-storage'
 import { ensureHydrated } from '@/lib/hydration'
 import { verifyWalletSignatureWithNonce } from '@/lib/auth'
 import { generateHmacApiKey } from '@/lib/auth'
-import { saveAgentToKV, getAgentFromKV, getAgentsByOwnerFromKV, isKVConfigured } from '@/lib/agent-kv'
+import { registerAgentOnChain, updateAgentHashOnChain, getAgentsFromRegistry, getAgentFromRegistry } from '@/lib/registry'
 
 export const maxDuration = 60;
 
@@ -35,14 +32,14 @@ export async function GET(req: NextRequest) {
   const ownerAddress = new URL(req.url).searchParams.get('ownerAddress')
   
   if (agentId) {
-    // Try RAM first, then KV
     let agent = getAgent(agentId)
-    if (!agent && isKVConfigured()) {
-      agent = (await getAgentFromKV(agentId)) ?? undefined
-      if (agent) {
-        // Re-hydrate into RAM for this instance
-        upsertHydratedAgent(agent)
-        console.log(`⚡ Agent [${agentId}] restored from KV into RAM`)
+    // If not in RAM, query registry
+    if (!agent) {
+      const regAgent = await getAgentFromRegistry(agentId)
+      if (regAgent) {
+        upsertHydratedAgent(regAgent)
+        agent = regAgent
+        console.log(`⚡ Restored Agent [${agentId}] from on-chain registry into RAM`)
       }
     }
     if (!agent) return NextResponse.json({ error: 'Agent not found' }, { status: 404 })
@@ -55,13 +52,13 @@ export async function GET(req: NextRequest) {
   // Get all agents for a wallet
   let allAgents = getAllAgents(ownerAddress || undefined)
 
-  // If RAM is empty for this wallet, check KV
-  if (allAgents.length === 0 && ownerAddress && isKVConfigured()) {
-    const kvAgents = await getAgentsByOwnerFromKV(ownerAddress)
-    if (kvAgents.length > 0) {
-      console.log(`⚡ Restored ${kvAgents.length} agents from KV for wallet ${ownerAddress.slice(0, 10)}...`)
-      kvAgents.forEach(a => upsertHydratedAgent(a))
-      allAgents = kvAgents
+  // Double check on-chain if RAM is empty
+  if (allAgents.length === 0 && ownerAddress) {
+    const registryAgents = await getAgentsFromRegistry(ownerAddress)
+    if (registryAgents.length > 0) {
+      console.log(`⚡ Restored ${registryAgents.length} agents from on-chain registry for wallet ${ownerAddress.slice(0, 10)}...`)
+      registryAgents.forEach(a => upsertHydratedAgent(a))
+      allAgents = registryAgents
     }
   }
 
@@ -73,7 +70,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ agents: allAgents })
 }
 
-// POST /api/identity → register a new agent identity on 0G
+// POST /api/identity → register a new agent identity
 export async function POST(req: NextRequest) {
   try {
     await ensureHydrated()
@@ -86,7 +83,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'ownerAddress is required' }, { status: 400 })
     }
 
-    // ── Security: Require wallet signature to prove ownership ──
     if (!signature || !message) {
       return NextResponse.json({
         error: 'Signature and message are required to prove ownership of the ownerAddress.',
@@ -99,18 +95,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: error || 'Invalid signature. Ownership of wallet address not proven.' }, { status: 401 })
     }
 
-    // Step 1 — register in local RAM store immediately
     const agent = registerOrUpdateAgent(agentId.trim(), name?.trim() || agentId, ownerAddress.trim().toLowerCase())
 
     if (agent.ownerAddress && (!agent.apiKey?.startsWith('mos_') || agent.apiKey?.length !== 36)) {
       agent.apiKey = generateHmacApiKey(agent.agentId, agent.ownerAddress)
     }
 
-    // Step 2 — SAVE TO KV IMMEDIATELY (< 50ms, guarantees persistence)
-    await saveAgentToKV(agent)
+    // Step 1: Register On-Chain immediately (~10s)
+    try {
+      await registerAgentOnChain(agent)
+      console.log(`✓ Agent [${agentId}] registered on-chain successfully.`)
+    } catch (err: any) {
+      if (err.message.includes('already registered')) {
+        console.log(`ℹ Agent [${agentId}] already on-chain.`)
+      } else {
+        throw new Error(`Failed to register agent on-chain: ${err.message}`)
+      }
+    }
 
-    // Step 3 — Upload identity to 0G Storage in background
-    // This is the "permanent proof" layer. It's slow but doesn't block the response.
+    // Step 2: Upload identity to 0G Storage in background
     const backgroundUpload = async () => {
       try {
         const identityRecord = {
@@ -124,30 +127,28 @@ export async function POST(req: NextRequest) {
           capabilities: ['memory-read', 'memory-write', 'skill-publish', 'skill-execute'],
           timestamp: new Date().toISOString(),
         }
+        
         const hash = await uploadToStorage(identityRecord)
         updateAgentHash(agentId, hash)
+        
+        // Update the contract with the hash
+        await updateAgentHashOnChain(agentId, hash)
+        
         const hydratedAgent = { ...agent, identityHash: hash }
         upsertHydratedAgent(hydratedAgent)
-        await upsertAgentManifestRecord(hydratedAgent)
-        // Update KV with the hash
-        await saveAgentToKV(hydratedAgent)
-        console.log(`✓ Agent [${agentId}] identity registered on 0G: ${hash}`)
-        // Flush manifest (best-effort)
-        await flushManifest().catch(() => {})
+        console.log(`✓ Agent [${agentId}] identity 0G hash saved on-chain: ${hash}`)
       } catch (err: any) {
         console.error(`✗ 0G identity upload failed [${agentId}]:`, err.message)
       }
     }
 
-    // Fire and forget — don't block the HTTP response
-    // The agent is ALREADY safely persisted in KV.
+    // Fire and forget
     backgroundUpload().catch(() => {})
 
     return NextResponse.json({
       agent,
       status: 'registered',
-      message: 'Agent registered and persisted. 0G identity proof is being generated.',
-      kvPersisted: isKVConfigured(),
+      message: 'Agent registered permanently on-chain. 0G identity proof is being generated.',
     }, { status: 201 })
 
   } catch (e: any) {
