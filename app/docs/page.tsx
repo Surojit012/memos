@@ -196,7 +196,7 @@ export default function DocsPage() {
                   Before you start vibe coding, make sure your AI understands how to use MemoryOS. Tell your AI to read the <code className="text-[#7A9E8E] bg-[#0F1210] px-1 rounded">ZERO_CODING_GUIDE.md</code> file (or set it as your <code className="text-[#7A9E8E] bg-[#0F1210] px-1 rounded">.cursorrules</code>) so it stops asking you for low-level 0G network configurations.
                 </p>
               </div>
-              <Link href="https://github.com/0gfoundation/memoryos-v2/blob/main/ZERO_CODING_GUIDE.md" target="_blank" className="shrink-0 px-6 py-2.5 rounded-full bg-[#1A1F1C] border border-[#5E7D7E]/30 text-[#F4F1EE] text-sm font-bold hover:bg-[#5E7D7E] hover:text-[#0F1210] transition-colors flex items-center gap-2">
+              <Link href="https://github.com/Surojit012/memoryos-2/blob/main/ZERO_CODING_GUIDE.md" target="_blank" className="shrink-0 px-6 py-2.5 rounded-full bg-[#1A1F1C] border border-[#5E7D7E]/30 text-[#F4F1EE] text-sm font-bold hover:bg-[#5E7D7E] hover:text-[#0F1210] transition-colors flex items-center gap-2">
                 <Code2 size={16} /> View Guide
               </Link>
             </div>
