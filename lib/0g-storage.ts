@@ -10,8 +10,8 @@
  */
 import { get0GNetworkConfig, getStorageExplorerUrl } from './0g-network'
 
-const MAX_RETRIES = 1
-const UPLOAD_TIMEOUT_MS = 45_000
+const MAX_RETRIES = 2
+const UPLOAD_TIMEOUT_MS = 90_000
 
 // ─── Upload any object to 0G Storage ──────────────────────────
 export async function uploadToStorage(data: object): Promise<string> {
