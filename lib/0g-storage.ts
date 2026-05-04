@@ -8,6 +8,11 @@
  * Upload: serializes any object to JSON → MemData → Indexer.upload()
  * Download: Indexer.download() → temp file → parse JSON
  */
+// Polyfill for 0G SDK in Node.js serverless environments
+if (typeof globalThis !== 'undefined' && typeof (globalThis as any).indexedDB === 'undefined') {
+  (globalThis as any).indexedDB = undefined;
+}
+
 import { get0GNetworkConfig, getStorageExplorerUrl } from './0g-network'
 
 const MAX_RETRIES = 5
