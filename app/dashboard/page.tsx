@@ -81,9 +81,13 @@ function MemoryStudioTab({ agents }: { agents: AgentIdentity[] }) {
     if (!selectedAgentId || !simText.trim()) return;
     setIsSimulating(true);
     try {
+      const agent = agents.find(a => a.agentId === selectedAgentId);
       const res = await fetch('/api/memory', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(agent?.apiKey ? { Authorization: `Bearer ${agent.apiKey}` } : {})
+        },
         body: JSON.stringify({
           agentId: selectedAgentId,
           content: simText,
@@ -1533,7 +1537,10 @@ function EncryptedVaultTab({ agents }: { agents: AgentIdentity[] }) {
     if (!selectedAgentId) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/memory/encrypted?agentId=${selectedAgentId}`);
+      const agent = agents.find(a => a.agentId === selectedAgentId);
+      const res = await fetch(`/api/memory/encrypted?agentId=${selectedAgentId}`, {
+        headers: agent?.apiKey ? { Authorization: `Bearer ${agent.apiKey}` } : {}
+      });
       const data = await res.json();
       setVaultMemories(data.vaultMemories || []);
     } catch (e) { console.error(e); }
@@ -1547,9 +1554,13 @@ function EncryptedVaultTab({ agents }: { agents: AgentIdentity[] }) {
     setIsEncrypting(true);
     setSuccessMsg('');
     try {
+      const agent = agents.find(a => a.agentId === selectedAgentId);
       const res = await fetch('/api/memory/encrypted', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(agent?.apiKey ? { Authorization: `Bearer ${agent.apiKey}` } : {})
+        },
         body: JSON.stringify({ agentId: selectedAgentId, content: newContent.trim(), type: 'semantic', importance: 4 }),
       });
       const data = await res.json();
