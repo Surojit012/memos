@@ -48,13 +48,16 @@ export function generateAgentManifest(agentId: string): AgentManifest | null {
   }
 }
 
+import { waitUntil } from '@vercel/functions'
+
 /**
  * Queue an agent for a manifest update to 0G.
  */
 function queueAgentUpdate(agentId: string) {
   pendingAgentUpdates.add(agentId)
-  // Debounce flush
-  setTimeout(flushManifests, 5000)
+  if (!isFlushing) {
+    waitUntil(flushManifests().catch(console.error))
+  }
 }
 
 export function upsertMemoryManifestRecord(memory: Memory): void {
@@ -109,7 +112,7 @@ export async function flushManifests(): Promise<void> {
 
   isFlushing = false
   if (pendingAgentUpdates.size > 0) {
-    setTimeout(flushManifests, 5000)
+    waitUntil(flushManifests().catch(console.error))
   }
 }
 

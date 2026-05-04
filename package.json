@@ -25,6 +25,7 @@
     "@rainbow-me/rainbowkit": "^2.2.10",
     "@safe-global/safe-apps-sdk": "^9.1.0",
     "@tanstack/react-query": "^5.99.0",
+    "@vercel/functions": "^3.5.0",
     "@walletconnect/ethereum-provider": "^2.23.9",
     "dotenv": "^17.4.2",
     "encoding": "^0.1.13",

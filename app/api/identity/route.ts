@@ -22,6 +22,8 @@ import { verifyWalletSignatureWithNonce } from '@/lib/auth'
 import { generateHmacApiKey } from '@/lib/auth'
 import { registerAgentOnChain, updateAgentHashOnChain, getAgentsFromRegistry, getAgentFromRegistry } from '@/lib/registry'
 
+import { waitUntil } from '@vercel/functions'
+
 export const maxDuration = 60;
 
 // GET /api/identity?agentId=xxx → get one agent
@@ -142,8 +144,8 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Fire and forget
-    backgroundUpload().catch(() => {})
+    // Use waitUntil so Vercel doesn't kill the lambda before 0G finishes uploading
+    waitUntil(backgroundUpload().catch((err) => console.error(err)))
 
     return NextResponse.json({
       agent,
