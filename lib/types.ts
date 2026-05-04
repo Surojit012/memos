@@ -106,6 +106,15 @@ export interface AgentIdentity {
   snapshots?: string[]      // Array of 0G Storage hashes for full brain snapshots
 }
 
+export interface AgentManifest {
+  version: number
+  updatedAt: number
+  identity: AgentIdentity
+  memories: Memory[]
+  skills: Skill[]
+}
+
+
 // ── Platform stats ────────────────────────────────────────────
 
 export interface PlatformStats {

@@ -438,8 +438,16 @@ export function createSkill(input: CreateSkillInput): Skill {
   return skill
 }
 
+export function getMemoriesByAgent(agentId: string): Memory[] {
+  return memories.filter(m => m.agentId === agentId)
+}
+
 export function getAllSkills(): Skill[] {
   return [...skills].sort((a, b) => b.usageCount - a.usageCount)
+}
+
+export function getSkillsByAgent(agentId: string): Skill[] {
+  return skills.filter(s => s.publisherAgentId === agentId)
 }
 
 export function getSkillById(id: string): Skill | undefined {
@@ -609,3 +617,7 @@ export function removeMemoryFromStore(id: string) {
   const index = memories.findIndex(memory => memory.id === id)
   if (index >= 0) memories.splice(index, 1)
 }
+
+const walletNonces: Record<string, number> = {}
+export function getWalletNonce(address: string) { return walletNonces[address] || 0 }
+export function incrementWalletNonce(address: string) { walletNonces[address] = getWalletNonce(address) + 1 }

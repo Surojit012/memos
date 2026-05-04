@@ -24,6 +24,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   const deleted = deleteMemory(params.id, agentId)
   if (!deleted) return NextResponse.json({ error: 'Not found or unauthorized' }, { status: 404 })
   removeMemoryFromStore(params.id)
-  await removeMemoryManifestRecord(params.id)
+  removeMemoryManifestRecord(agentId, params.id)
   return NextResponse.json({ success: true })
 }

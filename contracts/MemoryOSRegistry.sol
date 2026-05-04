@@ -38,6 +38,9 @@ contract MemoryOSRegistry {
     /// @dev agentId hash → owner address (for ownership checks)
     mapping(bytes32 => address) private _agentOwner;
 
+    /// @dev Array of all agentIds for global iteration
+    string[] private _allAgentIds;
+
     /// @dev Total number of registered agents
     uint256 public totalAgents;
 
@@ -83,6 +86,7 @@ contract MemoryOSRegistry {
 
         _ownerAgentKeys[msg.sender].push(key);
         _agentOwner[key] = msg.sender;
+        _allAgentIds.push(agentId);
         totalAgents++;
 
         emit AgentRegistered(msg.sender, agentId, name, block.timestamp);
@@ -176,5 +180,16 @@ contract MemoryOSRegistry {
         returns (uint256)
     {
         return _ownerAgentKeys[owner].length;
+    }
+
+    /**
+     * @notice Get all registered agentIds. Used for platform stats and global indexing.
+     */
+    function getAllAgentIds()
+        external
+        view
+        returns (string[] memory)
+    {
+        return _allAgentIds;
     }
 }

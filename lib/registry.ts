@@ -5,7 +5,9 @@ import { AgentIdentity } from './types'
 const REGISTRY_ABI = [
   "function registerAgent(string calldata agentId, string calldata name) external",
   "function updateAgentHash(string calldata agentId, string calldata storageHash) external",
-  "function getAgentsByOwner(address owner) external view returns (tuple(string agentId, string name, string storageHash, address owner, uint256 createdAt, uint256 updatedAt, bool exists)[])"
+  "function getAgentsByOwner(address owner) external view returns (tuple(string agentId, string name, string storageHash, address owner, uint256 createdAt, uint256 updatedAt, bool exists)[])",
+  "function getAgent(string calldata agentId) external view returns (tuple(string agentId, string name, string storageHash, address owner, uint256 createdAt, uint256 updatedAt, bool exists))",
+  "function getAllAgentIds() external view returns (string[])"
 ]
 
 function getRegistryContract() {
@@ -56,8 +58,11 @@ export async function getAgentsFromRegistry(ownerAddress: string): Promise<Agent
       createdAt: Number(a.createdAt) * 1000,
       identityHash: a.storageHash !== "" ? a.storageHash : undefined,
       memoryCount: 0,
-      systemPrompt: '',
-      skills: [],
+      skillsPublished: 0,
+      totalReads: 0,
+      totalEarned: 0,
+      storageUsed: 0,
+      openClawConnected: false,
     }))
   } catch (error) {
     console.error("Failed to fetch agents from registry:", error)
@@ -82,11 +87,27 @@ export async function getAgentFromRegistry(agentId: string): Promise<AgentIdenti
       createdAt: Number(a.createdAt) * 1000,
       identityHash: a.storageHash !== "" ? a.storageHash : undefined,
       memoryCount: 0,
-      systemPrompt: '',
-      skills: [],
+      skillsPublished: 0,
+      totalReads: 0,
+      totalEarned: 0,
+      storageUsed: 0,
+      openClawConnected: false,
     }
   } catch (error) {
     console.error(`Failed to fetch agent [${agentId}] from registry:`, error)
     return null
+  }
+}
+
+/**
+ * Fetches all agent IDs from the registry. (Free view call)
+ */
+export async function getAllAgentIdsFromRegistry(): Promise<string[]> {
+  const contract = getRegistryContract()
+  try {
+    return await contract.getAllAgentIds()
+  } catch (error) {
+    console.error(`Failed to fetch all agent IDs from registry:`, error)
+    return []
   }
 }

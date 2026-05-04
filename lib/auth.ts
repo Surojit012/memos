@@ -1,7 +1,6 @@
 import { ethers } from 'ethers'
 import { createHmac } from 'crypto'
-import { getAgent } from './store'
-import { getWalletNonce, incrementWalletNonce } from './0g-manifest'
+import { getAgent, getWalletNonce, incrementWalletNonce } from './store'
 
 /**
  * Verifies an Ethereum message signature.

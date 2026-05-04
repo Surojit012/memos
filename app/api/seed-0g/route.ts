@@ -12,7 +12,7 @@
  */
 import { NextResponse } from 'next/server'
 import { getAllAgents, getAllMemoriesForSeed, getAllSkillsForSeed, updateAgentHash, updateMemoryHash, updateSkillHash } from '@/lib/store'
-import { upsertAgentManifestRecord, upsertMemoryManifestRecord, upsertSkillManifestRecord, flushManifest } from '@/lib/0g-manifest'
+import { upsertMemoryManifestRecord, upsertSkillManifestRecord, flushManifest } from '@/lib/0g-manifest'
 import { uploadToStorage, getExplorerUrl } from '@/lib/0g-storage'
 import { ensureHydrated } from '@/lib/hydration'
 
@@ -84,7 +84,7 @@ export async function GET() {
         }
         const hash = await uploadToStorage(identityRecord)
         updateAgentHash(agent.agentId, hash)
-        upsertAgentManifestRecord({ ...agent, identityHash: hash })
+        // Agent was queued by memories/skills or we can manually trigger it here if needed
         uploaded++
         console.log(`✓ Agent  [${agent.agentId}] → ${hash}`)
         console.log(`  ${getExplorerUrl(hash)}`)
@@ -95,13 +95,10 @@ export async function GET() {
       await new Promise(r => setTimeout(r, 1000))
     }
 
-    // Flush the manifest to 0G immediately after seed
-    const manifestHash = await flushManifest()
+    // Flush all per-agent manifests to 0G immediately after seed
+    await flushManifest()
     console.log(`\n✅ Seed complete — ${uploaded} uploaded, ${failed} failed`)
-    if (manifestHash) {
-      console.log(`📦 Manifest uploaded to 0G: ${manifestHash}`)
-      console.log(`   Set MANIFEST_HASH=${manifestHash} in .env.local\n`)
-    }
+    console.log(`📦 All Agent manifests uploaded to 0G individually.`)
   })()
 
   return NextResponse.json({
