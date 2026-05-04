@@ -22,6 +22,8 @@ import { verifyWalletSignatureWithNonce } from '@/lib/auth'
 
 import { generateHmacApiKey } from '@/lib/auth'
 
+export const maxDuration = 60;
+
 // GET /api/identity?agentId=xxx → get one agent
 // GET /api/identity?ownerAddress=xxx → get all agents for a wallet
 export async function GET(req: NextRequest) {
@@ -89,25 +91,17 @@ export async function POST(req: NextRequest) {
       timestamp:   new Date().toISOString(),
     }
 
-    // Step 3 — upload identity to 0G Storage (timeout after 7s to prevent Vercel 504 Gateway Timeout)
+    // Step 3 — upload identity to 0G Storage (wait up to 60s)
     try {
-      const uploadPromise = async () => {
-        const hash = await uploadToStorage(identityRecord)
-        updateAgentHash(agentId, hash)
-        const hydratedAgent = { ...agent, identityHash: hash }
-        upsertHydratedAgent(hydratedAgent)
-        await upsertAgentManifestRecord(hydratedAgent)
-        console.log(`✓ Agent [${agentId}] identity registered on 0G: ${hash}`)
-        return hash
-      }
-      
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('0G Upload took longer than 7s (Vercel limit)')), 7000)
-      )
-
-      await Promise.race([uploadPromise(), timeoutPromise])
+      const hash = await uploadToStorage(identityRecord)
+      updateAgentHash(agentId, hash)
+      const hydratedAgent = { ...agent, identityHash: hash }
+      upsertHydratedAgent(hydratedAgent)
+      await upsertAgentManifestRecord(hydratedAgent)
+      console.log(`✓ Agent [${agentId}] identity registered on 0G: ${hash} by ${agent.ownerAddress}`)
+      console.log(`  ${getExplorerUrl(hash)}`)
     } catch (err: any) {
-      console.warn(`⚠ Agent identity upload backgrounded or failed [${agentId}]:`, err.message)
+      console.error(`✗ Agent identity upload failed [${agentId}]:`, err.message)
       // We don't throw! We return success to the UI so it doesn't crash with an HTML error.
     }
 
