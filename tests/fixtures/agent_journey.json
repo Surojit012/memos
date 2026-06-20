@@ -1,0 +1,10 @@
+{
+  "agent_id": "agent-journey-1",
+  "graph_id": "journey-graph",
+  "memory_content": "User prefers concise technical summaries about AI systems.",
+  "memory_tags": ["ai", "summary"],
+  "checkpoint_payload": {
+    "step": "awaiting_resume",
+    "input": "summarize architecture notes"
+  }
+}
