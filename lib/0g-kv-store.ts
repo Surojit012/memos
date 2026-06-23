@@ -15,7 +15,7 @@
  * │    → Used for: agent manifests, indexes, state    │
  * │    → Implemented HERE                             │
  * │                                                   │
- * │  Together: Zero local persistence. Any MemoryOS   │
+ * │  Together: Zero local persistence. Any memos   │
  * │  node bootstraps entirely from 0G.                │
  * └───────────────────────────────────────────────────┘
  *
@@ -37,9 +37,9 @@ import { get0GNetworkConfig } from './0g-network'
 const KV_VERSION = 1
 const UPLOAD_TIMEOUT_MS = 30_000
 
-// Default stream ID for MemoryOS — all agents share this namespace
+// Default stream ID for memos — all agents share this namespace
 // In production, each agent could have its own stream
-const MEMORYOS_STREAM_ID = process.env.ZG_KV_STREAM_ID ||
+const MEMOS_STREAM_ID = process.env.ZG_KV_STREAM_ID ||
   '0x0000000000000000000000000000000000000000000000000000000000000000'
 
 // ── Helpers ─────────────────────────────────────────────────
@@ -67,7 +67,7 @@ function getKvNodeUrl(): string {
  * 
  * @param key - The key (e.g., "agent_123/manifest")
  * @param value - Any JSON-serializable value
- * @param streamId - Optional stream ID (defaults to MemoryOS stream)
+ * @param streamId - Optional stream ID (defaults to memos stream)
  * @returns The root hash of the upload transaction
  */
 export async function kvPut(
@@ -87,7 +87,7 @@ export async function kvPut(
   const { Indexer, StreamDataBuilder } = await import('@0gfoundation/0g-ts-sdk')
   const { ethers } = await import('ethers')
 
-  const sid = streamId || MEMORYOS_STREAM_ID
+  const sid = streamId || MEMOS_STREAM_ID
   const jsonValue = typeof value === 'string' ? value : JSON.stringify(value)
 
   // Build KV stream data
@@ -144,7 +144,7 @@ export async function kvBatchPut(
   const { Indexer, StreamDataBuilder } = await import('@0gfoundation/0g-ts-sdk')
   const { ethers } = await import('ethers')
 
-  const sid = streamId || MEMORYOS_STREAM_ID
+  const sid = streamId || MEMOS_STREAM_ID
 
   const builder = new StreamDataBuilder(KV_VERSION)
   for (const entry of entries) {
@@ -196,7 +196,7 @@ export async function kvGet<T = any>(
 
     const kvNodeUrl = getKvNodeUrl()
     const client = new KvClient(kvNodeUrl)
-    const sid = streamId || MEMORYOS_STREAM_ID
+    const sid = streamId || MEMOS_STREAM_ID
 
     const value = await client.getValue(sid, stringToBytes(key))
 
@@ -333,5 +333,5 @@ export function isKvConfigured(): boolean {
 }
 
 export function getKvStreamId(): string {
-  return MEMORYOS_STREAM_ID
+  return MEMOS_STREAM_ID
 }

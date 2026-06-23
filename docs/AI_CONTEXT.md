@@ -1,8 +1,8 @@
 # AI Context
 
-MemoryOS is AI-native.
+memos is AI-native.
 
-AI coding tools should understand MemoryOS from context before they write code. MemoryOS follows 0G's Zero Coding philosophy: developers describe agent behavior, and AI tools connect the framework to 0G infrastructure through MemoryOS abstractions.
+AI coding tools should understand memos from context before they write code. memos follows 0G's Zero Coding philosophy: developers describe agent behavior, and AI tools connect the framework to 0G infrastructure through memos abstractions.
 
 ## Stack
 
@@ -11,7 +11,7 @@ Claude / Cursor
     |
 AI Context
     |
-MemoryOS
+memos
     |
 Adapters
     |
@@ -20,7 +20,7 @@ Adapters
 
 ## Compatible Systems
 
-MemoryOS must remain aligned with:
+memos must remain aligned with:
 
 - 0G AI Context
 - 0G Agent Skills
@@ -29,13 +29,13 @@ MemoryOS must remain aligned with:
 - Cursor
 - `@0gfoundation/0g-cc`
 
-MemoryOS integrates with these systems. It does not rebuild them.
+memos integrates with these systems. It does not rebuild them.
 
 ## AI Tool Responsibilities
 
-When an AI tool builds with MemoryOS, it should:
+When an AI tool builds with memos, it should:
 
-- Treat MemoryOS as the primary framework.
+- Treat memos as the primary framework.
 - Treat Brain as mandatory.
 - Treat LangGraph as optional Runtime.
 - Use Module for installable capabilities.
@@ -49,17 +49,17 @@ When an AI tool builds with MemoryOS, it should:
 
 An AI tool must not:
 
-- Turn MemoryOS into an application shell.
-- Turn MemoryOS into an orchestrator.
-- Turn MemoryOS into a LangGraph wrapper.
+- Turn memos into an application shell.
+- Turn memos into an orchestrator.
+- Turn memos into a LangGraph wrapper.
 - Call 0G directly from Brain or LangGraph.
 - Promote product features into framework primitives.
 - Introduce other runtimes.
 - Introduce custom orchestration layers.
 
-## MemoryOS Ownership
+## memos Ownership
 
-MemoryOS owns:
+memos owns:
 
 - Remember
 - Reason
@@ -77,7 +77,7 @@ LangGraph owns only execution state, thread state, resume lifecycle, and checkpo
 
 - Module = installable capability
 - LangGraph Graph = LangGraph execution graph
-- Module Installation = adding a Module to an Agent through MemoryOS
+- Module Installation = adding a Module to an Agent through memos
 - Marketplace = Module distribution
 - Brain = cognition engine
 

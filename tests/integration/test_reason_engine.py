@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from brain.memoryos.memory.memory_manager import MemoryManager
-from brain.memoryos.reason.citation_manager import CitationManager
-from brain.memoryos.reason.context_builder import ContextBuilder
-from brain.memoryos.reason.reason_engine import ReasonEngine
-from brain.memoryos.reason.retriever import Retriever
+from brain.memos.memory.memory_manager import MemoryManager
+from brain.memos.reason.citation_manager import CitationManager
+from brain.memos.reason.context_builder import ContextBuilder
+from brain.memos.reason.reason_engine import ReasonEngine
+from brain.memos.reason.retriever import Retriever
 
 
 def build_memories() -> list:
@@ -106,7 +106,7 @@ def test_empty_context_handling_is_deterministic() -> None:
     assert result.citations == []
     assert result.used_memories == []
     assert result.used_modules == []
-    assert "No cited MemoryOS sources" in result.answer
+    assert "No cited Memos sources" in result.answer
     assert result.metadata["provider"] == "local"
 
 

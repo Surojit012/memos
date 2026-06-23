@@ -1,0 +1,19 @@
+include README.md
+include LICENSE
+include pyproject.toml
+
+global-exclude .env
+global-exclude node_modules
+global-exclude node_modules/*
+global-exclude venv
+global-exclude venv/*
+global-exclude dist
+global-exclude dist/*
+global-exclude __pycache__
+global-exclude __pycache__/*
+global-exclude .pytest_cache
+global-exclude .pytest_cache/*
+global-exclude coverage
+global-exclude coverage/*
+global-exclude *.log
+global-exclude *.sqlite

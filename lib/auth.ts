@@ -20,7 +20,7 @@ export function verifyWalletSignature(address: string, message: string, signatur
  * Verifies a wallet signature WITH nonce-based replay protection.
  * The nonce is tracked in the 0G manifest (per wallet).
  *
- * Expected message format: "Register agent <agentId> on MemoryOS | nonce: <N>"
+ * Expected message format: "Register agent <agentId> on memos | nonce: <N>"
  * or any message ending with " | nonce: <N>"
  */
 export function verifyWalletSignatureWithNonce(
@@ -78,7 +78,7 @@ function getHmacSecret(): string {
   if (isDev()) {
     // Only allow default in development — logged so it's obvious
     console.warn('⚠ [AUTH] Using insecure default HMAC secret. Set PLATFORM_HMAC_SECRET in production.')
-    return 'memoryos-dev-secret'
+    return 'memos-dev-secret'
   }
   throw new Error('PLATFORM_HMAC_SECRET or MEMORY_SERVICE_SECRET must be set in production.')
 }
@@ -130,12 +130,12 @@ export function getNextNonce(walletAddress: string): number {
 }
 
 /**
- * Middleware-like helper to check for the MemoryOS platform secret.
+ * Middleware-like helper to check for the memos platform secret.
  * In production, MEMORY_SERVICE_SECRET MUST be set — requests without it are rejected.
  * In development (NODE_ENV !== 'production'), access is allowed if secret is not configured.
  */
 export function validatePlatformSecret(req: Request): boolean {
-  const secret = req.headers.get('X-MemoryOS-Secret')
+  const secret = req.headers.get('X-memos-Secret')
   const expected = process.env.MEMORY_SERVICE_SECRET
   if (!expected) {
     if (isDev()) return true // Dev mode without secret configured → allow

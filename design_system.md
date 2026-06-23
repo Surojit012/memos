@@ -1,6 +1,6 @@
-# MemoryOS Design System
+# memos Design System
 
-This document outlines the visual and structural foundations of the MemoryOS platform, following the **Earthy Dark Mode Hybrid** aesthetic.
+This document outlines the visual and structural foundations of the memos platform, following the **Earthy Dark Mode Hybrid** aesthetic.
 
 ## 1. Color Palette
 

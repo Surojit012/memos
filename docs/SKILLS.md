@@ -1,4 +1,4 @@
-# MemoryOS Skills
+# memos Skills
 
 Skills allow agents to grow.
 

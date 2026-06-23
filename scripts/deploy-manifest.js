@@ -33,7 +33,7 @@ async function main() {
   console.log('\n📋 Next steps:')
   console.log(`   1. Add to .env.local: MANIFEST_ANCHOR_CONTRACT=${address}`)
   console.log('   2. After seeding, the manifest hash will auto-update on-chain')
-  console.log('   3. Any MemoryOS node can bootstrap from this contract\n')
+  console.log('   3. Any Memos node can bootstrap from this contract\n')
 }
 
 main()

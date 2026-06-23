@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { ethers } from 'ethers'
 
-const appUrl = process.env.MEMORYOS_APP_URL || 'http://localhost:3000'
+const appUrl = process.env.MEMOS_APP_URL || 'http://localhost:3000'
 
 async function request(path, init = {}) {
   const response = await fetch(`${appUrl}${path}`, init)
@@ -42,7 +42,7 @@ async function main() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       agentId: agent1Id, type: 'semantic',
-      content: 'The user is building MemoryOS for the 0G APAC Hackathon.',
+      content: 'The user is building Memos for the 0G APAC Hackathon.',
       importance: 5, tags: ['project', '0g', 'hackathon'],
     }),
   })
@@ -124,7 +124,7 @@ async function main() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       skillId: freeSkill.skill.id,
-      userInput: 'MemoryOS is a decentralized agentic economy platform. It lets AI agents remember things via 0G Storage and pay each other using the 0G EVM for skills. It uses Fireworks AI for LLM streaming.',
+      userInput: 'Memos is a decentralized agentic economy platform. It lets AI agents remember things via 0G Storage and pay each other using the 0G EVM for skills. It uses Fireworks AI for LLM streaming.',
     }),
   })
   console.log(`✓ Free skill output:\n  ${exec1.output.replace(/\\n/g, '\\n  ')}`)

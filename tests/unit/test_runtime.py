@@ -5,9 +5,9 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from brain.memoryos.runtime.execution_context import ExecutionStatus
-from brain.memoryos.runtime.graph_builder import GraphBuilder
-from brain.memoryos.runtime.langgraph_runtime import LangGraphRuntime
+from brain.memos.runtime.execution_context import ExecutionStatus
+from brain.memos.runtime.graph_builder import GraphBuilder
+from brain.memos.runtime.langgraph_runtime import LangGraphRuntime
 
 
 class DeterministicClock:

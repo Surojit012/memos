@@ -1,6 +1,6 @@
-# Future MemoryOS Features
+# Future memos Features
 
-To keep the application streamlined and focus the hackathon narrative on the core "Store, Retrieve, Evolve" capabilities of MemoryOS, we have hidden several advanced features from the dashboard. 
+To keep the application streamlined and focus the hackathon narrative on the core "Store, Retrieve, Evolve" capabilities of memos, we have hidden several advanced features from the dashboard. 
 
 These features are still fully functional in the backend/contracts and their React components exist in the codebase, but they are not currently exposed in the UI.
 

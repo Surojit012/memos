@@ -5,8 +5,8 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from brain.memoryos.memory.memory_manager import MemoryManager
-from brain.memoryos.models.memory import MemoryType
+from brain.memos.memory.memory_manager import MemoryManager
+from brain.memos.models.memory import MemoryType
 
 
 class DeterministicClock:

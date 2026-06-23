@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from brain.memoryos.runtime.langgraph_checkpointer import LangGraphCheckpointer
+from brain.memos.runtime.langgraph_checkpointer import LangGraphCheckpointer
 
 
 class DeterministicClock:

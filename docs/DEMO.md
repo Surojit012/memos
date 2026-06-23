@@ -1,10 +1,10 @@
 # Demo
 
-The shortest MemoryOS demo proves persistent cognition.
+The shortest memos demo proves persistent cognition.
 
 ## Goal
 
-Show that an AI agent can remember, reason, and dream using MemoryOS while durable state connects to 0G through Adapters.
+Show that an AI agent can remember, reason, and dream using memos while durable state connects to 0G through Adapters.
 
 ## Flow
 
@@ -18,7 +18,7 @@ Show that an AI agent can remember, reason, and dream using MemoryOS while durab
 
 ## What The Demo Must Prove
 
-- MemoryOS is the persistent brain.
+- memos is the persistent brain.
 - Brain is mandatory.
 - LangGraph Runtime is optional.
 - Modules are installable capabilities, not agent state.
@@ -35,4 +35,4 @@ Show that an AI agent can remember, reason, and dream using MemoryOS while durab
 
 ## Demo Sentence
 
-MemoryOS gives this Agent a brain that survives the session, reasons from stored knowledge, consolidates what it learns, and persists durable state through 0G-backed Adapters.
+memos gives this Agent a brain that survives the session, reasons from stored knowledge, consolidates what it learns, and persists durable state through 0G-backed Adapters.

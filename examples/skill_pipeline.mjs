@@ -7,14 +7,14 @@
  * Run: node examples/skill_pipeline.mjs
  */
 
-import { MemoryOSClient } from "memoryos-openclaw";
+import { MemosClient } from "memos-openclaw";
 
-const client = new MemoryOSClient({
+const client = new MemosClient({
   apiUrl: "http://localhost:3000",
   agentId: "agent_pipeline_demo",
 });
 
-console.log("── MemoryOS Skill Pipeline Example ──\n");
+console.log("── Memos Skill Pipeline Example ──\n");
 
 // 1. Register
 await client.identity.register("Pipeline Demo Agent");

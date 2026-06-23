@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
     if (!signature || !message) {
       return NextResponse.json({
         error: 'Signature and message are required to prove ownership of the ownerAddress.',
-        hint: 'Sign a message like "Register agent <agentId> on MemoryOS" with your wallet.',
+        hint: 'Sign a message like "Register agent <agentId> on memos" with your wallet.',
       }, { status: 401 })
     }
 
@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
           name: agent.name,
           ownerAddress: agent.ownerAddress,
           registeredAt: agent.createdAt,
-          platform: 'MemoryOS',
+          platform: 'memos',
           network: 'Galileo Testnet',
           version: '1.0',
           capabilities: ['memory-read', 'memory-write', 'skill-publish', 'skill-execute'],

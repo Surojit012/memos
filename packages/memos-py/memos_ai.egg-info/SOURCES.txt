@@ -1,0 +1,14 @@
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+memos/__init__.py
+memos/client.py
+memos/exceptions.py
+memos/models.py
+memos_ai.egg-info/PKG-INFO
+memos_ai.egg-info/SOURCES.txt
+memos_ai.egg-info/dependency_links.txt
+memos_ai.egg-info/requires.txt
+memos_ai.egg-info/top_level.txt
+tests/test_client.py

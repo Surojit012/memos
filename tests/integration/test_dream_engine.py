@@ -4,11 +4,11 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from brain.memoryos.dreams.dream_engine import DreamEngine
-from brain.memoryos.dreams.dream_history import DreamHistory
-from brain.memoryos.memory.memory_manager import MemoryManager
-from brain.memoryos.models.dream_result import DreamResult
-from brain.memoryos.models.memory import MemoryType
+from brain.memos.dreams.dream_engine import DreamEngine
+from brain.memos.dreams.dream_history import DreamHistory
+from brain.memos.memory.memory_manager import MemoryManager
+from brain.memos.models.dream_result import DreamResult
+from brain.memos.models.memory import MemoryType
 
 
 class DeterministicClock:

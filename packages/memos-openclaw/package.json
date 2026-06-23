@@ -1,0 +1,22 @@
+{
+  "name": "memos-openclaw",
+  "version": "0.2.0",
+  "description": "memos client and plugin adapter for OpenClaw agents",
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "README.md"
+  ],
+  "keywords": [
+    "memos",
+    "openclaw",
+    "0g",
+    "agent",
+    "memory",
+    "skills"
+  ],
+  "license": "MIT"
+}

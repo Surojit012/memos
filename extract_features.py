@@ -12,7 +12,7 @@ features_to_extract = [
     "EncryptedVaultTab"
 ]
 
-future_features = "# Future MemoryOS Features\n\nThis document contains advanced features that were removed from the initial hackathon build to keep the core narrative focused and simple. They are ready to be integrated back into `app/dashboard/page.tsx` when needed.\n\n"
+future_features = "# Future Memos Features\n\nThis document contains advanced features that were removed from the initial hackathon build to keep the core narrative focused and simple. They are ready to be integrated back into `app/dashboard/page.tsx` when needed.\n\n"
 
 for feature in features_to_extract:
     # Find the function definition

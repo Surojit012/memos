@@ -4,7 +4,7 @@
 
 ## Overview
 
-MemoryOS integrates the **0G Compute Network** — a decentralized GPU marketplace for AI inference and model fine-tuning. This document covers all SDK patterns used in the codebase.
+memos integrates the **0G Compute Network** — a decentralized GPU marketplace for AI inference and model fine-tuning. This document covers all SDK patterns used in the codebase.
 
 ## Network Information
 
@@ -87,7 +87,7 @@ Provider Sub-Accounts → retrieve-fund (24h lock) → Main Account → refund �
 
 ## Hybrid Compute Architecture
 
-MemoryOS supports four compute providers for skill execution:
+memos supports four compute providers for skill execution:
 
 | Provider | Type | Config |
 |----------|------|--------|
@@ -125,7 +125,7 @@ Setup: Visit [pc.0g.ai](https://pc.0g.ai) → connect wallet → deposit → API
 
 ## Agent Brain INFTs (ERC-7857)
 
-MemoryOS supports minting agent brain snapshots as **Intelligent NFTs** on-chain:
+memos supports minting agent brain snapshots as **Intelligent NFTs** on-chain:
 
 - `mintBrain()` — Mint a snapshot hash as an ERC-7857 NFT
 - `cloneBrain()` — Fork an agent's cognitive state to a new owner

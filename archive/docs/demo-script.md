@@ -1,4 +1,4 @@
-# MemoryOS — Hackathon Demo Script (3–5 minutes)
+# memos — Hackathon Demo Script (3–5 minutes)
 
 > Updated: 2026-05-01 | All features live on Galileo Testnet
 
@@ -26,7 +26,7 @@
    - Type: `semantic`
    - Content: "The user prefers TypeScript over Python for backend development"
    - Click **Store Memory**
-3. **Point out**: "Watch the bottom of the card — it says 'uploading to 0G Storage'. In the background, MemoryOS is building a Merkle tree and uploading to the 0G Storage Indexer"
+3. **Point out**: "Watch the bottom of the card — it says 'uploading to 0G Storage'. In the background, memos is building a Merkle tree and uploading to the 0G Storage Indexer"
 4. **Wait ~10 seconds** for the 0G hash to appear
 5. **Click the hash link** → Opens 0G Storage Scan showing the actual blob on-chain
 
@@ -67,7 +67,7 @@
 
 Close with this:
 
-> "MemoryOS has **30 distinct 0G use cases** across Storage, Compute, and Chain. Every memory, every index, every embedding, every encrypted vault, every agent manifest — it all lives on 0G. There's no AWS, no Pinecone, no Redis. This isn't a project that uses 0G. This IS 0G."
+> "memos has **30 distinct 0G use cases** across Storage, Compute, and Chain. Every memory, every index, every embedding, every encrypted vault, every agent manifest — it all lives on 0G. There's no AWS, no Pinecone, no Redis. This isn't a project that uses 0G. This IS 0G."
 
 ---
 
@@ -83,4 +83,4 @@ A: "AES-256-GCM with wallet-derived keys. The ciphertext on 0G is indistinguisha
 A: "It's an extension of ERC-721 for Intelligent NFTs. The key innovation is the two-phase transfer: when the NFT transfers, the encrypted metadata key must be re-encrypted for the new owner. Standard ERC-721 transferFrom is blocked — you must use iTransferFrom which locks the token until re-encryption completes."
 
 **Q: "What's the KV layer?"**
-A: "0G Storage has two layers. The Log layer is immutable — append-only Merkle blobs. The KV layer is mutable — key-value pairs that can be updated. We use Log for memories and KV for manifests, so any MemoryOS node can bootstrap its entire state from a single 0G key lookup."
+A: "0G Storage has two layers. The Log layer is immutable — append-only Merkle blobs. The KV layer is mutable — key-value pairs that can be updated. We use Log for memories and KV for manifests, so any memos node can bootstrap its entire state from a single 0G key lookup."

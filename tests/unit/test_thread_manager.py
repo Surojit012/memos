@@ -5,8 +5,8 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from brain.memoryos.runtime.execution_context import ExecutionStatus
-from brain.memoryos.runtime.thread_manager import ThreadManager
+from brain.memos.runtime.execution_context import ExecutionStatus
+from brain.memos.runtime.thread_manager import ThreadManager
 
 
 class DeterministicClock:

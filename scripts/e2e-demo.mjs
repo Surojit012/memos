@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { ethers } from 'ethers'
 
-const appUrl = process.env.MEMORYOS_APP_URL || 'http://localhost:3001'
+const appUrl = process.env.MEMOS_APP_URL || 'http://localhost:3001'
 
 async function request(path, init = {}) {
   const response = await fetch(`${appUrl}${path}`, init)
@@ -14,7 +14,7 @@ async function request(path, init = {}) {
 
 async function main() {
   console.log('='.repeat(60))
-  console.log('🚀 MemoryOS 0G E2E Demo Flow')
+  console.log('🚀 Memos 0G E2E Demo Flow')
   console.log('='.repeat(60) + '\n')
   
   const agentId = `agent_hacker_${Date.now()}`

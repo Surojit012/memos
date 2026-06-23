@@ -1,7 +1,7 @@
 /**
  * lib/cache.ts
  *
- * LRU (Least Recently Used) cache for MemoryOS.
+ * LRU (Least Recently Used) cache for memos.
  *
  * Architecture:
  * - RAM is a cache. 0G Storage is the database.

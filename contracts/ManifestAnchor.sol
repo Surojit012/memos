@@ -4,15 +4,15 @@ pragma solidity ^0.8.24;
 /**
  * ManifestAnchor.sol
  *
- * Stores the MemoryOS master manifest hash on-chain.
- * Any MemoryOS node anywhere in the world can read this hash,
+ * Stores the Memos master manifest hash on-chain.
+ * Any Memos node anywhere in the world can read this hash,
  * download the manifest from 0G Storage, and fully reconstruct
  * the platform state — zero local files required.
  *
  * This is the "trustless bootstrap" mechanism:
- * 1. MemoryOS uploads manifest to 0G Storage → gets rootHash
- * 2. MemoryOS calls updateManifest(rootHash)
- * 3. New MemoryOS node reads manifestHash from this contract
+ * 1. Memos uploads manifest to 0G Storage → gets rootHash
+ * 2. Memos calls updateManifest(rootHash)
+ * 3. New Memos node reads manifestHash from this contract
  * 4. Downloads manifest from 0G → hydrates RAM → starts serving
  */
 contract ManifestAnchor {

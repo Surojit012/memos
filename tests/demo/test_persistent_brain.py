@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from brain.memoryos.agent.agent import Agent
-from brain.memoryos.agent.identity import Identity
-from brain.memoryos.dreams.dream_engine import DreamEngine
-from brain.memoryos.models.agent_profile import AgentProfile
-from brain.memoryos.models.memory import MemoryType
+from brain.memos.agent.agent import Agent
+from brain.memos.agent.identity import Identity
+from brain.memos.dreams.dream_engine import DreamEngine
+from brain.memos.models.agent_profile import AgentProfile
+from brain.memos.models.memory import MemoryType
 
 
 def test_persistent_brain_demo_research_topics() -> None:

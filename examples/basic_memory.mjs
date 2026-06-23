@@ -2,19 +2,19 @@
  * Example: Basic Memory CRUD with the JS SDK
  *
  * Demonstrates saving, listing, searching, and using skills
- * with the MemoryOS OpenClaw JS SDK.
+ * with the Memos OpenClaw JS SDK.
  *
  * Run: node examples/basic_memory.mjs
  */
 
-import { MemoryOSClient } from "memoryos-openclaw";
+import { MemosClient } from "memos-openclaw";
 
-const client = new MemoryOSClient({
+const client = new MemosClient({
   apiUrl: "http://localhost:3000",
   agentId: "agent_example_js",
 });
 
-console.log("── MemoryOS JS SDK Example ──\n");
+console.log("── Memos JS SDK Example ──\n");
 
 // 1. Register agent
 try {

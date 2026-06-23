@@ -2,7 +2,7 @@
 Example: Basic Memory CRUD
 
 Demonstrates saving, listing, searching, and deleting memories
-using the MemoryOS Python SDK.
+using the Memos Python SDK.
 
 Run: python3 examples/basic_memory.py
 """
@@ -10,15 +10,15 @@ Run: python3 examples/basic_memory.py
 import sys
 import os
 
-# Resolve the local memoryos package (no pip install needed)
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "packages", "memoryos-py"))
+# Resolve the local memos package (no pip install needed)
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "packages", "memos-py"))
 
-from memoryos import MemoryOS
+from memos import Memos
 
 
 def main():
-    # 1. Connect to MemoryOS
-    client = MemoryOS(
+    # 1. Connect to Memos
+    client = Memos(
         api_url="http://localhost:3000",
         agent_id="agent_example_bot",
     )

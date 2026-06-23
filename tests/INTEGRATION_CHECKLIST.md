@@ -1,4 +1,4 @@
-# MemoryOS Validation Checklist
+# memos Validation Checklist
 
 ## Scope
 
@@ -7,10 +7,12 @@
 - Reason Engine integration behavior is covered.
 - Agent Core integration behavior is covered.
 - Dream Engine integration behavior is covered.
+- Grow layer integration behavior is covered.
 - Brain pipeline behavior is covered end-to-end.
 - Complete cognitive loop behavior is covered end-to-end.
 - Demo Brain journey is covered.
 - Persistent Brain demo behavior is covered.
+- Agent Growth demo behavior is covered.
 - Agent journey integration behavior is covered.
 - Tests use local in-memory objects only.
 - Tests make no 0G calls.
@@ -45,3 +47,5 @@ python3 -m compileall brain tests
 - Cognitive loop tests validate Remember, Dream, and Reason together.
 - Dream tests validate grouping, semantic creation, decay, history, empty state handling, and duplicate protection.
 - Persistent Brain demo validates recurring research topics without external services.
+- Grow tests validate local Module installation, execution, duplicate rejection, and uninstall behavior.
+- Grow tests do not call Marketplace, Economy, payments, wallets, 0G, remote services, or LangGraph.

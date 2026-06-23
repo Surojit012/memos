@@ -1,15 +1,15 @@
-# MemoryOS Runtime Spec
+# memos Runtime Spec
 
-MemoryOS is the primary framework for persistent AI agents.
+memos is the primary framework for persistent AI agents.
 
-The Runtime layer executes LangGraph Graphs without owning long-term cognition. MemoryOS Brain remains mandatory and owns:
+The Runtime layer executes LangGraph Graphs without owning long-term cognition. memos Brain remains mandatory and owns:
 
 - Memory
 - Remember
 - Reason
 - Dream
 
-LangGraph is optional and may be used only as an execution runtime. MemoryOS must never become a LangGraph wrapper.
+LangGraph is optional and may be used only as an execution runtime. memos must never become a LangGraph wrapper.
 
 The Runtime layer consists of these components only:
 
@@ -27,14 +27,14 @@ The Runtime layer consists of these components only:
 
 **Purpose**
 
-Execute LangGraph Graphs when a MemoryOS Agent needs structured runtime execution.
+Execute LangGraph Graphs when a memos Agent needs structured runtime execution.
 
 **Responsibilities**
 
 - Run LangGraph Graphs.
 - Manage execution transitions inside a LangGraph Graph.
 - Support pauses, resumes, and step-level execution state.
-- Delegate cognition to MemoryOS Brain.
+- Delegate cognition to memos Brain.
 - Keep runtime execution separate from persistent Brain ownership.
 
 **Inputs**
@@ -51,33 +51,33 @@ Execute LangGraph Graphs when a MemoryOS Agent needs structured runtime executio
 - Runtime state updates.
 - Resume requests.
 - Checkpoint requests.
-- Errors for MemoryOS to handle.
+- Errors for memos to handle.
 
 **Ownership**
 
-LangGraph owns execution state, thread state, resume lifecycle, and checkpoint lifecycle while the graph is running. MemoryOS owns the Agent, Brain state, Adapters, Module Installation, and final persistence policy.
+LangGraph owns execution state, thread state, resume lifecycle, and checkpoint lifecycle while the graph is running. memos owns the Agent, Brain state, Adapters, Module Installation, and final persistence policy.
 
 **Failure Handling**
 
-- Runtime errors are returned to MemoryOS with thread and checkpoint context.
+- Runtime errors are returned to memos with thread and checkpoint context.
 - Partial execution state is checkpointed when possible.
 - Failed runs may resume from the last valid checkpoint.
-- Brain operations fail closed: MemoryOS decides whether Memory, Reason, or Dream updates are committed.
+- Brain operations fail closed: memos decides whether Memory, Reason, or Dream updates are committed.
 
 **Persistence Strategy**
 
-Runtime does not persist directly to 0G. It emits checkpoint data through the LangGraph Checkpointer, which is owned by MemoryOS and persists checkpoints through the Storage Adapter.
+Runtime does not persist directly to 0G. It emits checkpoint data through the LangGraph Checkpointer, which is owned by memos and persists checkpoints through the Storage Adapter.
 
 **Interaction With Brain**
 
-- Calls MemoryOS Reason for cognition.
-- Reads and writes Memory only through MemoryOS Brain APIs.
+- Calls memos Reason for cognition.
+- Reads and writes Memory only through memos Brain APIs.
 - Does not implement Remember, Reason, or Dream.
-- May request Brain operations, but MemoryOS owns execution and persistence of those lifecycle steps.
+- May request Brain operations, but memos owns execution and persistence of those lifecycle steps.
 
 **Interaction With 0G**
 
-No direct 0G access. All 0G reads and writes go through MemoryOS Adapters.
+No direct 0G access. All 0G reads and writes go through memos Adapters.
 
 **Lifecycle**
 
@@ -103,7 +103,7 @@ Persist and restore LangGraph execution checkpoints without giving LangGraph dir
 - Restore checkpoint state for resume.
 - Associate checkpoints with Agents and threads.
 - Hand off checkpoint persistence to the Storage Adapter.
-- Preserve MemoryOS ownership over checkpoint storage.
+- Preserve memos ownership over checkpoint storage.
 
 **Inputs**
 
@@ -122,13 +122,13 @@ Persist and restore LangGraph execution checkpoints without giving LangGraph dir
 
 **Ownership**
 
-Checkpoint ownership remains inside MemoryOS. LangGraph may produce and consume checkpoint payloads, but MemoryOS owns where, when, and how checkpoints are stored.
+Checkpoint ownership remains inside memos. LangGraph may produce and consume checkpoint payloads, but memos owns where, when, and how checkpoints are stored.
 
 **Failure Handling**
 
 - If local checkpoint capture fails, the run fails with a recoverable runtime error.
-- If 0G persistence fails, MemoryOS may keep the checkpoint pending and retry through the Storage Adapter.
-- Resume uses the latest valid checkpoint known to MemoryOS.
+- If 0G persistence fails, memos may keep the checkpoint pending and retry through the Storage Adapter.
+- Resume uses the latest valid checkpoint known to memos.
 - Corrupt or incompatible checkpoints are rejected and not passed back into LangGraph.
 
 **Persistence Strategy**
@@ -138,16 +138,16 @@ All checkpoints eventually persist to 0G Storage through the Storage Adapter.
 **Interaction With Brain**
 
 - Checkpoints reference Brain state but do not replace it.
-- Memory, Reason, and Dream outputs are committed by MemoryOS separately from runtime checkpoint payloads.
-- A restored checkpoint must reconcile with current Brain state through MemoryOS.
+- Memory, Reason, and Dream outputs are committed by memos separately from runtime checkpoint payloads.
+- A restored checkpoint must reconcile with current Brain state through memos.
 
 **Interaction With 0G**
 
-Never directly accesses 0G. It uses MemoryOS checkpoint persistence through the Storage Adapter.
+Never directly accesses 0G. It uses memos checkpoint persistence through the Storage Adapter.
 
 **Lifecycle**
 
-Created with a runtime run, receives checkpoint writes during execution, stores checkpoint references under the owning thread, restores checkpoints for resume, and expires or archives checkpoints according to MemoryOS policy.
+Created with a runtime run, receives checkpoint writes during execution, stores checkpoint references under the owning thread, restores checkpoints for resume, and expires or archives checkpoints according to memos policy.
 
 **Examples**
 
@@ -189,33 +189,33 @@ Track runtime conversation or execution threads for an Agent.
 
 **Ownership**
 
-LangGraph owns thread state during graph execution. MemoryOS owns thread identity, authorization, checkpoint references, and long-term thread records.
+LangGraph owns thread state during graph execution. memos owns thread identity, authorization, checkpoint references, and long-term thread records.
 
 **Failure Handling**
 
-- Missing thread identifiers create new threads only when allowed by MemoryOS.
+- Missing thread identifiers create new threads only when allowed by memos.
 - Invalid thread ownership fails authorization.
 - Failed runtime threads are marked failed with recoverable checkpoint references when available.
 - Resume attempts without a valid checkpoint fail safely.
 
 **Persistence Strategy**
 
-Thread metadata is owned by MemoryOS. Durable thread recovery depends on checkpoint references that persist through the Storage Adapter.
+Thread metadata is owned by memos. Durable thread recovery depends on checkpoint references that persist through the Storage Adapter.
 
 **Interaction With Brain**
 
 - Supplies thread context to Reason.
 - Does not own Memory.
 - Does not summarize or consolidate the Brain by itself.
-- May request that MemoryOS write thread outcomes as Memories when appropriate.
+- May request that memos write thread outcomes as Memories when appropriate.
 
 **Interaction With 0G**
 
-No direct 0G access. Thread checkpoint references and durable state are persisted through MemoryOS Adapters.
+No direct 0G access. Thread checkpoint references and durable state are persisted through memos Adapters.
 
 **Lifecycle**
 
-Thread is created, passed into runtime execution, updated as the graph progresses, linked to checkpoints, completed or paused, and later resumed or archived by MemoryOS.
+Thread is created, passed into runtime execution, updated as the graph progresses, linked to checkpoints, completed or paused, and later resumed or archived by memos.
 
 **Examples**
 
@@ -229,21 +229,21 @@ Thread is created, passed into runtime execution, updated as the graph progresse
 
 **Purpose**
 
-Build LangGraph Graphs from MemoryOS-approved runtime definitions.
+Build LangGraph Graphs from memos-approved runtime definitions.
 
 **Responsibilities**
 
 - Assemble LangGraph Graphs.
-- Bind graph nodes to MemoryOS Brain operations.
+- Bind graph nodes to memos Brain operations.
 - Keep graph structure separate from Brain ownership.
-- Validate that graphs do not bypass MemoryOS Adapters.
+- Validate that graphs do not bypass memos Adapters.
 - Produce graph definitions for LangGraph Runtime.
 
 **Inputs**
 
 - Agent capability requirements.
 - Runtime flow definition.
-- MemoryOS Brain operation references.
+- memos Brain operation references.
 - Module references when needed.
 - Runtime configuration.
 
@@ -256,7 +256,7 @@ Build LangGraph Graphs from MemoryOS-approved runtime definitions.
 
 **Ownership**
 
-MemoryOS owns graph construction policy. LangGraph owns execution after a valid LangGraph Graph is handed to the runtime.
+memos owns graph construction policy. LangGraph owns execution after a valid LangGraph Graph is handed to the runtime.
 
 **Failure Handling**
 
@@ -267,27 +267,27 @@ MemoryOS owns graph construction policy. LangGraph owns execution after a valid 
 
 **Persistence Strategy**
 
-Graph definitions may be stored as MemoryOS runtime metadata when needed. Runtime checkpoints are handled by the LangGraph Checkpointer and persist through the Storage Adapter.
+Graph definitions may be stored as memos runtime metadata when needed. Runtime checkpoints are handled by the LangGraph Checkpointer and persist through the Storage Adapter.
 
 **Interaction With Brain**
 
 - Maps graph nodes to Remember, Reason, and Dream operations.
 - Does not implement those operations.
-- Ensures cognition remains inside MemoryOS Brain.
+- Ensures cognition remains inside memos Brain.
 
 **Interaction With 0G**
 
-No direct 0G access. Graph nodes use MemoryOS Adapters when storage, compute, marketplace, or economy operations are required.
+No direct 0G access. Graph nodes use memos Adapters when storage, compute, marketplace, or economy operations are required.
 
 **Lifecycle**
 
-Receives a runtime flow requirement, validates it against MemoryOS rules, builds a LangGraph Graph, hands it to LangGraph Runtime, and remains outside execution state.
+Receives a runtime flow requirement, validates it against memos rules, builds a LangGraph Graph, hands it to LangGraph Runtime, and remains outside execution state.
 
 **Examples**
 
 - A graph with input, memory retrieval, reasoning, response, and memory write nodes.
 - A graph that pauses for approval before committing a memory.
-- A graph that invokes a Module through MemoryOS Marketplace and records usage through MemoryOS Economy.
+- A graph that invokes a Module through memos Marketplace and records usage through memos Economy.
 
 ---
 
@@ -295,7 +295,7 @@ Receives a runtime flow requirement, validates it against MemoryOS rules, builds
 
 **Purpose**
 
-Provide Runtime with the minimum required context to execute on behalf of a MemoryOS Agent.
+Provide Runtime with the minimum required context to execute on behalf of a memos Agent.
 
 **Responsibilities**
 
@@ -303,7 +303,7 @@ Provide Runtime with the minimum required context to execute on behalf of a Memo
 - Carry thread identity.
 - Carry authorization context.
 - Carry runtime configuration.
-- Carry Brain access handles through MemoryOS.
+- Carry Brain access handles through memos.
 - Prevent runtime components from owning cognition or infrastructure adapters.
 
 **Inputs**
@@ -313,7 +313,7 @@ Provide Runtime with the minimum required context to execute on behalf of a Memo
 - Thread identifier.
 - User or system input.
 - Runtime options.
-- MemoryOS Brain interface.
+- memos Brain interface.
 
 **Outputs**
 
@@ -324,14 +324,14 @@ Provide Runtime with the minimum required context to execute on behalf of a Memo
 
 **Ownership**
 
-Owned by MemoryOS. LangGraph Runtime receives it for execution but does not own or persist it directly.
+Owned by memos. LangGraph Runtime receives it for execution but does not own or persist it directly.
 
 **Failure Handling**
 
 - Missing Agent identity fails before runtime execution.
 - Unauthorized context fails before Brain access.
 - Invalid thread context fails before resume.
-- Expired or incompatible context requires MemoryOS to create a new Execution Context.
+- Expired or incompatible context requires memos to create a new Execution Context.
 
 **Persistence Strategy**
 
@@ -345,11 +345,11 @@ Execution Context is runtime-scoped. Durable state is persisted through Memory, 
 
 **Interaction With 0G**
 
-No direct 0G access. It exposes MemoryOS Adapters to runtime components when 0G-backed operations are needed.
+No direct 0G access. It exposes memos Adapters to runtime components when 0G-backed operations are needed.
 
 **Lifecycle**
 
-Created before runtime execution, passed into LangGraph Runtime, used by graph nodes to call MemoryOS Brain and Adapters, included in checkpoint metadata as needed, and discarded after execution completes.
+Created before runtime execution, passed into LangGraph Runtime, used by graph nodes to call memos Brain and Adapters, included in checkpoint metadata as needed, and discarded after execution completes.
 
 **Examples**
 
@@ -369,7 +369,7 @@ Install Modules for an Agent without giving Runtime ownership of memory or agent
 
 - Install a selected Module for an Agent.
 - Validate Module metadata.
-- Record installation state through MemoryOS.
+- Record installation state through memos.
 - Coordinate with Module Loader for execution readiness.
 - Keep Module Installation separate from Marketplace discovery.
 
@@ -389,18 +389,18 @@ Install Modules for an Agent without giving Runtime ownership of memory or agent
 
 **Ownership**
 
-MemoryOS owns Module Installation. Runtime owns the Installer component as execution-layer machinery, but it does not own Marketplace catalog, Agent memory, or Module business rules.
+memos owns Module Installation. Runtime owns the Installer component as execution-layer machinery, but it does not own Marketplace catalog, Agent memory, or Module business rules.
 
 **Failure Handling**
 
 - Invalid Module manifests are rejected.
 - Unauthorized installation fails before state is recorded.
 - Failed installation does not mutate Agent memory.
-- Retriable persistence failures are handled through MemoryOS Adapters.
+- Retriable persistence failures are handled through memos Adapters.
 
 **Persistence Strategy**
 
-Installation records are MemoryOS state. Module manifests persist to 0G Storage through the Storage Adapter.
+Installation records are memos state. Module manifests persist to 0G Storage through the Storage Adapter.
 
 **Interaction With Brain**
 
@@ -455,18 +455,18 @@ Load installed Modules for execution without making Modules part of Runtime stat
 
 **Ownership**
 
-MemoryOS owns Module definitions, Module Installation, and Module usage policy. Runtime owns the loading mechanism during execution only.
+memos owns Module definitions, Module Installation, and Module usage policy. Runtime owns the loading mechanism during execution only.
 
 **Failure Handling**
 
 - Missing installed Module fails before execution.
 - Invalid manifest fails loading.
-- Handler errors are returned to MemoryOS with execution context.
+- Handler errors are returned to memos with execution context.
 - Failed Module execution does not commit Memory unless Brain explicitly accepts the result.
 
 **Persistence Strategy**
 
-Module manifests persist to 0G Storage through the Storage Adapter. Usage events are recorded by Economy through MemoryOS.
+Module manifests persist to 0G Storage through the Storage Adapter. Usage events are recorded by Economy through memos.
 
 **Interaction With Brain**
 
@@ -476,11 +476,11 @@ Module manifests persist to 0G Storage through the Storage Adapter. Usage events
 
 **Interaction With 0G**
 
-No direct 0G access. Uses MemoryOS Adapters only.
+No direct 0G access. Uses memos Adapters only.
 
 **Lifecycle**
 
-Resolves an installed Module, loads its manifest and handler, executes it inside an Execution Context, returns output to MemoryOS, and emits usage for Economy.
+Resolves an installed Module, loads its manifest and handler, executes it inside an Execution Context, returns output to memos, and emits usage for Economy.
 
 **Examples**
 

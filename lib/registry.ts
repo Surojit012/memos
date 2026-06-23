@@ -11,8 +11,8 @@ const REGISTRY_ABI = [
 ]
 
 function getRegistryContract() {
-  const address = process.env.MEMORYOS_REGISTRY_CONTRACT
-  if (!address) throw new Error("MEMORYOS_REGISTRY_CONTRACT env var is not set")
+  const address = process.env.MEMOS_REGISTRY_CONTRACT
+  if (!address) throw new Error("MEMOS_REGISTRY_CONTRACT env var is not set")
   
   const privateKey = process.env.WALLET_PRIVATE_KEY
   if (!privateKey) throw new Error("WALLET_PRIVATE_KEY is missing")

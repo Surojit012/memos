@@ -1,25 +1,43 @@
-import type { Metadata } from 'next'
-import './globals.css'
-import { Providers } from './providers'
+import type { Metadata } from 'next';
+import './globals.css';
+import { PixelTrailBackground } from '@/components/ui/pixel-trail-background';
+import { AppPrivyProvider } from '@/components/providers/privy-provider';
 
 export const metadata: Metadata = {
-  title: 'MemoryOS — Middleware for AI Agents on 0G',
-  description: 'Persistent memory + skills marketplace for any AI agent. Powered by 0G Network.',
-}
+  title: 'memos — A Persistent Brain for AI Agents',
+  description:
+    'memos gives AI agents persistent memory across sessions. Remember, Dream, Reason, Grow, Sync — all powered by 0G infrastructure.',
+  icons: {
+    icon: '/icon.svg',
+  },
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body>
-        <Providers>
-          {children}
-        </Providers>
+        <AppPrivyProvider>
+          <PixelTrailBackground />
+          <div className="relative z-10">{children}</div>
+        </AppPrivyProvider>
       </body>
     </html>
-  )
+  );
 }
+

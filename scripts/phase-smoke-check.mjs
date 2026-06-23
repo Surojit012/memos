@@ -1,4 +1,4 @@
-const appUrl = process.env.MEMORYOS_APP_URL || 'http://localhost:3000'
+const appUrl = process.env.MEMOS_APP_URL || 'http://localhost:3000'
 
 async function request(path, init = {}) {
   const response = await fetch(`${appUrl}${path}`, init)

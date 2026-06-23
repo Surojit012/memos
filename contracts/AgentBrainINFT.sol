@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title AgentBrainINFT
- * @notice ERC-7857 Intelligent NFT for MemoryOS Agent Brains.
+ * @notice ERC-7857 Intelligent NFT for Memos Agent Brains.
  *
  * Full ERC-7857 features implemented:
  * 1. Encrypted Metadata — Brain data is AES-256 encrypted, key stored on-chain
@@ -120,7 +120,7 @@ contract AgentBrainINFT is ERC721, ERC721URIStorage, Ownable {
 
     // ── Constructor ─────────────────────────────────────────
 
-    constructor() ERC721("MemoryOS Agent Brain", "BRAIN") Ownable(msg.sender) {
+    constructor() ERC721("Memos Agent Brain", "BRAIN") Ownable(msg.sender) {
         _nextTokenId = 1;
         mintFee = 0;
     }
@@ -129,7 +129,7 @@ contract AgentBrainINFT is ERC721, ERC721URIStorage, Ownable {
 
     /**
      * @notice Mint a new Agent Brain INFT with encrypted metadata.
-     * @param agentId The MemoryOS agent identifier
+     * @param agentId The Memos agent identifier
      * @param brainHash 0G Storage root hash of the encrypted brain snapshot
      * @param memoriesCount Number of memories in the snapshot
      * @param snapshotVersion Brain version number

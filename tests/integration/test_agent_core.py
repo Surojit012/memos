@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import pytest
 
-from brain.memoryos.agent.agent import Agent
-from brain.memoryos.agent.identity import Identity
-from brain.memoryos.memory.memory_manager import MemoryManager
-from brain.memoryos.models.agent_profile import AgentProfile
+from brain.memos.agent.agent import Agent
+from brain.memos.agent.identity import Identity
+from brain.memos.memory.memory_manager import MemoryManager
+from brain.memos.models.agent_profile import AgentProfile
 
 
 def create_agent(*, agent_id: str = "agent-1", memory_manager: MemoryManager | None = None) -> Agent:

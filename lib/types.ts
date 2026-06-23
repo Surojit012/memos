@@ -1,5 +1,5 @@
 /**
- * lib/types.ts — all data shapes for MemoryOS
+ * lib/types.ts — all data shapes for memos
  */
 
 // ── Memory ────────────────────────────────────────────────────

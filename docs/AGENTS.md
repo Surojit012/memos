@@ -1,18 +1,18 @@
-# MemoryOS Agents
+# memos Agents
 
 # Product Identity
 
-MemoryOS is a Persistent Brain for AI Agents.
+memos is a Persistent Brain for AI Agents.
 
-MemoryOS is not an agent framework.
+memos is not an agent framework.
 
-MemoryOS is not a marketplace.
+memos is not a marketplace.
 
-MemoryOS is not an AI companion.
+memos is not an AI companion.
 
-MemoryOS is not a game.
+memos is not a game.
 
-MemoryOS gives AI agents long-term memory and cognition.
+memos gives AI agents long-term memory and cognition.
 
 The system is built around four abilities:
 

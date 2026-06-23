@@ -77,7 +77,7 @@ export async function GET() {
       try {
         const identityRecord = {
           agentId: agent.agentId, name: agent.name,
-          registeredAt: agent.createdAt, platform: 'MemoryOS',
+          registeredAt: agent.createdAt, platform: 'memos',
           network: 'Galileo Testnet', version: '1.0',
           capabilities: ['memory-read', 'memory-write', 'skill-publish', 'skill-execute'],
           timestamp: new Date().toISOString(),

@@ -1,7 +1,7 @@
 /**
  * lib/intelligence/llm.ts
  * 
- * Core LLM inference layer for MemoryOS Intelligence.
+ * Core LLM inference layer for memos Intelligence.
  * 
  * Priority order:
  * 1. 0G Router API (ZG_ROUTER_API_KEY) — decentralized inference via 0G Compute

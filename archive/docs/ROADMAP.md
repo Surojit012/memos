@@ -1,4 +1,4 @@
-# MemoryOS — CEO Strategic Roadmap
+# memos — CEO Strategic Roadmap
 
 > **Last Updated:** April 30, 2026  
 > **Status:** Active  
@@ -9,7 +9,7 @@
 
 ## I. Executive Summary
 
-MemoryOS is positioning to become **the operating system for autonomous AI agents** — a decentralized Backend-as-a-Service (BaaS) that proves a single thesis:
+memos is positioning to become **the operating system for autonomous AI agents** — a decentralized Backend-as-a-Service (BaaS) that proves a single thesis:
 
 > **0G Storage + 0G Compute + 0G Chain can fully replace every centralized backend service an AI agent needs.**
 
@@ -17,7 +17,7 @@ We are not supplementing 0G with traditional infrastructure. We are **demonstrat
 
 ### The Three Pillars (All Powered by 0G)
 
-| Pillar | 0G Component | What MemoryOS Does With It |
+| Pillar | 0G Component | What memos Does With It |
 |:-------|:-------------|:---------------------------|
 | **Permanent Memory** | 0G Storage (Merkle Trees → Storage Nodes) | Episodic, semantic, and procedural memories uploaded as immutable JSON blobs |
 | **Self-Funded Compute** | 0G Serving Broker (Inference Ledger) | Agents deposit $0G, allocate to GPU providers, run embeddings and LLM inference |
@@ -31,7 +31,7 @@ Every AI Agent built today suffers from three fatal flaws:
 2. **Siloed Intelligence** — Agent A cannot share learned skills or context with Agent B because their state is locked inside different vendors' walled gardens.
 3. **Human Financial Dependency** — Agents cannot pay for their own GPU compute. They rely on human credit cards attached to OpenAI/Anthropic SaaS accounts.
 
-**MemoryOS solves all three using exclusively the 0G Network.** No centralized database. No AWS. No Pinecone. Pure 0G.
+**memos solves all three using exclusively the 0G Network.** No centralized database. No AWS. No Pinecone. Pure 0G.
 
 ### Current State (Hackathon Final)
 
@@ -123,7 +123,7 @@ Architecture: 0G-on-0G Bootstrap
 
 ### Direct Competitors
 
-| Platform | What They Do | Where Their Data Lives | MemoryOS Advantage |
+| Platform | What They Do | Where Their Data Lives | memos Advantage |
 |:---------|:-------------|:-----------------------|:-------------------|
 | **Mem0** | Centralized memory for LLM apps | AWS/GCP databases | Our memories are immutable, verifiable, and decentralized on 0G |
 | **Zep** | Session memory for chatbots | PostgreSQL/Redis | Our memories survive server death because they're on 0G Storage |
@@ -171,11 +171,11 @@ We demonstrate that 0G Storage is not just a file dump — it's a **full-stack d
 |:-----|:---------|:-------------|
 | **Master Manifest on 0G** — Replace `data/0g-registry.json` with a manifest blob uploaded to 0G Storage. Store only the master hash locally (or on-chain). | 🔴 Critical | 0G Storage |
 | **Tiered Index Blobs** — Separate agent index, memory index, and skill index into linked 0G blobs for parallel hydration. | 🔴 Critical | 0G Storage |
-| **On-Chain Manifest Anchor** — Deploy a minimal smart contract that stores the master manifest hash on-chain, so any MemoryOS node can bootstrap from zero. | 🟡 High | 0G Chain |
+| **On-Chain Manifest Anchor** — Deploy a minimal smart contract that stores the master manifest hash on-chain, so any memos node can bootstrap from zero. | 🟡 High | 0G Chain |
 | **Delta Uploads** — Instead of re-uploading the entire index on every write, compute diffs and upload only changed entries (append-only log pattern). | 🟡 High | 0G Storage |
 | **Parallel Hydration Pipeline** — Download memory, skill, and agent indexes concurrently from 0G with retry/timeout hardening. | 🟡 High | 0G Storage |
 
-**Why this matters:** This eliminates the local JSON registry entirely. A new MemoryOS instance can spin up anywhere in the world, read one hash from the chain, and fully reconstruct its state from 0G Storage. **Zero local persistence required.**
+**Why this matters:** This eliminates the local JSON registry entirely. A new memos instance can spin up anywhere in the world, read one hash from the chain, and fully reconstruct its state from 0G Storage. **Zero local persistence required.**
 
 #### P0.2 — Smart Hot Cache (RAM Layer)
 
@@ -221,7 +221,7 @@ We demonstrate that 0G Storage is not just a file dump — it's a **full-stack d
 | **Skill Prompt Versioning on 0G** — When a publisher updates a skill, the old version remains on 0G (immutable), and the new version gets a new hash. Consumers can pin to a version. | 🟡 High | Level 3 |
 | **Agent Configuration Store** — Store agent preferences, connected skills, and behavioral configurations on 0G (not just identity). | 🟡 High | Level 2 |
 | **Developer Project Manifest** — Each developer's entire workspace (agents, skills, settings) is a single manifest on 0G. One hash = one project. | 🟡 High | Level 2 |
-| **Memory Export Bundles** — Export an agent's entire 0G-stored brain as a portable bundle (one root hash) that can be imported into any MemoryOS instance globally. | 🟢 Medium | Level 3 |
+| **Memory Export Bundles** — Export an agent's entire 0G-stored brain as a portable bundle (one root hash) that can be imported into any memos instance globally. | 🟢 Medium | Level 3 |
 
 #### P1.2 — 0G Compute Expansion
 
@@ -236,8 +236,8 @@ We demonstrate that 0G Storage is not just a file dump — it's a **full-stack d
 
 | Task | Priority | Notes |
 |:-----|:---------|:------|
-| **Publish `memoryos-openclaw` to npm** with proper TypeScript types | 🔴 Critical | — |
-| **Python SDK** (`pip install memoryos`) with full parity | 🔴 Critical | Critical for ML/AI community |
+| **Publish `memos-openclaw` to npm** with proper TypeScript types | 🔴 Critical | — |
+| **Python SDK** (`pip install memos`) with full parity | 🔴 Critical | Critical for ML/AI community |
 | **SDK Offline Queue** — buffer writes when 0G is unreachable, flush on reconnect | 🟡 High | Resilience |
 | **0G Storage Explorer Integration** — every SDK response includes a direct link to verify the data on `storagescan-galileo.0g.ai` | 🟡 High | Transparency |
 
@@ -246,7 +246,7 @@ We demonstrate that 0G Storage is not just a file dump — it's a **full-stack d
 | Task | Priority | Notes |
 |:-----|:---------|:------|
 | Build `/docs` as a full MDX documentation site | 🔴 Critical | — |
-| Create "How MemoryOS Uses 0G" deep-dive guide (storage, compute, chain) | 🔴 Critical | For hackathon judges |
+| Create "How memos Uses 0G" deep-dive guide (storage, compute, chain) | 🔴 Critical | For hackathon judges |
 | Quickstart tutorials: Node.js + Python agent in 5 minutes | 🔴 Critical | — |
 | Architecture diagram showing every 0G touchpoint | 🟡 High | Visual proof of depth |
 
@@ -344,22 +344,22 @@ This is where we demonstrate that 0G Storage can support **intelligent memory op
 
 | Task | Priority | How 0G Is Used |
 |:-----|:---------|:---------------|
-| **Edge Cache Nodes** — Run lightweight MemoryOS instances at the edge that cache the hot set from 0G and serve sub-50ms reads. | 🟡 High | 0G Storage (source of truth) |
+| **Edge Cache Nodes** — Run lightweight memos instances at the edge that cache the hot set from 0G and serve sub-50ms reads. | 🟡 High | 0G Storage (source of truth) |
 | **Batch Upload Pipeline** — Bulk-import millions of memories from centralized providers into 0G Storage for agent migration. | 🟡 High | 0G Storage |
 | **0G Storage Streaming** — WebSocket subscriptions that detect new 0G uploads and push updates to connected clients in real-time. | 🟢 Medium | 0G Storage |
 
 ---
 
-### 🟤 PHASE 5 — The MemoryOS Protocol (Week 30+)
+### 🟤 PHASE 5 — The memos Protocol (Week 30+)
 
 > **Theme:** "0G Storage as the universal agentic file system."
 
 | Task | Priority | Vision |
 |:-----|:---------|:-------|
 | **Open-Source the 0G Memory Spec** — Publish a standard for how any agent framework can store and retrieve memories from 0G. | 🟡 High | Protocol |
-| **MemoryOS Grants Program** — Fund teams building new 0G Storage use cases through MemoryOS. | 🟡 High | Ecosystem |
+| **memos Grants Program** — Fund teams building new 0G Storage use cases through memos. | 🟡 High | Ecosystem |
 | **Agent Interoperability Standard** — Agents on LangChain, AutoGPT, CrewAI can all share memories through standardized 0G blobs. | 🟢 Medium | Protocol |
-| **MemoryOS DAO** — Decentralized governance over the platform fee, marketplace rules, and protocol upgrades. All governance data stored on 0G. | 🟢 Medium | 0G Chain |
+| **memos DAO** — Decentralized governance over the platform fee, marketplace rules, and protocol upgrades. All governance data stored on 0G. | 🟢 Medium | 0G Chain |
 
 ---
 
@@ -402,7 +402,7 @@ A real-time dashboard showing:
 All metrics computed by reading 0G Storage metadata. **The dashboard itself is an 0G Storage consumer.**
 
 ### 🎯 5. 0G-Powered Autonomous RAG
-The "MemoryOS Think" endpoint:
+The "memos Think" endpoint:
 1. Receives a question
 2. Generates a query embedding via **0G Compute**
 3. Searches the memory index on **0G Storage**
@@ -425,7 +425,7 @@ Export an agent's entire cognitive state as a single 0G root hash:
 Agent Brain Hash: 0x7f3a...b4c2
 Contains: 847 memories, 12 skills, 3 snapshots, full provenance chain
 ```
-Import that hash into any MemoryOS instance globally → the agent is fully reconstructed from 0G. **Agent teleportation via 0G Storage.**
+Import that hash into any memos instance globally → the agent is fully reconstructed from 0G. **Agent teleportation via 0G Storage.**
 
 ---
 
@@ -474,7 +474,7 @@ This is the matrix we present to judges showing the **breadth and depth** of our
 |:---------------|:------|:------|
 | **Platform Fee** | Now | 5% of all skill marketplace transactions (in `SkillPaymentEscrow.sol`) |
 | **API Usage Tiers** | Phase 1 | Free: 1K memories/month, Pro: 100K ($49/mo), Enterprise: Custom |
-| **Compute Margin** | Phase 2 | 2-3% markup on 0G Compute inference facilitated through MemoryOS |
+| **Compute Margin** | Phase 2 | 2-3% markup on 0G Compute inference facilitated through memos |
 | **Enterprise Licenses** | Phase 4 | Custom pricing for encrypted vaults, compliance logging, SLA |
 | **Protocol Fees** | Phase 5 | Base-layer fees on all protocol transactions (DAO-governed) |
 
@@ -532,11 +532,11 @@ Network Effect → More Developers → More 0G Usage → Ecosystem Growth
 ## XII. Immediate Next Actions (This Sprint)
 
 1. **[x] 0G-on-0G Index** — Manifest system with master manifest on 0G Storage. Local JSON registry eliminated.
-2. **[x] On-Chain Manifest Anchor** — `ManifestAnchor.sol` deployed. Any MemoryOS node bootstraps from chain.
+2. **[x] On-Chain Manifest Anchor** — `ManifestAnchor.sol` deployed. Any memos node bootstraps from chain.
 3. **[x] Embedding Storage on 0G** — Embedding vectors stored alongside memory payloads on 0G Storage.
 4. **[x] Memory Snapshots** — Full brain snapshots with `Take Snapshot` in Dashboard. One 0G blob = one brain.
 5. **[x] Security** — HMAC API keys, nonce-based signing, wallet-scoped data isolation.
-6. **[x] Python SDK** — `memoryos-py` package with full 0G Storage/Compute/Chain support.
+6. **[x] Python SDK** — `memos-py` package with full 0G Storage/Compute/Chain support.
 7. **[x] "How We Use 0G" Doc** — `docs/HOW_WE_USE_0G.md` covering all 6 pillars of 0G usage.
 8. **[x] Hybrid Compute** — 4-provider execution (Fireworks / 0G Router / 0G Direct / Anthropic).
 9. **[x] 0G Router Integration** — `router-api.0g.ai/v1` as OpenAI-compatible managed compute.
@@ -547,4 +547,4 @@ Network Effect → More Developers → More 0G Usage → Ecosystem Growth
 
 *"Other platforms store data on AWS and call it 'decentralized'. We don't use a single centralized service. Every byte of state — identity, memory, skills, indexes, embeddings, audit logs, reputation, configuration — lives on 0G. That's not a feature. That's the whole point."*
 
-— MemoryOS Executive Team
+— memos Executive Team

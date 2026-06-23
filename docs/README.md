@@ -1,8 +1,8 @@
-# MemoryOS
+# memos
 
-MemoryOS is a 0G-native framework for persistent AI agents.
+memos is a 0G-native framework for persistent AI agents.
 
-MemoryOS owns an AI agent's long-term cognition. It is not a landing page, not an agent orchestrator, and not a blockchain application.
+memos owns an AI agent's long-term cognition. It is not a landing page, not an agent orchestrator, and not a blockchain application.
 
 ## Framework Stack
 
@@ -11,7 +11,7 @@ Claude / Cursor
     |
 AI Context
     |
-MemoryOS
+memos
     |
 Adapters
     |
@@ -21,7 +21,7 @@ Adapters
 ## Architecture Tree
 
 ```text
-MemoryOS
+memos
 ├── Brain
 │   ├── Remember
 │   ├── Reason
@@ -71,15 +71,15 @@ MemoryOS
 - Runtime never owns memories. Runtime only owns execution state.
 - Marketplace never owns agent state.
 - Modules are atomic. Each Module does exactly one thing.
-- LangGraph is optional. MemoryOS Brain is mandatory.
+- LangGraph is optional. memos Brain is mandatory.
 - 0G is infrastructure. 0G is never business logic.
-- MemoryOS must survive if any LLM provider changes. All providers are replaceable.
+- memos must survive if any LLM provider changes. All providers are replaceable.
 
 ## Naming
 
 - Module = installable capability
 - LangGraph Graph = LangGraph execution graph
-- Module Installation = adding a Module to an Agent through MemoryOS
+- Module Installation = adding a Module to an Agent through memos
 
 ## Core Docs
 

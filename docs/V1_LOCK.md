@@ -1,8 +1,8 @@
-MemoryOS V1 Freeze
+memos V1 Freeze
 
 Core Product:
 
-MemoryOS = 0G-native framework for persistent AI agents.
+memos = 0G-native framework for persistent AI agents.
 
 Frozen Layers:
 

@@ -1,4 +1,4 @@
-# MemoryOS — Full Platform Smoke Test
+# memos — Full Platform Smoke Test
 
 > Updated: 2026-05-01 | All features verified on Galileo Testnet
 

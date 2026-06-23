@@ -1,8 +1,8 @@
-# MemoryOS Framework Primitives
+# memos Framework Primitives
 
-MemoryOS V1 is the persistent brain for AI agents.
+memos V1 is the persistent brain for AI agents.
 
-MemoryOS is a framework, not an application, not an agent orchestrator, and not a blockchain application. It owns an agent's long-term cognition.
+memos is a framework, not an application, not an agent orchestrator, and not a blockchain application. It owns an agent's long-term cognition.
 
 Brain lifecycle:
 
@@ -10,7 +10,7 @@ Remember -> Reason -> Dream
 
 The following primitives are the only framework primitives.
 
-These primitives fit inside the MemoryOS architecture:
+These primitives fit inside the memos architecture:
 
 - Brain
 - Runtime
@@ -72,7 +72,7 @@ Owned by the wallet, account, or authority bound through Identity.
 
 **Persistence Layer**
 
-Agent state is reconstructed through MemoryOS Adapters from Identity on 0G Chain, Memory on 0G Storage, Module manifests on 0G Storage, transaction proofs on 0G Chain, and Ledger state inside MemoryOS.
+Agent state is reconstructed through memos Adapters from Identity on 0G Chain, Memory on 0G Storage, Module manifests on 0G Storage, transaction proofs on 0G Chain, and Ledger state inside memos.
 
 **Examples**
 
@@ -238,7 +238,7 @@ The compute primitive that turns memories and requests into context-aware output
 
 **Ownership**
 
-Owned by MemoryOS as the framework execution path; invoked on behalf of an Agent.
+Owned by memos as the framework execution path; invoked on behalf of an Agent.
 
 **Persistence Layer**
 
@@ -292,7 +292,7 @@ The background intelligence cycle that reorganizes an agent's memory over time.
 
 **Ownership**
 
-Owned by the Agent's lifecycle and executed by MemoryOS.
+Owned by the Agent's lifecycle and executed by memos.
 
 **Persistence Layer**
 
@@ -407,11 +407,11 @@ The framework distribution surface for Modules.
 
 **Ownership**
 
-Owned by MemoryOS as a framework service.
+Owned by memos as a framework service.
 
 **Persistence Layer**
 
-MemoryOS catalog state, backed by Module manifests on 0G Storage and transaction proofs on 0G Chain through Adapters.
+memos catalog state, backed by Module manifests on 0G Storage and transaction proofs on 0G Chain through Adapters.
 
 **Examples**
 
@@ -462,7 +462,7 @@ The verifiable economic event created when a paid Module execution occurs.
 
 **Ownership**
 
-Owned by the participating economic actors and verified by MemoryOS.
+Owned by the participating economic actors and verified by memos.
 
 **Persistence Layer**
 
@@ -476,7 +476,7 @@ Owned by the participating economic actors and verified by MemoryOS.
 
 **Lifecycle**
 
-Prepared by Economy, submitted to 0G Chain through the Chain Adapter, verified by MemoryOS, consumed once for the intended operation, and reflected in Ledger.
+Prepared by Economy, submitted to 0G Chain through the Chain Adapter, verified by memos, consumed once for the intended operation, and reflected in Ledger.
 
 ---
 
@@ -484,7 +484,7 @@ Prepared by Economy, submitted to 0G Chain through the Chain Adapter, verified b
 
 **Purpose**
 
-The MemoryOS accounting view of framework usage over time.
+The memos accounting view of framework usage over time.
 
 **Responsibilities**
 
@@ -511,17 +511,17 @@ The MemoryOS accounting view of framework usage over time.
 
 **Relationships**
 
-- Belongs to MemoryOS.
+- Belongs to memos.
 - References Agents, Memories, Reasoners, Dreams, Modules, Marketplace activity, and Transactions.
 - Does not replace source-of-truth persistence layers.
 
 **Ownership**
 
-Owned by MemoryOS.
+Owned by memos.
 
 **Persistence Layer**
 
-MemoryOS.
+memos.
 
 **Examples**
 

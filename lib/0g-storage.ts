@@ -154,12 +154,12 @@ export function is0GConfigured(): boolean {
 
 // ─── OpenClaw plugin snippet ──────────────────────────────────
 export const OPENCLAW_PLUGIN_CODE = `
-import { MemoryOSPlugin } from 'memoryos-openclaw'
+import { memosPlugin } from 'memos-openclaw'
 
 const agent = new OpenClawAgent({
   plugins: [
-    MemoryOSPlugin({
-      apiUrl: 'https://your-memoryos.vercel.app',
+    memosPlugin({
+      apiUrl: 'https://your-memos.vercel.app',
       agentId: 'agent_your_unique_id',
     })
   ]

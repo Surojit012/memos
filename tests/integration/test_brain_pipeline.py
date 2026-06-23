@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from brain.memoryos.agent.agent import Agent
-from brain.memoryos.agent.identity import Identity
-from brain.memoryos.models.agent_profile import AgentProfile
+from brain.memos.agent.agent import Agent
+from brain.memos.agent.identity import Identity
+from brain.memos.models.agent_profile import AgentProfile
 
 
 def test_brain_pipeline_remember_retrieve_reason_cite_answer() -> None:

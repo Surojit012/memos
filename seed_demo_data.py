@@ -1,19 +1,19 @@
 import os
 import sys
 
-# Ensure the local memoryos package is in the path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "packages/memoryos-py")))
+# Ensure the local memos package is in the path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "packages/memos-py")))
 
 try:
-    from memoryos import MemoryOS
+    from memos import Memos
 except ImportError:
-    print("Error: Could not import memoryos. Make sure you are in the project root.")
+    print("Error: Could not import memos. Make sure you are in the project root.")
     sys.exit(1)
 
 # --- Configuration ---
-# Replace these with the details shown in your MemoryOS Dashboard!
-AGENT_ID = os.environ.get("MEMORYOS_AGENT_ID", "agent_...")
-API_KEY = os.environ.get("MEMORYOS_API_KEY", "agt_...")
+# Replace these with the details shown in your Memos Dashboard!
+AGENT_ID = os.environ.get("MEMOS_AGENT_ID", "agent_...")
+API_KEY = os.environ.get("MEMOS_API_KEY", "agt_...")
 ENDPOINT = "http://localhost:3000"
 
 def seed_data():
@@ -22,8 +22,8 @@ def seed_data():
         print("You can find them in the Dashboard -> API Keys tab.")
         sys.exit(1)
 
-    print(f"🔌 Connecting to MemoryOS at {ENDPOINT}...")
-    client = MemoryOS(
+    print(f"🔌 Connecting to Memos at {ENDPOINT}...")
+    client = Memos(
         api_url=ENDPOINT, 
         agent_id=AGENT_ID, 
         headers={"Authorization": f"Bearer {API_KEY}"}

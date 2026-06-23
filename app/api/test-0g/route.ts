@@ -12,9 +12,9 @@ export async function GET() {
   try {
     const hash = await uploadToStorage({
       test: true,
-      message: 'MemoryOS 0G Storage test',
+      message: 'memos 0G Storage test',
       timestamp: new Date().toISOString(),
-      project: 'MemoryOS — 0G APAC Hackathon 2026',
+      project: 'memos — 0G APAC Hackathon 2026',
     })
     return NextResponse.json({
       success: true,

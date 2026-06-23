@@ -1,6 +1,6 @@
 # Modules
 
-Modules are installable capabilities for MemoryOS agents.
+Modules are installable capabilities for memos agents.
 
 New docs and framework APIs should use Module.
 
@@ -12,13 +12,13 @@ A Module gives an Agent one atomic capability without taking ownership of the Ag
 
 - A Module does exactly one thing.
 - A Module is installable.
-- A Module is callable by a MemoryOS Agent.
+- A Module is callable by a memos Agent.
 - A Module can be distributed through Marketplace.
 - A Module can be priced through Economy.
 - A Module must not own agent memory.
 - A Module must not own agent state.
 - A Module must not directly access 0G.
-- A Module must use MemoryOS Adapters for storage, compute, or chain operations.
+- A Module must use memos Adapters for storage, compute, or chain operations.
 
 ## Package Structure
 
@@ -44,7 +44,7 @@ Defines Module metadata:
 
 Contains the Module execution entrypoint.
 
-The handler receives input from MemoryOS and returns output to MemoryOS. MemoryOS decides whether the output should become Memory, trigger Reason, update Ledger, or produce a transaction proof.
+The handler receives input from memos and returns output to memos. memos decides whether the output should become Memory, trigger Reason, update Ledger, or produce a transaction proof.
 
 ## README.md
 
@@ -52,7 +52,7 @@ Explains what the Module does, what input it expects, what output it returns, an
 
 ## Module Installation
 
-Module Installation is the act of adding a Module to an Agent through MemoryOS.
+Module Installation is the act of adding a Module to an Agent through memos.
 
 Runtime owns the Installer and Module Loader components. Marketplace owns catalog, publishers, discovery, and usage analytics. Economy owns pricing, metering, and ledger records.
 
@@ -68,7 +68,7 @@ Modules may support Brain activity, but they do not become the Brain.
 
 Modules may be called from a LangGraph Graph when LangGraph Runtime is used.
 
-Runtime executes the LangGraph Graph. MemoryOS owns Module Installation, Module access, pricing, usage metering, and persistence.
+Runtime executes the LangGraph Graph. memos owns Module Installation, Module access, pricing, usage metering, and persistence.
 
 ## Relationship To Marketplace
 
@@ -93,7 +93,7 @@ Users pay per Module execution. Economy updates Ledger records.
 
 0G Storage stores Module manifests.
 
-0G Compute may run inference or embeddings needed by a Module when MemoryOS routes execution through the Compute Adapter.
+0G Compute may run inference or embeddings needed by a Module when memos routes execution through the Compute Adapter.
 
 0G Chain stores transaction proofs for paid Module execution.
 

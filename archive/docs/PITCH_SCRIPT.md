@@ -1,4 +1,4 @@
-# MemoryOS – 3-Minute Pitch Video Script
+# memos – 3-Minute Pitch Video Script
 
 **Target Time:** 3:00  
 **Format:** Screen recording with voiceover / picture-in-picture.
@@ -8,16 +8,16 @@
 ### 1. The Hook & The Problem (0:00 - 0:30)
 
 **[Visual]** 
-* Start on the MemoryOS Landing Page (`memoryos-sigma.vercel.app` or localhost). 
+* Start on the memos Landing Page (`memos-sigma.vercel.app` or localhost). 
 * Scroll slowly to show the UI. 
 
 **[Audio/Voiceover]**
 "Right now, Autonomous AI Agents are stuck. They suffer from amnesia. They rely on centralized, expensive, and fragile vector databases like Pinecone or AWS to remember who they are and what they've done. 
 But if we want true autonomy in the Web3 era, agents need a brain that is as decentralized as the blockchain itself. 
 
-Enter MemoryOS. 
+Enter memos. 
 
-MemoryOS is the first operating system for Autonomous AI Agents built *exclusively* on the 0G Network. No AWS. No Pinecone. Pure 0G Storage and 0G Compute."
+memos is the first operating system for Autonomous AI Agents built *exclusively* on the 0G Network. No AWS. No Pinecone. Pure 0G Storage and 0G Compute."
 
 ---
 
@@ -52,12 +52,12 @@ As you can see, we are injecting Semantic, Episodic, and Procedural memories dir
 ### 4. The Visual Proof (1:45 - 2:15)
 
 **[Visual]** 
-* Switch to the **MemoryOS Dashboard**.
+* Switch to the **memos Dashboard**.
 * Go to the **0G Memory Explorer** tab.
 * Show the list of memories that just popped up. Point out the `0G Hash` links next to them.
 
 **[Audio/Voiceover]**
-"If we jump into the MemoryOS Dashboard, we can actually see the agent's brain in real-time. 
+"If we jump into the memos Dashboard, we can actually see the agent's brain in real-time. 
 
 Here are the memories we just injected. These aren't just rows in a Postgres database; these are verifiable records living on the 0G Data Availability layer. You can track their exact on-chain hash."
 
@@ -75,7 +75,7 @@ Here are the memories we just injected. These aren't just rows in a Postgres dat
 
 I'll ask the agent: 'Who are you and what did you do yesterday?' 
 
-Behind the scenes, MemoryOS triggers a 0G Compute job. It embeds the query, searches the agent's decentralized memory graph, and uses decentralized LLM inference to synthesize the answer. 
+Behind the scenes, memos triggers a 0G Compute job. It embeds the query, searches the agent's decentralized memory graph, and uses decentralized LLM inference to synthesize the answer. 
 
 And there it is! The agent perfectly recalls its identity as an archivist and its actions from yesterday, entirely retrieved from 0G."
 
@@ -85,9 +85,9 @@ And there it is! The agent perfectly recalls its identity as an archivist and it
 
 **[Visual]** 
 * Switch to the **Agent Dreams** tab. Just show the UI briefly.
-* Fade to black / MemoryOS logo.
+* Fade to black / memos logo.
 
 **[Audio/Voiceover]**
 "And with advanced background features like Agent Dreams—which autonomously consolidates memories while the agent sleeps—we aren't just storing data. We are building the infrastructure for true AI cognition. 
 
-This is MemoryOS. Thank you."
+This is memos. Thank you."

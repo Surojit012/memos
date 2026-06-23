@@ -3,13 +3,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from brain.memoryos.memory.memory_manager import MemoryManager
-from brain.memoryos.models.memory import MemoryType
-from brain.memoryos.runtime.execution_context import ExecutionStatus
-from brain.memoryos.runtime.graph_builder import GraphBuilder
-from brain.memoryos.runtime.langgraph_checkpointer import LangGraphCheckpointer
-from brain.memoryos.runtime.langgraph_runtime import LangGraphRuntime
-from brain.memoryos.runtime.thread_manager import ThreadManager
+from brain.memos.memory.memory_manager import MemoryManager
+from brain.memos.models.memory import MemoryType
+from brain.memos.runtime.execution_context import ExecutionStatus
+from brain.memos.runtime.graph_builder import GraphBuilder
+from brain.memos.runtime.langgraph_checkpointer import LangGraphCheckpointer
+from brain.memos.runtime.langgraph_runtime import LangGraphRuntime
+from brain.memos.runtime.thread_manager import ThreadManager
 
 
 def load_fixture() -> dict:
