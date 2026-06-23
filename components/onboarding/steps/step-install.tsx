@@ -21,7 +21,7 @@ export function StepInstall(_props: StepInstallProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <h2 style={{ fontSize: 24, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#18181b', margin: '0 0 8px' }}>
+        <h2 style={{ fontSize: 24, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#ffffff', margin: '0 0 8px' }}>
           Install the SDK
         </h2>
         <p style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', margin: 0 }}>
@@ -39,8 +39,8 @@ export function StepInstall(_props: StepInstallProps) {
               fontSize: 13,
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: 500,
-              color: lang === l ? '#ffffff' : '#71717a',
-              background: lang === l ? '#18181b' : '#ffffff',
+              color: lang === l ? 'var(--surface)' : 'var(--text2)',
+              background: lang === l ? '#ffffff' : 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: l === 'python' ? '6px 0 0 6px' : '0 6px 6px 0',
               padding: '6px 16px',
@@ -63,8 +63,8 @@ export function StepInstall(_props: StepInstallProps) {
             style={{
               fontFamily: 'JetBrains Mono, Fira Code, monospace',
               fontSize: 14,
-              color: '#ffffff',
-              background: '#18181b',
+              color: 'var(--surface)',
+              background: '#ffffff',
               padding: 16,
               borderRadius: 8,
               margin: 0,
@@ -100,7 +100,7 @@ export function StepInstall(_props: StepInstallProps) {
         <label style={{ fontSize: 11, fontFamily: 'Inter, system-ui, sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#a1a1aa', fontWeight: 500, display: 'block', marginBottom: 6 }}>
           Requirements
         </label>
-        <div style={{ background: '#f4f4f5', borderRadius: 6, padding: 12, fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', lineHeight: 1.6 }}>
+        <div style={{ background: '#f4f4f5', borderRadius: 6, padding: 12, fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', lineHeight: 1.6 }}>
           {lang === 'python' ? (
             <>
               Python 3.8+<br />
@@ -116,7 +116,7 @@ export function StepInstall(_props: StepInstallProps) {
       </div>
 
       {/* PyPI note */}
-      <div style={{ borderLeft: '3px solid #2563eb', padding: '10px 14px', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', lineHeight: 1.5 }}>
+      <div style={{ borderLeft: '3px solid #2563eb', padding: '10px 14px', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', lineHeight: 1.5 }}>
         memos-py is published on PyPI. Run the install command above to get started.
       </div>
     </div>

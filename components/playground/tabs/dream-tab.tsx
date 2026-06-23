@@ -188,7 +188,7 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
           padding: 16,
         }}
       >
-        <p style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b', margin: '0 0 12px', lineHeight: 1.5 }}>
+        <p style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', margin: '0 0 12px', lineHeight: 1.5 }}>
           Dream consolidation requires at least 3 memories. You currently have <strong>{memoryCount}</strong> stored.
         </p>
         <button
@@ -198,7 +198,7 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
             fontFamily: 'Inter, system-ui, sans-serif',
             fontWeight: 500,
             color: '#2563eb',
-            background: '#ffffff',
+            background: 'var(--surface)',
             border: '1px solid #bfdbfe',
             borderRadius: 6,
             padding: '8px 16px',
@@ -206,7 +206,7 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
             transition: 'background 150ms ease',
           }}
           onMouseEnter={(e) => { e.currentTarget.style.background = '#eff6ff'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = '#ffffff'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
         >
           Go to Memory Tab
         </button>
@@ -237,8 +237,8 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
             ['Patterns found', result.patternsFound],
             ['New memories', result.newMemoriesCreated],
           ].map(([label, val]) => (
-            <div key={String(label)} style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>
-              {label}: <span style={{ fontWeight: 500, color: '#18181b' }}>{val}</span>
+            <div key={String(label)} style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>
+              {label}: <span style={{ fontWeight: 500, color: '#ffffff' }}>{val}</span>
             </div>
           ))}
         </div>
@@ -250,7 +250,7 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
           <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#a1a1aa', marginBottom: 6, fontWeight: 500, fontFamily: 'Inter, system-ui, sans-serif' }}>
             Summary
           </div>
-          <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', lineHeight: 1.6, margin: 0 }}>
             {result.dreamSummary}
           </p>
         </div>
@@ -266,8 +266,8 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
             {result.newMemories.map((mem) => {
               const tc = TYPE_COLORS[mem.type] ?? TYPE_COLORS.semantic;
               return (
-                <div key={mem.id} style={{ border: '1px solid #e4e4e7', borderRadius: 6, padding: 12, background: '#ffffff' }}>
-                  <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b', lineHeight: 1.5, margin: '0 0 6px' }}>
+                <div key={mem.id} style={{ border: '1px solid #e4e4e7', borderRadius: 6, padding: 12, background: 'var(--surface)' }}>
+                  <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', lineHeight: 1.5, margin: '0 0 6px' }}>
                     {mem.content}
                   </p>
                   <span style={{ fontSize: 11, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: tc.color, background: tc.bg, borderRadius: 4, padding: '2px 6px' }}>
@@ -288,15 +288,15 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
             fontSize: 14,
             fontFamily: 'Inter, system-ui, sans-serif',
             fontWeight: 500,
-            color: '#18181b',
-            background: '#ffffff',
+            color: '#ffffff',
+            background: 'var(--surface)',
             border: '1px solid #e4e4e7',
             borderRadius: 6,
             cursor: 'pointer',
             transition: 'background 150ms ease',
           }}
           onMouseEnter={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = '#ffffff'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
         >
           Run Another Dream
         </button>
@@ -307,7 +307,7 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
   /* ─── Render: Trigger UI ─── */
   return (
     <div>
-      <p style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', lineHeight: 1.6, margin: '0 0 16px' }}>
+      <p style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', lineHeight: 1.6, margin: '0 0 16px' }}>
         Dream consolidation analyzes your episodic memories, finds patterns, and creates new semantic memories — similar to how human sleep consolidates learning.
       </p>
 
@@ -320,15 +320,15 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
           fontSize: 14,
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeight: 500,
-          color: '#ffffff',
-          background: running ? '#71717a' : '#18181b',
+          color: 'var(--surface)',
+          background: running ? 'var(--text2)' : '#ffffff',
           border: 'none',
           borderRadius: 6,
           cursor: running ? 'not-allowed' : 'pointer',
           transition: 'background 150ms ease',
         }}
         onMouseEnter={(e) => { if (!running) e.currentTarget.style.background = '#27272a'; }}
-        onMouseLeave={(e) => { if (!running) e.currentTarget.style.background = '#18181b'; }}
+        onMouseLeave={(e) => { if (!running) e.currentTarget.style.background = '#ffffff'; }}
       >
         {running ? 'Dreaming...' : 'Start Dream Cycle'}
       </button>
@@ -348,7 +348,7 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
             textAlign: 'center',
             fontSize: 13,
             fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#71717a',
+            color: 'var(--text2)',
             opacity: loadingOpacity,
             transition: 'opacity 300ms ease',
           }}

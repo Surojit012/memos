@@ -8,16 +8,16 @@ export function ApiUsageCard() {
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottom: '1px solid #e4e4e7' }}>
-            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>Requests today</span>
-            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>—</span>
+            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Requests today</span>
+            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>—</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottom: '1px solid #e4e4e7' }}>
-            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>Requests this month</span>
-            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>—</span>
+            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Requests this month</span>
+            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>—</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>Rate limit tier</span>
-            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>Free</span>
+            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Rate limit tier</span>
+            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>Free</span>
           </div>
         </div>
         <div style={{ marginTop: 'auto', paddingTop: 16 }}>

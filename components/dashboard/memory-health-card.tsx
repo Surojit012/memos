@@ -64,7 +64,7 @@ export function MemoryHealthCard({ memories, isLoading, error }: MemoryHealthCar
             style={{
               fontSize: 13,
               fontFamily: 'Inter, system-ui, sans-serif',
-              color: '#18181b',
+              color: '#ffffff',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -79,10 +79,10 @@ export function MemoryHealthCard({ memories, isLoading, error }: MemoryHealthCar
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {/* Total count */}
           <div>
-            <div style={{ fontSize: 32, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#18181b', lineHeight: 1 }}>
+            <div style={{ fontSize: 32, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#ffffff', lineHeight: 1 }}>
               {total}
             </div>
-            <div style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', marginTop: 4 }}>
+            <div style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', marginTop: 4 }}>
               Total memories stored
             </div>
           </div>
@@ -104,8 +104,8 @@ export function MemoryHealthCard({ memories, isLoading, error }: MemoryHealthCar
 
           {/* Average importance */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>Average Importance</span>
-            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>{avgImportance}</span>
+            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Average Importance</span>
+            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>{avgImportance}</span>
           </div>
 
           <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: 0 }} />
@@ -114,10 +114,10 @@ export function MemoryHealthCard({ memories, isLoading, error }: MemoryHealthCar
           {mostRecent && (
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>Most Recent</span>
+                <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Most Recent</span>
                 <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa' }}>{timeAgo(mostRecent.createdAt)}</span>
               </div>
-              <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {mostRecent.content}
               </p>
             </div>

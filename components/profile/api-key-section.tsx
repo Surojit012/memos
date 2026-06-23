@@ -81,7 +81,7 @@ export function ApiKeySection({ apiKey, onApiKeyUpdate }: ApiKeySectionProps) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {/* Key display row */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 13, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#18181b', wordBreak: 'break-all' }}>
+          <span style={{ fontSize: 13, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#ffffff', wordBreak: 'break-all' }}>
             {revealed ? localApiKey : maskedKey}
           </span>
           <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
@@ -91,7 +91,7 @@ export function ApiKeySection({ apiKey, onApiKeyUpdate }: ApiKeySectionProps) {
               style={{
                 fontSize: 11,
                 fontFamily: 'Inter, system-ui, sans-serif',
-                color: '#71717a',
+                color: 'var(--text2)',
                 background: '#f4f4f5',
                 border: '1px solid #e4e4e7',
                 borderRadius: 4,
@@ -99,7 +99,7 @@ export function ApiKeySection({ apiKey, onApiKeyUpdate }: ApiKeySectionProps) {
                 cursor: 'pointer',
                 transition: 'background 150ms ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = '#e4e4e7'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
             >
               {revealed ? 'Hide' : 'Reveal'}
@@ -110,7 +110,7 @@ export function ApiKeySection({ apiKey, onApiKeyUpdate }: ApiKeySectionProps) {
               style={{
                 fontSize: 11,
                 fontFamily: 'Inter, system-ui, sans-serif',
-                color: '#71717a',
+                color: 'var(--text2)',
                 background: '#f4f4f5',
                 border: '1px solid #e4e4e7',
                 borderRadius: 4,
@@ -118,7 +118,7 @@ export function ApiKeySection({ apiKey, onApiKeyUpdate }: ApiKeySectionProps) {
                 cursor: 'pointer',
                 transition: 'background 150ms ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = '#e4e4e7'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
             >
               {copied ? 'Copied!' : '⧉'}
@@ -145,7 +145,7 @@ export function ApiKeySection({ apiKey, onApiKeyUpdate }: ApiKeySectionProps) {
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: 500,
               color: '#dc2626',
-              background: '#ffffff',
+              background: 'var(--surface)',
               border: '1px solid #dc2626',
               borderRadius: 6,
               padding: '8px 14px',
@@ -154,7 +154,7 @@ export function ApiKeySection({ apiKey, onApiKeyUpdate }: ApiKeySectionProps) {
               alignSelf: 'flex-start',
             }}
             onMouseEnter={(e) => { e.currentTarget.style.background = '#fef2f2'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#ffffff'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
           >
             Regenerate Key
           </button>
@@ -171,8 +171,8 @@ export function ApiKeySection({ apiKey, onApiKeyUpdate }: ApiKeySectionProps) {
                   fontSize: 13,
                   fontFamily: 'Inter, system-ui, sans-serif',
                   fontWeight: 500,
-                  color: '#18181b',
-                  background: '#ffffff',
+                  color: '#ffffff',
+                  background: 'var(--surface)',
                   border: '1px solid #e4e4e7',
                   borderRadius: 6,
                   padding: '6px 14px',
@@ -189,8 +189,8 @@ export function ApiKeySection({ apiKey, onApiKeyUpdate }: ApiKeySectionProps) {
                   fontSize: 13,
                   fontFamily: 'Inter, system-ui, sans-serif',
                   fontWeight: 500,
-                  color: '#ffffff',
-                  background: regenerating ? '#71717a' : '#dc2626',
+                  color: 'var(--surface)',
+                  background: regenerating ? 'var(--text2)' : '#dc2626',
                   border: 'none',
                   borderRadius: 6,
                   padding: '6px 14px',

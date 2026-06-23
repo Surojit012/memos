@@ -17,7 +17,7 @@ export default function PlaygroundPage() {
           alignItems: 'center',
           justifyContent: 'center',
           height: '100vh',
-          background: '#fafafa',
+          background: 'var(--bg)',
         }}
       >
         <div
@@ -40,7 +40,7 @@ export default function PlaygroundPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fafafa' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       {/* Mode banner */}
       {!auth.isAuthenticated ? (
         <div

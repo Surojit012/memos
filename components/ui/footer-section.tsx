@@ -122,7 +122,7 @@ export function FooterSection() {
                     style={{
                       transform: cell.active ? "scale(1)" : "scale(0.3)",
                       opacity: cell.active ? 1 : 0.05,
-                      backgroundColor: cell.active ? "#ABD1C6" : "#ffffff",
+                      backgroundColor: cell.active ? "#ABD1C6" : 'var(--surface)',
                       transitionDelay: `${cell.delay}s`,
                     }}
                   />

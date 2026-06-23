@@ -29,7 +29,7 @@ interface IdentityTabProps {
 /* ─── Constants ─── */
 
 const TIER_COLORS: Record<string, { bg: string; color: string }> = {
-  new: { bg: '#f4f4f5', color: '#71717a' },
+  new: { bg: '#f4f4f5', color: 'var(--text2)' },
   established: { bg: '#dbeafe', color: '#1d4ed8' },
   trusted: { bg: '#dcfce7', color: '#15803d' },
   expert: { bg: '#f3e8ff', color: '#7e22ce' },
@@ -51,11 +51,11 @@ function CopyRow({ label, value, masked }: { label: string; value: string; maske
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f4f4f5' }}>
-      <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', flexShrink: 0 }}>
+      <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', flexShrink: 0 }}>
         {label}
       </span>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-        <span style={{ fontSize: 13, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#18181b', wordBreak: 'break-all', textAlign: 'right', maxWidth: 220 }}>
+        <span style={{ fontSize: 13, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#ffffff', wordBreak: 'break-all', textAlign: 'right', maxWidth: 220 }}>
           {displayValue}
         </span>
         {masked && (
@@ -64,7 +64,7 @@ function CopyRow({ label, value, masked }: { label: string; value: string; maske
             style={{
               fontSize: 11,
               fontFamily: 'Inter, system-ui, sans-serif',
-              color: '#71717a',
+              color: 'var(--text2)',
               background: '#f4f4f5',
               border: '1px solid #e4e4e7',
               borderRadius: 4,
@@ -73,7 +73,7 @@ function CopyRow({ label, value, masked }: { label: string; value: string; maske
               transition: 'background 150ms ease',
               flexShrink: 0,
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#e4e4e7'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
           >
             {revealed ? 'Hide' : 'Reveal'}
@@ -84,7 +84,7 @@ function CopyRow({ label, value, masked }: { label: string; value: string; maske
           style={{
             fontSize: 11,
             fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#71717a',
+            color: 'var(--text2)',
             background: '#f4f4f5',
             border: '1px solid #e4e4e7',
             borderRadius: 4,
@@ -93,7 +93,7 @@ function CopyRow({ label, value, masked }: { label: string; value: string; maske
             transition: 'background 150ms ease',
             flexShrink: 0,
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = '#e4e4e7'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
         >
           {copied ? 'Copied!' : '⧉'}
@@ -222,7 +222,7 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
 
     return (
       <div>
-        <div style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b', marginBottom: 12 }}>
+        <div style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 12 }}>
           Your Agent Identity
         </div>
         <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: '0 0 8px' }} />
@@ -231,14 +231,14 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
         <CopyRow label="API Key" value={apiKey} masked />
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f4f4f5' }}>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>Reputation Score</span>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>
+          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Reputation Score</span>
+          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
             {loadingRep ? '...' : `${reputation.score}/100`}
           </span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f4f4f5' }}>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>Tier</span>
+          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Tier</span>
           <span
             style={{
               fontSize: 12,
@@ -255,8 +255,8 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>Interactions</span>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>
+          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Interactions</span>
+          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
             {loadingRep ? '...' : reputation.totalInteractions}
           </span>
         </div>
@@ -287,7 +287,7 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
         <div style={{ marginBottom: 12 }}>
           <label
             htmlFor="identity-name"
-            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b', marginBottom: 4 }}
+            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}
           >
             Agent Name
           </label>
@@ -301,8 +301,8 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
               width: '100%',
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 13,
-              color: '#18181b',
-              background: '#ffffff',
+              color: '#ffffff',
+              background: 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: 6,
               padding: '8px 10px',
@@ -310,15 +310,15 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
               boxSizing: 'border-box',
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#18181b'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = '#e4e4e7'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
           />
         </div>
 
         <div style={{ marginBottom: 12 }}>
           <label
             htmlFor="identity-desc"
-            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b', marginBottom: 4 }}
+            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}
           >
             Description
           </label>
@@ -332,8 +332,8 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
               width: '100%',
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 13,
-              color: '#18181b',
-              background: '#ffffff',
+              color: '#ffffff',
+              background: 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: 6,
               padding: '8px 10px',
@@ -342,8 +342,8 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
               boxSizing: 'border-box',
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#18181b'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = '#e4e4e7'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
           />
         </div>
 
@@ -356,15 +356,15 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
             fontSize: 14,
             fontFamily: 'Inter, system-ui, sans-serif',
             fontWeight: 500,
-            color: '#ffffff',
-            background: registering || !name.trim() ? '#71717a' : '#18181b',
+            color: 'var(--surface)',
+            background: registering || !name.trim() ? 'var(--text2)' : '#ffffff',
             border: 'none',
             borderRadius: 6,
             cursor: registering || !name.trim() ? 'not-allowed' : 'pointer',
             transition: 'background 150ms ease',
           }}
           onMouseEnter={(e) => { if (!registering && name.trim()) e.currentTarget.style.background = '#27272a'; }}
-          onMouseLeave={(e) => { if (!registering && name.trim()) e.currentTarget.style.background = '#18181b'; }}
+          onMouseLeave={(e) => { if (!registering && name.trim()) e.currentTarget.style.background = '#ffffff'; }}
         >
           {registering ? 'Registering...' : 'Register Agent'}
         </button>

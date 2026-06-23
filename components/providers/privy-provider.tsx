@@ -17,7 +17,7 @@ export function AppPrivyProvider({ children }: { children: React.ReactNode }) {
         loginMethods: ['email', 'wallet', 'google'],
         appearance: {
           theme: 'light',
-          accentColor: '#18181b',
+          accentColor: '#ffffff',
         },
         embeddedWallets: {
           ethereum: {

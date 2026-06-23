@@ -287,7 +287,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             background: banner.type === 'network' || banner.type === '429' ? '#fffbeb' : '#fef2f2',
             fontSize: 13,
             fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#18181b',
+            color: '#ffffff',
           }}
         >
           <span>{banner.message}</span>
@@ -298,7 +298,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               border: 'none',
               cursor: 'pointer',
               fontSize: 16,
-              color: '#71717a',
+              color: 'var(--text2)',
               padding: '0 4px',
               lineHeight: 1,
             }}
@@ -318,7 +318,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               fontSize: 13,
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: 500,
-              color: '#18181b',
+              color: '#ffffff',
               marginBottom: 4,
             }}
           >
@@ -334,8 +334,8 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               width: '100%',
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 13,
-              color: '#18181b',
-              background: '#ffffff',
+              color: '#ffffff',
+              background: 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: 6,
               padding: '8px 10px',
@@ -344,8 +344,8 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               boxSizing: 'border-box',
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#18181b'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = '#e4e4e7'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
           />
         </div>
 
@@ -359,7 +359,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 fontSize: 13,
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontWeight: 500,
-                color: '#18181b',
+                color: '#ffffff',
                 marginBottom: 4,
               }}
             >
@@ -373,8 +373,8 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 width: '100%',
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontSize: 13,
-                color: '#18181b',
-                background: '#ffffff',
+                color: '#ffffff',
+                background: 'var(--surface)',
                 border: '1px solid #e4e4e7',
                 borderRadius: 6,
                 padding: '8px 10px',
@@ -398,12 +398,12 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 fontSize: 13,
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontWeight: 500,
-                color: '#18181b',
+                color: '#ffffff',
                 marginBottom: 4,
               }}
             >
               Importance{' '}
-              <span style={{ fontWeight: 400, color: '#71717a' }}>{importance}</span>
+              <span style={{ fontWeight: 400, color: 'var(--text2)' }}>{importance}</span>
             </label>
             <input
               id="memory-importance"
@@ -415,7 +415,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               onChange={(e) => setImportance(Number(e.target.value))}
               style={{
                 width: '100%',
-                accentColor: '#18181b',
+                accentColor: '#ffffff',
                 cursor: 'pointer',
               }}
             />
@@ -431,7 +431,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               fontSize: 13,
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: 500,
-              color: '#18181b',
+              color: '#ffffff',
               marginBottom: 4,
             }}
           >
@@ -447,8 +447,8 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               width: '100%',
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 13,
-              color: '#18181b',
-              background: '#ffffff',
+              color: '#ffffff',
+              background: 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: 6,
               padding: '8px 10px',
@@ -456,8 +456,8 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               boxSizing: 'border-box',
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#18181b'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = '#e4e4e7'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
           />
         </div>
 
@@ -471,15 +471,15 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             fontSize: 14,
             fontFamily: 'Inter, system-ui, sans-serif',
             fontWeight: 500,
-            color: '#ffffff',
-            background: submitting ? '#71717a' : '#18181b',
+            color: 'var(--surface)',
+            background: submitting ? 'var(--text2)' : '#ffffff',
             border: 'none',
             borderRadius: 6,
             cursor: submitting ? 'not-allowed' : 'pointer',
             transition: 'background 150ms ease',
           }}
           onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = '#27272a'; }}
-          onMouseLeave={(e) => { if (!submitting) e.currentTarget.style.background = '#18181b'; }}
+          onMouseLeave={(e) => { if (!submitting) e.currentTarget.style.background = '#ffffff'; }}
         >
           {submitting ? 'Storing...' : 'Store Memory'}
         </button>
@@ -509,7 +509,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             fontSize: 14,
             fontFamily: 'Inter, system-ui, sans-serif',
             fontWeight: 500,
-            color: '#18181b',
+            color: '#ffffff',
           }}
         >
           Stored Memories
@@ -518,7 +518,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
           style={{
             fontSize: 12,
             fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#71717a',
+            color: 'var(--text2)',
             background: '#f4f4f5',
             borderRadius: 6,
             padding: '2px 8px',
@@ -555,7 +555,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 border: '1px solid #e4e4e7',
                 borderRadius: 6,
                 padding: 12,
-                background: '#ffffff',
+                background: 'var(--surface)',
                 position: 'relative',
               }}
             >
@@ -564,7 +564,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 style={{
                   fontSize: 13,
                   fontFamily: 'Inter, system-ui, sans-serif',
-                  color: '#18181b',
+                  color: '#ffffff',
                   lineHeight: 1.5,
                   margin: '0 0 8px',
                   overflow: 'hidden',
@@ -603,7 +603,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                         width: 6,
                         height: 6,
                         borderRadius: '50%',
-                        background: n <= mem.importance ? '#18181b' : '#e4e4e7',
+                        background: n <= mem.importance ? '#ffffff' : 'var(--border)',
                         display: 'inline-block',
                       }}
                     />
@@ -617,7 +617,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                     style={{
                       fontSize: 11,
                       fontFamily: 'Inter, system-ui, sans-serif',
-                      color: '#71717a',
+                      color: 'var(--text2)',
                       background: '#f4f4f5',
                       borderRadius: 4,
                       padding: '2px 6px',
@@ -653,13 +653,13 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                   border: 'none',
                   cursor: isDeleting ? 'not-allowed' : 'pointer',
                   fontSize: 14,
-                  color: isDeleting ? '#a1a1aa' : '#71717a',
+                  color: isDeleting ? '#a1a1aa' : 'var(--text2)',
                   padding: '2px 4px',
                   lineHeight: 1,
                   transition: 'color 150ms ease',
                 }}
                 onMouseEnter={(e) => { if (!isDeleting) e.currentTarget.style.color = '#dc2626'; }}
-                onMouseLeave={(e) => { if (!isDeleting) e.currentTarget.style.color = '#71717a'; }}
+                onMouseLeave={(e) => { if (!isDeleting) e.currentTarget.style.color = 'var(--text2)'; }}
               >
                 {isDeleting ? '⟳' : '✕'}
               </button>

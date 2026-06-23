@@ -30,7 +30,7 @@ export function StepDone({ onComplete }: StepDoneProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <h2 style={{ fontSize: 28, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#18181b', margin: '0 0 8px' }}>
+        <h2 style={{ fontSize: 28, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#ffffff', margin: '0 0 8px' }}>
           You&apos;re all set.
         </h2>
         <p style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', margin: 0 }}>
@@ -53,14 +53,14 @@ export function StepDone({ onComplete }: StepDoneProps) {
               border: '1px solid #e4e4e7',
               borderRadius: 8,
               padding: 16,
-              background: '#ffffff',
+              background: 'var(--surface)',
               cursor: 'pointer',
               transition: 'background 150ms ease',
             }}
             onMouseEnter={(e) => { e.currentTarget.style.background = '#f9f9f9'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#ffffff'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
           >
-            <span style={{ fontSize: 15, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>
+            <span style={{ fontSize: 15, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
               {card.title}
             </span>
             <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', marginTop: 4, lineHeight: 1.4 }}>
@@ -80,8 +80,8 @@ export function StepDone({ onComplete }: StepDoneProps) {
           fontSize: 14,
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeight: 500,
-          color: '#ffffff',
-          background: '#18181b',
+          color: 'var(--surface)',
+          background: '#ffffff',
           border: 'none',
           borderRadius: 6,
           cursor: 'pointer',

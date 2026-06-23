@@ -32,7 +32,7 @@ export function StepWelcome({ agentId, apiKey }: StepWelcomeProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <h2 style={{ fontSize: 28, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#18181b', margin: '0 0 8px' }}>
+        <h2 style={{ fontSize: 28, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#ffffff', margin: '0 0 8px' }}>
           Your agent brain is ready.
         </h2>
         <p style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', margin: 0, lineHeight: 1.5 }}>
@@ -46,7 +46,7 @@ export function StepWelcome({ agentId, apiKey }: StepWelcomeProps) {
           Agent ID
         </label>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f4f4f5', border: '1px solid #e4e4e7', borderRadius: 6, padding: 12 }}>
-          <span style={{ fontSize: 14, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#18181b', wordBreak: 'break-all' }}>
+          <span style={{ fontSize: 14, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#ffffff', wordBreak: 'break-all' }}>
             {agentId}
           </span>
           <button
@@ -55,8 +55,8 @@ export function StepWelcome({ agentId, apiKey }: StepWelcomeProps) {
             style={{
               fontSize: 11,
               fontFamily: 'Inter, system-ui, sans-serif',
-              color: '#71717a',
-              background: '#ffffff',
+              color: 'var(--text2)',
+              background: 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: 4,
               padding: '4px 8px',
@@ -76,7 +76,7 @@ export function StepWelcome({ agentId, apiKey }: StepWelcomeProps) {
           API Key
         </label>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f4f4f5', border: '1px solid #e4e4e7', borderRadius: 6, padding: 12, gap: 8 }}>
-          <span style={{ fontSize: 14, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#18181b', wordBreak: 'break-all' }}>
+          <span style={{ fontSize: 14, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#ffffff', wordBreak: 'break-all' }}>
             {revealed ? apiKey : maskedKey}
           </span>
           <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
@@ -86,8 +86,8 @@ export function StepWelcome({ agentId, apiKey }: StepWelcomeProps) {
               style={{
                 fontSize: 11,
                 fontFamily: 'Inter, system-ui, sans-serif',
-                color: '#71717a',
-                background: '#ffffff',
+                color: 'var(--text2)',
+                background: 'var(--surface)',
                 border: '1px solid #e4e4e7',
                 borderRadius: 4,
                 padding: '4px 8px',
@@ -102,8 +102,8 @@ export function StepWelcome({ agentId, apiKey }: StepWelcomeProps) {
               style={{
                 fontSize: 11,
                 fontFamily: 'Inter, system-ui, sans-serif',
-                color: '#71717a',
-                background: '#ffffff',
+                color: 'var(--text2)',
+                background: 'var(--surface)',
                 border: '1px solid #e4e4e7',
                 borderRadius: 4,
                 padding: '4px 8px',

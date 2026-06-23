@@ -67,7 +67,7 @@ export function StepCode({ agentId, apiKey }: StepCodeProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <h2 style={{ fontSize: 24, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#18181b', margin: '0 0 8px' }}>
+        <h2 style={{ fontSize: 24, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#ffffff', margin: '0 0 8px' }}>
           Connect your agent
         </h2>
         <p style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', margin: 0 }}>
@@ -85,8 +85,8 @@ export function StepCode({ agentId, apiKey }: StepCodeProps) {
               fontSize: 13,
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: 500,
-              color: lang === l ? '#ffffff' : '#71717a',
-              background: lang === l ? '#18181b' : '#ffffff',
+              color: lang === l ? 'var(--surface)' : 'var(--text2)',
+              background: lang === l ? '#ffffff' : 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: l === 'python' ? '6px 0 0 6px' : '0 6px 6px 0',
               padding: '6px 16px',
@@ -106,8 +106,8 @@ export function StepCode({ agentId, apiKey }: StepCodeProps) {
             fontFamily: 'JetBrains Mono, Fira Code, monospace',
             fontSize: 13,
             lineHeight: 1.6,
-            color: '#ffffff',
-            background: '#18181b',
+            color: 'var(--surface)',
+            background: '#ffffff',
             padding: 16,
             borderRadius: 8,
             margin: 0,

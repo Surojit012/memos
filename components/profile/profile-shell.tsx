@@ -25,7 +25,7 @@ export function ProfileShell({ privyUser, agentId, children }: ProfileShellProps
       : agentId;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#fafafa' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg)' }}>
       {/* Top bar */}
       <header
         style={{
@@ -35,21 +35,21 @@ export function ProfileShell({ privyUser, agentId, children }: ProfileShellProps
           height: 48,
           padding: '0 16px',
           borderBottom: '1px solid #e4e4e7',
-          background: '#ffffff',
+          background: 'var(--surface)',
           position: 'sticky',
           top: 0,
           zIndex: 10,
         }}
       >
-        <span style={{ fontSize: 14, fontFamily: 'JetBrains Mono, Fira Code, monospace', fontWeight: 600, color: '#18181b', letterSpacing: '-0.02em' }}>
+        <span style={{ fontSize: 14, fontFamily: 'JetBrains Mono, Fira Code, monospace', fontWeight: 600, color: '#ffffff', letterSpacing: '-0.02em' }}>
           memos Profile
         </span>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <Link href="/dashboard" style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', textDecoration: 'none' }}>
+          <Link href="/dashboard" style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', textDecoration: 'none' }}>
             Go to Dashboard
           </Link>
-          <Link href="/playground" style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', textDecoration: 'none' }}>
+          <Link href="/playground" style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', textDecoration: 'none' }}>
             Go to Playground
           </Link>
           <button
@@ -63,7 +63,7 @@ export function ProfileShell({ privyUser, agentId, children }: ProfileShellProps
 
       {/* Content */}
       <main style={{ padding: 24, flex: 1, maxWidth: 800, margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
-        <h1 style={{ fontSize: 24, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#18181b', margin: '0 0 4px' }}>
+        <h1 style={{ fontSize: 24, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#ffffff', margin: '0 0 4px' }}>
           Profile
         </h1>
         <div style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', marginBottom: 24 }}>

@@ -147,13 +147,13 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             background: '#fffbeb',
             fontSize: 13,
             fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#18181b',
+            color: '#ffffff',
           }}
         >
           <span>{banner.message}</span>
           <button
             onClick={() => dismissBanner(banner.id)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: '#71717a', padding: '0 4px', lineHeight: 1 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: 'var(--text2)', padding: '0 4px', lineHeight: 1 }}
           >
             ×
           </button>
@@ -166,7 +166,7 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
         <div style={{ marginBottom: 12 }}>
           <label
             htmlFor="search-query"
-            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b', marginBottom: 4 }}
+            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}
           >
             Query
           </label>
@@ -180,8 +180,8 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               width: '100%',
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 13,
-              color: '#18181b',
-              background: '#ffffff',
+              color: '#ffffff',
+              background: 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: 6,
               padding: '8px 10px',
@@ -189,15 +189,15 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               boxSizing: 'border-box',
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#18181b'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = '#e4e4e7'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
           />
         </div>
 
         {/* Mode toggle */}
         <div style={{ marginBottom: 12 }}>
           <label
-            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b', marginBottom: 4 }}
+            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}
           >
             Mode
           </label>
@@ -210,8 +210,8 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 fontSize: 13,
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontWeight: 500,
-                color: searchType === 'keyword' ? '#ffffff' : '#71717a',
-                background: searchType === 'keyword' ? '#18181b' : '#ffffff',
+                color: searchType === 'keyword' ? 'var(--surface)' : 'var(--text2)',
+                background: searchType === 'keyword' ? '#ffffff' : 'var(--surface)',
                 border: searchType === 'keyword' ? '1px solid #18181b' : '1px solid #e4e4e7',
                 borderRadius: '6px 0 0 6px',
                 padding: '8px 12px',
@@ -229,8 +229,8 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 fontSize: 13,
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontWeight: 500,
-                color: searchType === 'semantic' ? '#ffffff' : '#71717a',
-                background: searchType === 'semantic' ? '#18181b' : '#ffffff',
+                color: searchType === 'semantic' ? 'var(--surface)' : 'var(--text2)',
+                background: searchType === 'semantic' ? '#ffffff' : 'var(--surface)',
                 border: searchType === 'semantic' ? '1px solid #18181b' : '1px solid #e4e4e7',
                 borderRadius: '0 6px 6px 0',
                 padding: '8px 12px',
@@ -254,7 +254,7 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               marginBottom: 12,
               fontSize: 13,
               fontFamily: 'Inter, system-ui, sans-serif',
-              color: '#71717a',
+              color: 'var(--text2)',
               lineHeight: 1.5,
             }}
           >
@@ -272,15 +272,15 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             fontSize: 14,
             fontFamily: 'Inter, system-ui, sans-serif',
             fontWeight: 500,
-            color: '#ffffff',
-            background: submitting || !query.trim() ? '#71717a' : '#18181b',
+            color: 'var(--surface)',
+            background: submitting || !query.trim() ? 'var(--text2)' : '#ffffff',
             border: 'none',
             borderRadius: 6,
             cursor: submitting || !query.trim() ? 'not-allowed' : 'pointer',
             transition: 'background 150ms ease',
           }}
           onMouseEnter={(e) => { if (!submitting && query.trim()) e.currentTarget.style.background = '#27272a'; }}
-          onMouseLeave={(e) => { if (!submitting && query.trim()) e.currentTarget.style.background = '#18181b'; }}
+          onMouseLeave={(e) => { if (!submitting && query.trim()) e.currentTarget.style.background = '#ffffff'; }}
         >
           {submitting ? 'Searching...' : 'Search Memories'}
         </button>
@@ -291,8 +291,8 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
         <>
           <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: '20px 0 16px' }} />
 
-          <div style={{ marginBottom: 12, fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>
-            Found <span style={{ fontWeight: 500, color: '#18181b' }}>{totalFound}</span> memories
+          <div style={{ marginBottom: 12, fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>
+            Found <span style={{ fontWeight: 500, color: '#ffffff' }}>{totalFound}</span> memories
           </div>
 
           {results.length === 0 && (
@@ -313,18 +313,18 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                     border: '1px solid #e4e4e7',
                     borderRadius: 6,
                     padding: 12,
-                    background: '#ffffff',
+                    background: 'var(--surface)',
                   }}
                 >
                   {/* Content */}
-                  <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b', lineHeight: 1.5, margin: '0 0 8px' }}>
+                  <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', lineHeight: 1.5, margin: '0 0 8px' }}>
                     {r.content}
                   </p>
 
                   {/* Score bar */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                    <div style={{ flex: 1, height: 4, background: '#e4e4e7', borderRadius: 2, overflow: 'hidden' }}>
-                      <div style={{ width: `${scorePercent}%`, height: '100%', background: '#18181b', borderRadius: 2 }} />
+                    <div style={{ flex: 1, height: 4, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
+                      <div style={{ width: `${scorePercent}%`, height: '100%', background: '#ffffff', borderRadius: 2 }} />
                     </div>
                     <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', whiteSpace: 'nowrap' }}>
                       {scorePercent}% match
@@ -353,7 +353,7 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                         style={{
                           fontSize: 11,
                           fontFamily: 'Inter, system-ui, sans-serif',
-                          color: '#71717a',
+                          color: 'var(--text2)',
                           background: '#f4f4f5',
                           borderRadius: 4,
                           padding: '2px 6px',

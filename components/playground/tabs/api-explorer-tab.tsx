@@ -243,7 +243,7 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
 
       {/* Endpoint selection */}
       <div>
-        <label style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b', marginBottom: 4 }}>
+        <label style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}>
           Endpoint
         </label>
         <select
@@ -253,8 +253,8 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
             width: '100%',
             fontFamily: 'JetBrains Mono, Fira Code, monospace',
             fontSize: 13,
-            color: '#18181b',
-            background: '#ffffff',
+            color: '#ffffff',
+            background: 'var(--surface)',
             border: '1px solid #e4e4e7',
             borderRadius: 6,
             padding: '8px 10px',
@@ -268,7 +268,7 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
           ))}
         </select>
         {processedUrl !== rawPath && (
-          <div style={{ fontSize: 12, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#71717a', marginTop: 4 }}>
+          <div style={{ fontSize: 12, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: 'var(--text2)', marginTop: 4 }}>
             → {method} {processedUrl}
           </div>
         )}
@@ -277,7 +277,7 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
       {/* Headers */}
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-          <label style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>
+          <label style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
             Headers
           </label>
           <button
@@ -285,7 +285,7 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
             style={{
               fontSize: 12,
               fontFamily: 'Inter, system-ui, sans-serif',
-              color: '#71717a',
+              color: 'var(--text2)',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -308,8 +308,8 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
                   flex: 1,
                   fontFamily: 'JetBrains Mono, Fira Code, monospace',
                   fontSize: 12,
-                  color: h.isStatic ? '#71717a' : '#18181b',
-                  background: h.isStatic ? '#f4f4f5' : '#ffffff',
+                  color: h.isStatic ? 'var(--text2)' : '#ffffff',
+                  background: h.isStatic ? '#f4f4f5' : 'var(--surface)',
                   border: '1px solid #e4e4e7',
                   borderRadius: 4,
                   padding: '6px 8px',
@@ -325,8 +325,8 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
                   flex: 1,
                   fontFamily: 'JetBrains Mono, Fira Code, monospace',
                   fontSize: 12,
-                  color: '#18181b',
-                  background: '#ffffff',
+                  color: '#ffffff',
+                  background: 'var(--surface)',
                   border: '1px solid #e4e4e7',
                   borderRadius: 4,
                   padding: '6px 8px',
@@ -338,7 +338,7 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
                 disabled={h.isStatic}
                 style={{
                   fontSize: 16,
-                  color: h.isStatic ? '#e4e4e7' : '#71717a',
+                  color: h.isStatic ? 'var(--border)' : 'var(--text2)',
                   background: 'none',
                   border: 'none',
                   cursor: h.isStatic ? 'not-allowed' : 'pointer',
@@ -355,7 +355,7 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
 
       {/* Body */}
       <div>
-        <label style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: needsBody ? '#18181b' : '#a1a1aa', marginBottom: 4 }}>
+        <label style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: needsBody ? '#ffffff' : '#a1a1aa', marginBottom: 4 }}>
           Body
         </label>
         <textarea
@@ -368,8 +368,8 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
             width: '100%',
             fontFamily: 'JetBrains Mono, Fira Code, monospace',
             fontSize: 13,
-            color: needsBody ? '#18181b' : '#a1a1aa',
-            background: needsBody ? '#ffffff' : '#f4f4f5',
+            color: needsBody ? '#ffffff' : '#a1a1aa',
+            background: needsBody ? 'var(--surface)' : '#f4f4f5',
             border: '1px solid #e4e4e7',
             borderRadius: 6,
             padding: '8px 10px',
@@ -403,8 +403,8 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
           fontSize: 14,
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeight: 500,
-          color: '#ffffff',
-          background: sending || (needsBody && !isValidJson) ? '#71717a' : '#18181b',
+          color: 'var(--surface)',
+          background: sending || (needsBody && !isValidJson) ? 'var(--text2)' : '#ffffff',
           border: 'none',
           borderRadius: 6,
           cursor: sending || (needsBody && !isValidJson) ? 'not-allowed' : 'pointer',

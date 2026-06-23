@@ -62,29 +62,29 @@ function Nav({ visible }: { visible: boolean }) {
           <ul className="hidden sm:flex gap-8 list-none">
             <li>
               <a
-                href="#product"
+                href="/playground"
                 className="text-sm text-neutral-400 no-underline hover:text-neutral-100 transition-colors
                   focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4a7a62] focus-visible:rounded"
               >
-                Product
+                Playground
               </a>
             </li>
             <li>
               <a
-                href="#docs"
+                href="/dashboard"
                 className="text-sm text-neutral-400 no-underline hover:text-neutral-100 transition-colors
                   focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4a7a62] focus-visible:rounded"
               >
-                Docs
+                Dashboard
               </a>
             </li>
             <li>
               <a
-                href="#about"
+                href="/profile"
                 className="text-sm text-neutral-400 no-underline hover:text-neutral-100 transition-colors
                   focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4a7a62] focus-visible:rounded"
               >
-                About
+                Profile
               </a>
             </li>
           </ul>

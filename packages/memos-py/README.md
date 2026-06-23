@@ -1,10 +1,29 @@
-# memos-py
+# MEMOS Python SDK
 
-Python SDK for [memos](https://memos.io) — persistent brain framework for AI agents.
+Python SDK for [MEMOS](https://memos.io) — persistent brain framework for AI agents.
 
 ## Installation
 ```bash
-pip install memos-py
+pip install memos-ai
+```
+
+## Publish Verification
+```bash
+python3 -m venv verify
+source verify/bin/activate
+pip install memos-ai
+python3
+```
+
+```python
+from memos import MemosClient
+
+print(MemosClient)
+```
+
+Expected output:
+```text
+<class 'memos.client.MemosClient'>
 ```
 
 ## Quick Start
@@ -71,13 +90,13 @@ except MemosError as e:
 
 ## Context Manager
 ```python
-with Agent(api_key="...", agent_id="...") as client:
+with MemosClient(api_key="...", agent_id="...") as client:
     client.store_memory("...")
 # HTTP connection closed automatically
 ```
 
 ## Requirements
-Python 3.8+
+Python 3.11+
 No additional dependencies beyond `httpx`.
 
 ## License

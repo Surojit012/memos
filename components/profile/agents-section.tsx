@@ -59,11 +59,11 @@ export function AgentsSection({ agentId, memoryCount, statusData }: AgentsSectio
             <tbody>
               <tr>
                 <td style={{ padding: '10px 8px 10px 0', borderBottom: '1px solid #f4f4f5' }}>
-                  <span style={{ fontFamily: 'JetBrains Mono, Fira Code, monospace', fontSize: 12, color: '#18181b' }}>
+                  <span style={{ fontFamily: 'JetBrains Mono, Fira Code, monospace', fontSize: 12, color: '#ffffff' }}>
                     {agentId.length > 12 ? agentId.slice(0, 12) + '...' : agentId}
                   </span>
                 </td>
-                <td style={{ padding: '10px 8px 10px 0', borderBottom: '1px solid #f4f4f5', color: '#18181b', fontWeight: 500 }}>
+                <td style={{ padding: '10px 8px 10px 0', borderBottom: '1px solid #f4f4f5', color: '#ffffff', fontWeight: 500 }}>
                   {memoryCount ?? '—'}
                 </td>
                 <td style={{ padding: '10px 8px 10px 0', borderBottom: '1px solid #f4f4f5' }}>
@@ -83,7 +83,7 @@ export function AgentsSection({ agentId, memoryCount, statusData }: AgentsSectio
                     style={{
                       fontSize: 13,
                       fontFamily: 'Inter, system-ui, sans-serif',
-                      color: '#18181b',
+                      color: '#ffffff',
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',

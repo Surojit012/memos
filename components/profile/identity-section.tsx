@@ -17,7 +17,7 @@ interface IdentitySectionProps {
 }
 
 const TIER_COLORS: Record<string, { bg: string; color: string }> = {
-  new: { bg: '#f4f4f5', color: '#71717a' },
+  new: { bg: '#f4f4f5', color: 'var(--text2)' },
   established: { bg: '#dbeafe', color: '#1d4ed8' },
   trusted: { bg: '#dcfce7', color: '#15803d' },
   expert: { bg: '#f3e8ff', color: '#7e22ce' },
@@ -39,7 +39,7 @@ export function IdentitySection({ agentId, reputation, reputationLoading }: Iden
       label: 'Agent ID',
       content: (
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 13, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#18181b' }}>
+          <span style={{ fontSize: 13, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#ffffff' }}>
             {agentId}
           </span>
           <button
@@ -48,7 +48,7 @@ export function IdentitySection({ agentId, reputation, reputationLoading }: Iden
             style={{
               fontSize: 11,
               fontFamily: 'Inter, system-ui, sans-serif',
-              color: '#71717a',
+              color: 'var(--text2)',
               background: '#f4f4f5',
               border: '1px solid #e4e4e7',
               borderRadius: 4,
@@ -57,7 +57,7 @@ export function IdentitySection({ agentId, reputation, reputationLoading }: Iden
               transition: 'background 150ms ease',
               flexShrink: 0,
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#e4e4e7'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
           >
             {copied ? 'Copied!' : '⧉'}
@@ -70,7 +70,7 @@ export function IdentitySection({ agentId, reputation, reputationLoading }: Iden
       content: reputationLoading ? (
         <div style={{ background: '#f4f4f5', borderRadius: 4, height: 14, width: 60 }} className="skeleton-pulse" />
       ) : (
-        <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>
+        <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
           {reputation ? `${reputation.score}/100` : '—'}
         </span>
       ),
@@ -102,7 +102,7 @@ export function IdentitySection({ agentId, reputation, reputationLoading }: Iden
       content: reputationLoading ? (
         <div style={{ background: '#f4f4f5', borderRadius: 4, height: 14, width: 40 }} className="skeleton-pulse" />
       ) : (
-        <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>
+        <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
           {reputation ? reputation.totalInteractions : '—'}
         </span>
       ),
@@ -130,7 +130,7 @@ export function IdentitySection({ agentId, reputation, reputationLoading }: Iden
               borderBottom: i < rows.length - 1 ? '1px solid #e4e4e7' : 'none',
             }}
           >
-            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>
+            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>
               {row.label}
             </span>
             {row.content}

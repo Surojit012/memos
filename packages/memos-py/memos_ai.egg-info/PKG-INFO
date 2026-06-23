@@ -2,28 +2,7 @@ Metadata-Version: 2.4
 Name: memos-ai
 Version: 0.1.0
 Summary: Python SDK for memos — persistent brain framework for AI agents
-License: MIT License
-        
-        Copyright (c) 2024 memos
-        
-        Permission is hereby granted, free of charge, to any person obtaining a copy
-        of this software and associated documentation files (the "Software"), to deal
-        in the Software without restriction, including without limitation the rights
-        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-        copies of the Software, and to permit persons to whom the Software is
-        furnished to do so, subject to the following conditions:
-        
-        The above copyright notice and this permission notice shall be included in all
-        copies or substantial portions of the Software.
-        
-        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-        SOFTWARE.
-        
+License-Expression: MIT
 Project-URL: Homepage, https://memos.io
 Project-URL: Repository, https://github.com/memos/memos-py
 Project-URL: Documentation, https://docs.memos.io
@@ -36,13 +15,32 @@ Requires-Dist: pytest>=7.0; extra == "test"
 Requires-Dist: pytest-mock>=3.0; extra == "test"
 Dynamic: license-file
 
-# memos-py
+# MEMOS Python SDK
 
-Python SDK for [memos](https://memos.io) — persistent brain framework for AI agents.
+Python SDK for [MEMOS](https://memos.io) — persistent brain framework for AI agents.
 
 ## Installation
 ```bash
-pip install memos-py
+pip install memos-ai
+```
+
+## Publish Verification
+```bash
+python3 -m venv verify
+source verify/bin/activate
+pip install memos-ai
+python3
+```
+
+```python
+from memos import MemosClient
+
+print(MemosClient)
+```
+
+Expected output:
+```text
+<class 'memos.client.MemosClient'>
 ```
 
 ## Quick Start
@@ -109,7 +107,7 @@ except MemosError as e:
 
 ## Context Manager
 ```python
-with Agent(api_key="...", agent_id="...") as client:
+with MemosClient(api_key="...", agent_id="...") as client:
     client.store_memory("...")
 # HTTP connection closed automatically
 ```

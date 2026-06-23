@@ -50,6 +50,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--bg);
+    color: hsl(var(--foreground));
   }
 }

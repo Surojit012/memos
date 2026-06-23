@@ -33,7 +33,7 @@ export default function OnboardingPage() {
           alignItems: 'center',
           justifyContent: 'center',
           height: '100vh',
-          background: '#fafafa',
+          background: 'var(--bg)',
         }}
       >
         <div

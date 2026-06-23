@@ -54,7 +54,7 @@ export function LandingNavbar() {
       <nav
         style={{
           height: 60,
-          background: '#ffffff',
+          background: 'var(--surface)',
           borderBottom: '1px solid #e4e4e7',
           boxShadow: scrolled ? '0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1)' : 'none',
         }}
@@ -77,7 +77,7 @@ export function LandingNavbar() {
               fontFamily: 'JetBrains Mono, Fira Code, monospace',
               fontSize: 16,
               fontWeight: 600,
-              color: '#18181b',
+              color: '#ffffff',
               textDecoration: 'none',
             }}
           >
@@ -95,12 +95,12 @@ export function LandingNavbar() {
                     {auth.agentId.slice(0, 6)}...
                   </span>
                 )}
-                <button onClick={() => auth.logout()} style={{ ...textBtnStyle, color: '#71717a' }}>Log out</button>
+                <button onClick={() => auth.logout()} style={{ ...textBtnStyle, color: 'var(--text2)' }}>Log out</button>
               </>
             ) : (
               <>
                 <button onClick={() => router.push('/playground')} style={textBtnStyle}>Playground</button>
-                <button disabled title="Coming soon" style={{ ...textBtnStyle, color: '#a1a1aa', cursor: 'not-allowed' }}>Docs</button>
+                <button onClick={() => router.push('/profile')} style={textBtnStyle}>Profile</button>
                 <button onClick={() => auth.login()} style={outlineBtnStyle}>Log in</button>
                 <button onClick={() => auth.login()} style={filledBtnStyle}>Get API Key</button>
               </>
@@ -122,7 +122,7 @@ export function LandingNavbar() {
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                color: '#18181b',
+                color: '#ffffff',
                 padding: '4px 8px',
               }}
             >
@@ -139,7 +139,7 @@ export function LandingNavbar() {
           style={{
             display: 'none',
             flexDirection: 'column',
-            background: '#ffffff',
+            background: 'var(--surface)',
             border: '1px solid #e4e4e7',
             borderTop: 'none',
             borderRadius: '0 0 8px 8px',
@@ -185,7 +185,7 @@ function MobileNavItem({ label, onClick }: { label: string; onClick: () => void 
         padding: '0 24px',
         fontSize: 14,
         fontFamily: 'Inter, system-ui, sans-serif',
-        color: '#18181b',
+        color: '#ffffff',
         background: 'none',
         border: 'none',
         borderBottom: '1px solid #e4e4e7',
@@ -203,7 +203,7 @@ const textBtnStyle: React.CSSProperties = {
   fontSize: 13,
   fontFamily: 'Inter, system-ui, sans-serif',
   fontWeight: 500,
-  color: '#18181b',
+  color: '#ffffff',
   background: 'none',
   border: 'none',
   cursor: 'pointer',
@@ -214,8 +214,8 @@ const outlineBtnStyle: React.CSSProperties = {
   fontSize: 13,
   fontFamily: 'Inter, system-ui, sans-serif',
   fontWeight: 500,
-  color: '#18181b',
-  background: '#ffffff',
+  color: '#ffffff',
+  background: 'var(--surface)',
   border: '1px solid #e4e4e7',
   borderRadius: 6,
   padding: '8px 16px',
@@ -226,8 +226,8 @@ const filledBtnStyle: React.CSSProperties = {
   fontSize: 13,
   fontFamily: 'Inter, system-ui, sans-serif',
   fontWeight: 500,
-  color: '#ffffff',
-  background: '#18181b',
+  color: 'var(--surface)',
+  background: '#ffffff',
   border: 'none',
   borderRadius: 6,
   padding: '8px 16px',
@@ -237,7 +237,7 @@ const filledBtnStyle: React.CSSProperties = {
 const pillStyle: React.CSSProperties = {
   fontFamily: 'JetBrains Mono, Fira Code, monospace',
   fontSize: 12,
-  color: '#71717a',
+  color: 'var(--text2)',
   background: '#f4f4f5',
   border: '1px solid #e4e4e7',
   borderRadius: 99,

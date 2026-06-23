@@ -43,16 +43,16 @@ export function SkillsOverviewCard({ skills, isLoading, error }: SkillsOverviewC
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {/* Total count */}
         <div>
-          <div style={{ fontSize: 32, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#18181b', lineHeight: 1 }}>
+          <div style={{ fontSize: 32, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#ffffff', lineHeight: 1 }}>
             {total}
           </div>
-          <div style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', marginTop: 4 }}>
+          <div style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', marginTop: 4 }}>
             skills available
           </div>
         </div>
 
         {/* Free/Paid breakdown */}
-        <div style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b' }}>
+        <div style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff' }}>
           Free: {freeCount} &nbsp;&nbsp; Paid: {paidCount}
         </div>
 
@@ -63,14 +63,14 @@ export function SkillsOverviewCard({ skills, isLoading, error }: SkillsOverviewC
           {skills?.slice(0, 3).map((skill) => (
             <div key={skill.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>
+                <span style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
                   {skill.name}
                 </span>
-                <span style={{ fontSize: 11, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', background: '#f4f4f5', borderRadius: 4, padding: '2px 6px' }}>
+                <span style={{ fontSize: 11, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', background: '#f4f4f5', borderRadius: 4, padding: '2px 6px' }}>
                   {skill.category}
                 </span>
               </div>
-              <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: skill.price === 0 ? '#16a34a' : '#71717a' }}>
+              <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: skill.price === 0 ? '#16a34a' : 'var(--text2)' }}>
                 {skill.price === 0 ? 'Free' : `${skill.price} ETH`}
               </span>
             </div>

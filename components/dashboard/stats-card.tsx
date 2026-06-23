@@ -17,7 +17,7 @@ export function StatsCard({ title, children, isLoading, error, action }: StatsCa
       style={{
         border: '1px solid #e4e4e7',
         borderRadius: 8,
-        background: '#ffffff',
+        background: 'var(--surface)',
         padding: 20,
         display: 'flex',
         flexDirection: 'column',
@@ -45,7 +45,7 @@ export function StatsCard({ title, children, isLoading, error, action }: StatsCa
             style={{
               fontSize: 13,
               fontFamily: 'Inter, system-ui, sans-serif',
-              color: '#18181b',
+              color: '#ffffff',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -79,8 +79,8 @@ export function StatsCard({ title, children, isLoading, error, action }: StatsCa
                 fontSize: 13,
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontWeight: 500,
-                color: '#18181b',
-                background: '#ffffff',
+                color: '#ffffff',
+                background: 'var(--surface)',
                 border: '1px solid #e4e4e7',
                 borderRadius: 6,
                 padding: '6px 14px',
@@ -88,7 +88,7 @@ export function StatsCard({ title, children, isLoading, error, action }: StatsCa
                 transition: 'background 150ms ease',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = '#ffffff'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
             >
               Retry
             </button>

@@ -186,7 +186,7 @@ export function RequestPreviewPanel(props: RequestPreviewPanelProps) {
               fontSize: 12,
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: activeTab === tab.id ? 500 : 400,
-              color: '#18181b',
+              color: '#ffffff',
               background: activeTab === tab.id ? '#f4f4f5' : 'transparent',
               border: 'none',
               borderRadius: 6,
@@ -210,7 +210,7 @@ export function RequestPreviewPanel(props: RequestPreviewPanelProps) {
             right: 8,
             fontSize: 11,
             fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#71717a',
+            color: 'var(--text2)',
             background: '#f4f4f5',
             border: '1px solid #e4e4e7',
             borderRadius: 4,
@@ -219,7 +219,7 @@ export function RequestPreviewPanel(props: RequestPreviewPanelProps) {
             transition: 'background 150ms ease',
             zIndex: 1,
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = '#e4e4e7'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
         >
           {copied ? 'Copied!' : 'Copy'}
@@ -229,8 +229,8 @@ export function RequestPreviewPanel(props: RequestPreviewPanelProps) {
             fontFamily: 'JetBrains Mono, Fira Code, monospace',
             fontSize: 12,
             lineHeight: 1.6,
-            color: '#18181b',
-            background: '#fafafa',
+            color: '#ffffff',
+            background: 'var(--bg)',
             border: '1px solid #e4e4e7',
             borderRadius: 6,
             padding: 12,

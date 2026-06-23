@@ -82,7 +82,7 @@ export function OnboardingShell({ currentStep, setCurrentStep, agentId, apiKey }
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        background: '#fafafa',
+        background: 'var(--bg)',
       }}
     >
       {/* Progress bar */}
@@ -129,8 +129,8 @@ export function OnboardingShell({ currentStep, setCurrentStep, agentId, apiKey }
                 fontSize: 14,
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontWeight: 500,
-                color: '#18181b',
-                background: '#ffffff',
+                color: '#ffffff',
+                background: 'var(--surface)',
                 border: '1px solid #e4e4e7',
                 borderRadius: 6,
                 padding: '10px 20px',
@@ -151,8 +151,8 @@ export function OnboardingShell({ currentStep, setCurrentStep, agentId, apiKey }
                 fontSize: 14,
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontWeight: 500,
-                color: '#ffffff',
-                background: '#18181b',
+                color: 'var(--surface)',
+                background: '#ffffff',
                 border: 'none',
                 borderRadius: 6,
                 padding: '10px 20px',

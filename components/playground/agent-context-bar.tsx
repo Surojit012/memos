@@ -24,7 +24,7 @@ export function AgentContextBar({ isLive, agentId, onLogin, onLogout }: AgentCon
       style={{
         height: 48,
         borderBottom: '1px solid #e4e4e7',
-        background: '#ffffff',
+        background: 'var(--surface)',
         position: 'sticky',
         top: 0,
         zIndex: 50,
@@ -39,7 +39,7 @@ export function AgentContextBar({ isLive, agentId, onLogin, onLogout }: AgentCon
         style={{
           fontFamily: 'JetBrains Mono, Fira Code, monospace',
           fontSize: 14,
-          color: '#18181b',
+          color: '#ffffff',
           fontWeight: 500,
         }}
       >
@@ -53,7 +53,7 @@ export function AgentContextBar({ isLive, agentId, onLogin, onLogout }: AgentCon
               style={{
                 fontSize: 12,
                 fontFamily: 'Inter, system-ui, sans-serif',
-                color: '#71717a',
+                color: 'var(--text2)',
                 background: '#f4f4f5',
                 padding: '4px 10px',
                 borderRadius: 6,
@@ -67,8 +67,8 @@ export function AgentContextBar({ isLive, agentId, onLogin, onLogout }: AgentCon
                 fontSize: 13,
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontWeight: 500,
-                color: '#ffffff',
-                background: '#18181b',
+                color: 'var(--surface)',
+                background: '#ffffff',
                 border: 'none',
                 borderRadius: 6,
                 padding: '6px 14px',
@@ -76,7 +76,7 @@ export function AgentContextBar({ isLive, agentId, onLogin, onLogout }: AgentCon
                 transition: 'background 150ms ease',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = '#27272a'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = '#18181b'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = '#ffffff'; }}
             >
               Log in
             </button>
@@ -91,7 +91,7 @@ export function AgentContextBar({ isLive, agentId, onLogin, onLogout }: AgentCon
                 gap: 6,
                 fontSize: 12,
                 fontFamily: 'JetBrains Mono, Fira Code, monospace',
-                color: '#18181b',
+                color: '#ffffff',
                 background: '#f4f4f5',
                 border: '1px solid #e4e4e7',
                 borderRadius: 6,
@@ -99,12 +99,12 @@ export function AgentContextBar({ isLive, agentId, onLogin, onLogout }: AgentCon
                 cursor: 'pointer',
                 transition: 'background 150ms ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = '#e4e4e7'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
               title="Copy agent ID"
             >
               {agentId ? agentId.slice(0, 8) + '...' : ''}
-              <span style={{ fontSize: 11, color: '#71717a' }}>
+              <span style={{ fontSize: 11, color: 'var(--text2)' }}>
                 {copied ? '✓ Copied!' : '⧉'}
               </span>
             </button>
@@ -113,15 +113,15 @@ export function AgentContextBar({ isLive, agentId, onLogin, onLogout }: AgentCon
               style={{
                 fontSize: 13,
                 fontFamily: 'Inter, system-ui, sans-serif',
-                color: '#71717a',
+                color: 'var(--text2)',
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
                 padding: '4px 8px',
                 transition: 'color 150ms ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = '#18181b'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = '#71717a'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text2)'; }}
             >
               Log out
             </button>

@@ -175,17 +175,17 @@ export function SkillsTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 border: isSelected ? '2px solid #18181b' : '1px solid #e4e4e7',
                 borderRadius: 8,
                 padding: 14,
-                background: '#ffffff',
+                background: 'var(--surface)',
                 cursor: 'pointer',
                 transition: 'border-color 150ms ease',
                 display: 'flex',
                 flexDirection: 'column',
               }}
             >
-              <span style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>
+              <span style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
                 {skill.name}
               </span>
-              <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', marginTop: 4, lineHeight: 1.4 }}>
+              <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', marginTop: 4, lineHeight: 1.4 }}>
                 {skill.description}
               </span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10 }}>
@@ -193,7 +193,7 @@ export function SkillsTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                   style={{
                     fontSize: 11,
                     fontFamily: 'Inter, system-ui, sans-serif',
-                    color: '#71717a',
+                    color: 'var(--text2)',
                     background: '#f4f4f5',
                     borderRadius: 4,
                     padding: '2px 6px',
@@ -206,7 +206,7 @@ export function SkillsTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                     fontSize: 11,
                     fontFamily: 'Inter, system-ui, sans-serif',
                     fontWeight: 500,
-                    color: skill.price === 0 ? '#16a34a' : '#71717a',
+                    color: skill.price === 0 ? '#16a34a' : 'var(--text2)',
                     marginLeft: 'auto',
                   }}
                 >
@@ -223,7 +223,7 @@ export function SkillsTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
         <div>
           <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: '0 0 12px' }} />
 
-          <div style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b', marginBottom: 8 }}>
+          <div style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 8 }}>
             {selectedSkill.name}
           </div>
 
@@ -236,8 +236,8 @@ export function SkillsTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               width: '100%',
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 13,
-              color: '#18181b',
-              background: '#ffffff',
+              color: '#ffffff',
+              background: 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: 6,
               padding: '8px 10px',
@@ -247,8 +247,8 @@ export function SkillsTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               marginBottom: 8,
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#18181b'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = '#e4e4e7'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
           />
 
           {/* Paid skill warning */}
@@ -278,15 +278,15 @@ export function SkillsTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               fontSize: 14,
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: 500,
-              color: '#ffffff',
-              background: executing || !inputText.trim() ? '#71717a' : '#18181b',
+              color: 'var(--surface)',
+              background: executing || !inputText.trim() ? 'var(--text2)' : '#ffffff',
               border: 'none',
               borderRadius: 6,
               cursor: executing || !inputText.trim() ? 'not-allowed' : 'pointer',
               transition: 'background 150ms ease',
             }}
             onMouseEnter={(e) => { if (!executing && inputText.trim()) e.currentTarget.style.background = '#27272a'; }}
-            onMouseLeave={(e) => { if (!executing && inputText.trim()) e.currentTarget.style.background = '#18181b'; }}
+            onMouseLeave={(e) => { if (!executing && inputText.trim()) e.currentTarget.style.background = '#ffffff'; }}
           >
             {executing ? 'Executing...' : 'Execute Skill'}
           </button>
@@ -311,7 +311,7 @@ export function SkillsTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#a1a1aa', marginBottom: 6, fontWeight: 500, fontFamily: 'Inter, system-ui, sans-serif' }}>
                 Result:
               </div>
-              <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b', lineHeight: 1.6, margin: 0 }}>
+              <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', lineHeight: 1.6, margin: 0 }}>
                 {execResult.result}
               </p>
             </div>

@@ -63,7 +63,7 @@ function SourcePill({ source }: { source: Source }) {
         style={{
           fontSize: 12,
           fontFamily: 'JetBrains Mono, Fira Code, monospace',
-          color: '#71717a',
+          color: 'var(--text2)',
           background: '#f4f4f5',
           border: '1px solid #e4e4e7',
           borderRadius: 4,
@@ -80,13 +80,13 @@ function SourcePill({ source }: { source: Source }) {
             bottom: '100%',
             left: 0,
             marginBottom: 6,
-            background: '#ffffff',
+            background: 'var(--surface)',
             border: '1px solid #e4e4e7',
             borderRadius: 6,
             padding: '8px 10px',
             fontSize: 12,
             fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#18181b',
+            color: '#ffffff',
             lineHeight: 1.5,
             maxWidth: 280,
             width: 'max-content',
@@ -217,15 +217,15 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
           style={{
             fontSize: 12,
             fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#71717a',
+            color: 'var(--text2)',
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             padding: '2px 4px',
             transition: 'color 150ms ease',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = '#18181b'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = '#71717a'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text2)'; }}
         >
           Clear conversation
         </button>
@@ -257,8 +257,8 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
                 maxWidth: '80%',
                 padding: '10px 14px',
                 borderRadius: msg.role === 'user' ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
-                background: msg.role === 'user' ? '#18181b' : '#f4f4f5',
-                color: msg.role === 'user' ? '#ffffff' : '#18181b',
+                background: msg.role === 'user' ? '#ffffff' : '#f4f4f5',
+                color: msg.role === 'user' ? 'var(--surface)' : '#ffffff',
                 fontSize: 13,
                 fontFamily: 'Inter, system-ui, sans-serif',
                 lineHeight: 1.6,
@@ -354,8 +354,8 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
             flex: 1,
             fontFamily: 'Inter, system-ui, sans-serif',
             fontSize: 13,
-            color: '#18181b',
-            background: '#ffffff',
+            color: '#ffffff',
+            background: 'var(--surface)',
             border: '1px solid #e4e4e7',
             borderRadius: 6,
             padding: '8px 10px',
@@ -364,8 +364,8 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
             boxSizing: 'border-box',
             transition: 'border-color 150ms ease',
           }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = '#18181b'; }}
-          onBlur={(e) => { e.currentTarget.style.borderColor = '#e4e4e7'; }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
         />
         <button
           onClick={handleSend}
@@ -376,8 +376,8 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
             fontSize: 13,
             fontFamily: 'Inter, system-ui, sans-serif',
             fontWeight: 500,
-            color: '#ffffff',
-            background: !input.trim() || isLoading ? '#71717a' : '#18181b',
+            color: 'var(--surface)',
+            background: !input.trim() || isLoading ? 'var(--text2)' : '#ffffff',
             border: 'none',
             borderRadius: 6,
             cursor: !input.trim() || isLoading ? 'not-allowed' : 'pointer',
@@ -385,7 +385,7 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
             flexShrink: 0,
           }}
           onMouseEnter={(e) => { if (input.trim() && !isLoading) e.currentTarget.style.background = '#27272a'; }}
-          onMouseLeave={(e) => { if (input.trim() && !isLoading) e.currentTarget.style.background = '#18181b'; }}
+          onMouseLeave={(e) => { if (input.trim() && !isLoading) e.currentTarget.style.background = '#ffffff'; }}
         >
           Send
         </button>

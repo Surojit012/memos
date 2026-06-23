@@ -179,7 +179,7 @@ export function PlaygroundShell({
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
-        background: '#fafafa',
+        background: 'var(--bg)',
         fontFamily: 'Inter, system-ui, sans-serif',
       }}
     >

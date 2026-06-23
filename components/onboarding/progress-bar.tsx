@@ -14,7 +14,7 @@ export function ProgressBar({ currentStep, totalSteps }: ProgressBarProps) {
         style={{
           width: '100%',
           height: 4,
-          background: '#e4e4e7',
+          background: 'var(--border)',
           borderRadius: 2,
           overflow: 'hidden',
         }}
@@ -23,7 +23,7 @@ export function ProgressBar({ currentStep, totalSteps }: ProgressBarProps) {
           style={{
             width: `${percent}%`,
             height: '100%',
-            background: '#18181b',
+            background: '#ffffff',
             borderRadius: 2,
           }}
         />

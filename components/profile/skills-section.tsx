@@ -74,7 +74,7 @@ export function SkillsSection({ skills, agentId, skillsLoading, skillsError }: S
     return (
       <StatsCard title="My Skills">
         <div style={{ textAlign: 'center', padding: '32px 0' }}>
-          <p style={{ fontSize: 15, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b', margin: '0 0 6px' }}>
+          <p style={{ fontSize: 15, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', margin: '0 0 6px' }}>
             No skills published yet.
           </p>
           <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', margin: '0 0 16px' }}>
@@ -85,7 +85,7 @@ export function SkillsSection({ skills, agentId, skillsLoading, skillsError }: S
             style={{
               fontSize: 13,
               fontFamily: 'Inter, system-ui, sans-serif',
-              color: '#18181b',
+              color: '#ffffff',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -110,22 +110,22 @@ export function SkillsSection({ skills, agentId, skillsLoading, skillsError }: S
               border: '1px solid #e4e4e7',
               borderRadius: 8,
               padding: 14,
-              background: '#ffffff',
+              background: 'var(--surface)',
               display: 'flex',
               flexDirection: 'column',
             }}
           >
-            <span style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>
+            <span style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
               {skill.name}
             </span>
-            <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', marginTop: 4, lineHeight: 1.4 }}>
+            <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', marginTop: 4, lineHeight: 1.4 }}>
               {skill.description}
             </span>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10 }}>
-              <span style={{ fontSize: 11, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', background: '#f4f4f5', borderRadius: 4, padding: '2px 6px' }}>
+              <span style={{ fontSize: 11, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', background: '#f4f4f5', borderRadius: 4, padding: '2px 6px' }}>
                 {skill.category}
               </span>
-              <span style={{ fontSize: 11, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: skill.price === 0 ? '#16a34a' : '#71717a', marginLeft: 'auto' }}>
+              <span style={{ fontSize: 11, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: skill.price === 0 ? '#16a34a' : 'var(--text2)', marginLeft: 'auto' }}>
                 {skill.price === 0 ? 'Free' : `${skill.price} ETH`}
               </span>
             </div>

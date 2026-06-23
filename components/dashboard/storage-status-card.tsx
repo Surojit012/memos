@@ -31,7 +31,7 @@ export function StorageStatusCard({ status, isLoading, error }: StorageStatusCar
         {/* Status Indicator Row */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: dotColor, marginRight: 6 }} />
-          <span style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#18181b' }}>
+          <span style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
             {statusLabel}
           </span>
         </div>
@@ -40,7 +40,7 @@ export function StorageStatusCard({ status, isLoading, error }: StorageStatusCar
 
         {/* WAL Queue Row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>Write queue</span>
+          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Write queue</span>
           <span
             style={{
               fontSize: 13,
@@ -57,8 +57,8 @@ export function StorageStatusCard({ status, isLoading, error }: StorageStatusCar
 
         {/* Last Sync Row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>Last sync</span>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b' }}>
+          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Last sync</span>
+          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff' }}>
             {status?.lastSync ? timeAgo(status.lastSync) : '—'}
           </span>
         </div>

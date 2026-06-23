@@ -63,7 +63,7 @@ export function StepTest({ agentId, apiKey }: StepTestProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <h2 style={{ fontSize: 24, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#18181b', margin: '0 0 8px' }}>
+        <h2 style={{ fontSize: 24, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#ffffff', margin: '0 0 8px' }}>
           Test your connection
         </h2>
         <p style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', margin: 0 }}>
@@ -74,7 +74,7 @@ export function StepTest({ agentId, apiKey }: StepTestProps) {
       {/* Idle state */}
       {testStatus === 'idle' && (
         <>
-          <div style={{ background: '#f4f4f5', borderRadius: 6, padding: 12, fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', lineHeight: 1.5 }}>
+          <div style={{ background: '#f4f4f5', borderRadius: 6, padding: 12, fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', lineHeight: 1.5 }}>
             This will store a test memory in your agent to verify the connection.
           </div>
           <button
@@ -86,8 +86,8 @@ export function StepTest({ agentId, apiKey }: StepTestProps) {
               fontSize: 14,
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: 500,
-              color: '#ffffff',
-              background: '#18181b',
+              color: 'var(--surface)',
+              background: '#ffffff',
               border: 'none',
               borderRadius: 6,
               cursor: 'pointer',
@@ -109,8 +109,8 @@ export function StepTest({ agentId, apiKey }: StepTestProps) {
               fontSize: 14,
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: 500,
-              color: '#ffffff',
-              background: '#71717a',
+              color: 'var(--surface)',
+              background: 'var(--text2)',
               border: 'none',
               borderRadius: 6,
               cursor: 'not-allowed',
@@ -162,7 +162,7 @@ export function StepTest({ agentId, apiKey }: StepTestProps) {
                 style={{
                   fontSize: 13,
                   fontFamily: 'Inter, system-ui, sans-serif',
-                  color: '#71717a',
+                  color: 'var(--text2)',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
@@ -177,7 +177,7 @@ export function StepTest({ agentId, apiKey }: StepTestProps) {
                     fontFamily: 'JetBrains Mono, Fira Code, monospace',
                     fontSize: 12,
                     lineHeight: 1.6,
-                    color: '#18181b',
+                    color: '#ffffff',
                     background: '#f4f4f5',
                     border: '1px solid #e4e4e7',
                     borderRadius: 6,
@@ -201,8 +201,8 @@ export function StepTest({ agentId, apiKey }: StepTestProps) {
               fontSize: 13,
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: 500,
-              color: '#18181b',
-              background: '#ffffff',
+              color: '#ffffff',
+              background: 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: 6,
               padding: '6px 14px',
@@ -227,7 +227,7 @@ export function StepTest({ agentId, apiKey }: StepTestProps) {
                 {testError}
               </p>
             )}
-            <ul style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
+            <ul style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
               <li>Check that your API key is correct</li>
               <li>Make sure the memos service is reachable</li>
               <li>Try refreshing and logging in again</li>
@@ -240,8 +240,8 @@ export function StepTest({ agentId, apiKey }: StepTestProps) {
               fontSize: 13,
               fontFamily: 'Inter, system-ui, sans-serif',
               fontWeight: 500,
-              color: '#18181b',
-              background: '#ffffff',
+              color: '#ffffff',
+              background: 'var(--surface)',
               border: '1px solid #e4e4e7',
               borderRadius: 6,
               padding: '8px 14px',

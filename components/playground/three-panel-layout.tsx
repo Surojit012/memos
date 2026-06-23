@@ -24,7 +24,7 @@ const panelHeaderStyle: React.CSSProperties = {
 const panelStyle: React.CSSProperties = {
   border: '1px solid #e4e4e7',
   borderRadius: 8,
-  background: '#ffffff',
+  background: 'var(--surface)',
   padding: 16,
   overflowY: 'auto',
   minHeight: 500,
@@ -44,7 +44,7 @@ export function ThreePanelLayout({
   const toggleButtonStyle: React.CSSProperties = {
     fontSize: 12,
     fontFamily: 'Inter, system-ui, sans-serif',
-    color: '#71717a',
+    color: 'var(--text2)',
     background: '#f4f4f5',
     border: '1px solid #e4e4e7',
     borderRadius: 6,

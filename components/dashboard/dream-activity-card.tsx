@@ -56,7 +56,7 @@ export function DreamActivityCard({ agentId, apiKey, semanticCount, isLoading, e
         {/* Semantic memory count */}
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b' }}>Semantic memories:</span>
+            <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff' }}>Semantic memories:</span>
             <span
               style={{
                 fontSize: 13,
@@ -82,7 +82,7 @@ export function DreamActivityCard({ agentId, apiKey, semanticCount, isLoading, e
             Dream complete — {dreamResult.newMemoriesCreated} new memories created
           </div>
         ) : dreamLoading ? (
-          <div style={{ padding: '10px 14px', border: '1px solid #e4e4e7', borderRadius: 6, fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#18181b', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ padding: '10px 14px', border: '1px solid #e4e4e7', borderRadius: 6, fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             Running dream cycle
             <span className="dot-1" style={{ marginLeft: 2 }}>.</span>
             <span className="dot-2">.</span>
@@ -98,15 +98,15 @@ export function DreamActivityCard({ agentId, apiKey, semanticCount, isLoading, e
                 fontSize: 13,
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontWeight: 500,
-                color: '#18181b',
-                background: '#ffffff',
+                color: '#ffffff',
+                background: 'var(--surface)',
                 border: '1px solid #e4e4e7',
                 borderRadius: 6,
                 cursor: 'pointer',
                 transition: 'background 150ms ease',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = '#ffffff'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
             >
               Trigger Dream
             </button>
