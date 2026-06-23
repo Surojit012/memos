@@ -12,8 +12,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/hooks/use-auth';
-import { LandingNavbar } from '@/components/landing/landing-navbar';
-import { PricingSection } from '@/components/landing/pricing-section';
 import { BuiltOn0GSection } from '@/components/ui/built-on-0g-section';
 import { DifferentiatorSection } from '@/components/ui/differentiator-section';
 import { HowItWorksSection } from '@/components/ui/how-it-works-section';
@@ -60,24 +58,6 @@ function Nav({ visible }: { visible: boolean }) {
             memos
           </a>
           <ul className="hidden sm:flex gap-8 list-none">
-            <li>
-              <a
-                href="/playground"
-                className="text-sm text-neutral-400 no-underline hover:text-neutral-100 transition-colors
-                  focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4a7a62] focus-visible:rounded"
-              >
-                Playground
-              </a>
-            </li>
-            <li>
-              <a
-                href="/dashboard"
-                className="text-sm text-neutral-400 no-underline hover:text-neutral-100 transition-colors
-                  focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4a7a62] focus-visible:rounded"
-              >
-                Dashboard
-              </a>
-            </li>
             <li>
               <a
                 href="/profile"
@@ -132,7 +112,6 @@ export default function Home() {
         <MemosPreloader onComplete={() => setPreloaderDone(true)} />
       )}
 
-      <LandingNavbar />
       <Nav visible={preloaderDone && !isAtBottom} />
 
       <main style={{ paddingTop: 60 }}>
@@ -152,10 +131,10 @@ export default function Home() {
                 cursor: 'pointer',
               }}
             >
-              Try it free — no signup
+              Login
             </button>
             <button
-              onClick={() => auth.isAuthenticated ? router.push('/dashboard') : auth.login()}
+              onClick={() => router.push('/playground')}
               style={{
                 backgroundColor: 'white',
                 color: '#18181b',
@@ -167,16 +146,18 @@ export default function Home() {
                 cursor: 'pointer',
               }}
             >
-              Get your API key
+              Get Started
             </button>
           </div>
         </MemoryPaths>
-        <ProblemComparisonSlider />
+
+        <div className="border-t border-neutral-900">
+          <ProblemComparisonSlider />
+        </div>
         <HowItWorksSection />
         <DifferentiatorSection />
         <BuiltOn0GSection />
         <FaqSection />
-        <PricingSection onGetStarted={handleGetStarted} />
       </main>
       <FooterSection />
     </>

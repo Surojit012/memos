@@ -80,13 +80,13 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
   ];
 
   return (
-    <section style={{ padding: '80px 24px', background: 'var(--bg)' }}>
+    <section style={{ padding: '80px 24px', background: '#fafafa' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         {/* Heading */}
-        <h2 style={{ fontSize: 32, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#ffffff', textAlign: 'center', margin: 0 }}>
+        <h2 style={{ fontSize: 32, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 600, color: '#18181b', textAlign: 'center', margin: 0 }}>
           Simple pricing
         </h2>
-        <p style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', textAlign: 'center', marginTop: 8, marginBottom: 0 }}>
+        <p style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a', textAlign: 'center', marginTop: 8, marginBottom: 0 }}>
           Start free. Scale as your agents grow.
         </p>
 
@@ -99,7 +99,7 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
                 border: card.highlighted ? '2px solid #18181b' : '1px solid #e4e4e7',
                 borderRadius: 8,
                 padding: '28px 24px',
-                background: 'var(--surface)',
+                background: '#ffffff',
                 boxShadow: card.highlighted ? '0 4px 6px -1px rgba(0,0,0,0.07)' : 'none',
                 display: 'flex',
                 flexDirection: 'column',
@@ -112,7 +112,7 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
                   fontFamily: 'Inter, system-ui, sans-serif',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
-                  color: card.highlighted ? '#ffffff' : 'var(--text2)',
+                  color: card.highlighted ? '#18181b' : '#71717a',
                   fontWeight: card.highlighted ? 600 : 400,
                 }}>
                   {card.label}
@@ -122,8 +122,8 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
                     fontSize: 11,
                     fontFamily: 'Inter, system-ui, sans-serif',
                     fontWeight: 500,
-                    color: 'var(--surface)',
-                    background: '#ffffff',
+                    color: '#ffffff',
+                    background: '#18181b',
                     borderRadius: 99,
                     padding: '3px 8px',
                   }}>
@@ -134,10 +134,10 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
 
               {/* Price */}
               <div style={{ marginTop: 8 }}>
-                <span style={{ fontSize: 40, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 700, color: '#ffffff' }}>
+                <span style={{ fontSize: 40, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 700, color: '#18181b' }}>
                   {card.price}
                 </span>
-                <span style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>
+                <span style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', color: '#71717a' }}>
                   {card.period}
                 </span>
               </div>
@@ -156,7 +156,7 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
                       {f.included ? '✓' : '✗'}
                     </span>
                     <span style={{
-                      color: f.included ? '#ffffff' : '#a1a1aa',
+                      color: f.included ? '#18181b' : '#a1a1aa',
                       textDecoration: f.included ? 'none' : 'line-through',
                     }}>
                       {f.text}
@@ -176,8 +176,8 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
                   fontSize: 14,
                   fontFamily: 'Inter, system-ui, sans-serif',
                   fontWeight: 500,
-                  color: card.highlighted ? 'var(--surface)' : '#ffffff',
-                  background: card.highlighted ? '#ffffff' : 'var(--surface)',
+                  color: card.highlighted ? '#ffffff' : '#18181b',
+                  background: card.highlighted ? '#18181b' : '#ffffff',
                   border: card.highlighted ? 'none' : '1px solid #e4e4e7',
                   borderRadius: 6,
                   cursor: 'pointer',
