@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: memos-ai
-Version: 0.1.0
+Version: 0.2.0
 Summary: Python SDK for memos — persistent brain framework for AI agents
 License-Expression: MIT
 Project-URL: Homepage, https://memos.io
@@ -113,7 +113,7 @@ with MemosClient(api_key="...", agent_id="...") as client:
 ```
 
 ## Requirements
-Python 3.8+
+Python 3.11+
 No additional dependencies beyond `httpx`.
 
 ## License

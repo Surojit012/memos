@@ -228,13 +228,13 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
       {/* Banner */}
       <div
         style={{
-          border: '1px solid #d97706',
-          background: '#fffbeb',
+          border: '1px solid rgba(166,123,115,0.4)',
+          background: 'rgba(166,123,115,0.08)',
           borderRadius: 6,
           padding: 10,
           fontSize: 13,
-          fontFamily: 'Inter, system-ui, sans-serif',
-          color: '#92400e',
+          fontFamily: 'var(--pg-sans)',
+          color: '#A67B73',
         }}
       >
         API Explorer makes real requests.{' '}
@@ -243,7 +243,7 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
 
       {/* Endpoint selection */}
       <div>
-        <label style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}>
+        <label style={{ display: 'block', fontSize: 13, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)', marginBottom: 4 }}>
           Endpoint
         </label>
         <select
@@ -251,11 +251,11 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
           onChange={handleEndpointChange}
           style={{
             width: '100%',
-            fontFamily: 'JetBrains Mono, Fira Code, monospace',
+            fontFamily: 'var(--pg-mono)',
             fontSize: 13,
-            color: '#ffffff',
-            background: 'var(--surface)',
-            border: '1px solid #e4e4e7',
+            color: 'var(--pg-text)',
+            background: 'transparent',
+            border: '1px solid var(--pg-border)',
             borderRadius: 6,
             padding: '8px 10px',
             outline: 'none',
@@ -268,7 +268,7 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
           ))}
         </select>
         {processedUrl !== rawPath && (
-          <div style={{ fontSize: 12, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: 'var(--text2)', marginTop: 4 }}>
+          <div style={{ fontSize: 12, fontFamily: 'var(--pg-mono)', color: 'var(--pg-text2)', marginTop: 4 }}>
             → {method} {processedUrl}
           </div>
         )}
@@ -277,15 +277,15 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
       {/* Headers */}
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-          <label style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
+          <label style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)' }}>
             Headers
           </label>
           <button
             onClick={addHeader}
             style={{
               fontSize: 12,
-              fontFamily: 'Inter, system-ui, sans-serif',
-              color: 'var(--text2)',
+              fontFamily: 'var(--pg-sans)',
+              color: 'var(--pg-text2)',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -306,11 +306,11 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
                 placeholder="Key"
                 style={{
                   flex: 1,
-                  fontFamily: 'JetBrains Mono, Fira Code, monospace',
+                  fontFamily: 'var(--pg-mono)',
                   fontSize: 12,
-                  color: h.isStatic ? 'var(--text2)' : '#ffffff',
-                  background: h.isStatic ? '#f4f4f5' : 'var(--surface)',
-                  border: '1px solid #e4e4e7',
+                  color: h.isStatic ? 'var(--pg-text2)' : 'var(--pg-text)',
+                  background: h.isStatic ? 'rgba(232,228,220,0.04)' : 'transparent',
+                  border: '1px solid var(--pg-border)',
                   borderRadius: 4,
                   padding: '6px 8px',
                   outline: 'none',
@@ -323,11 +323,11 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
                 placeholder="Value"
                 style={{
                   flex: 1,
-                  fontFamily: 'JetBrains Mono, Fira Code, monospace',
+                  fontFamily: 'var(--pg-mono)',
                   fontSize: 12,
-                  color: '#ffffff',
-                  background: 'var(--surface)',
-                  border: '1px solid #e4e4e7',
+                  color: 'var(--pg-text)',
+                  background: 'transparent',
+                  border: '1px solid var(--pg-border)',
                   borderRadius: 4,
                   padding: '6px 8px',
                   outline: 'none',
@@ -338,7 +338,7 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
                 disabled={h.isStatic}
                 style={{
                   fontSize: 16,
-                  color: h.isStatic ? 'var(--border)' : 'var(--text2)',
+                  color: h.isStatic ? 'var(--pg-border)' : 'var(--pg-text2)',
                   background: 'none',
                   border: 'none',
                   cursor: h.isStatic ? 'not-allowed' : 'pointer',
@@ -355,7 +355,7 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
 
       {/* Body */}
       <div>
-        <label style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: needsBody ? '#ffffff' : '#a1a1aa', marginBottom: 4 }}>
+        <label style={{ display: 'block', fontSize: 13, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: needsBody ? 'var(--pg-text)' : 'var(--pg-text3)', marginBottom: 4 }}>
           Body
         </label>
         <textarea
@@ -366,11 +366,11 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
           placeholder={needsBody ? 'Enter JSON body...' : 'Body not required for GET/DELETE requests.'}
           style={{
             width: '100%',
-            fontFamily: 'JetBrains Mono, Fira Code, monospace',
+            fontFamily: 'var(--pg-mono)',
             fontSize: 13,
-            color: needsBody ? '#ffffff' : '#a1a1aa',
-            background: needsBody ? 'var(--surface)' : '#f4f4f5',
-            border: '1px solid #e4e4e7',
+            color: needsBody ? 'var(--pg-text)' : 'var(--pg-text3)',
+            background: needsBody ? 'transparent' : 'rgba(232,228,220,0.04)',
+            border: '1px solid var(--pg-border)',
             borderRadius: 6,
             padding: '8px 10px',
             resize: 'vertical',
@@ -382,9 +382,9 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
           <div
             style={{
               fontSize: 12,
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--pg-sans)',
               fontWeight: 500,
-              color: isValidJson ? '#16a34a' : '#dc2626',
+              color: isValidJson ? '#7A9E8E' : '#C67867',
               marginTop: 4,
             }}
           >
@@ -401,10 +401,10 @@ export function ApiExplorerTab({ isLive, agentId, apiKey, onRequestUpdate, onRes
           width: '100%',
           height: 40,
           fontSize: 14,
-          fontFamily: 'Inter, system-ui, sans-serif',
+          fontFamily: 'var(--pg-sans)',
           fontWeight: 500,
-          color: 'var(--surface)',
-          background: sending || (needsBody && !isValidJson) ? 'var(--text2)' : '#ffffff',
+          color: 'var(--pg-bg)',
+          background: sending || (needsBody && !isValidJson) ? 'var(--pg-text2)' : 'var(--pg-text)',
           border: 'none',
           borderRadius: 6,
           cursor: sending || (needsBody && !isValidJson) ? 'not-allowed' : 'pointer',

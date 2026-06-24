@@ -13,43 +13,36 @@ interface RequestPreviewPanelProps {
   apiKey: string | null;
 }
 
-function highlightJson(json: string): string {
-  return json
-    .replace(/"([^"]+)"(?=\s*:)/g, '<span style="color:#2563eb">"$1"</span>')
-    .replace(/:\s*"([^"]*)"/g, ': <span style="color:#16a34a">"$1"</span>')
-    .replace(/:\s*(\d+\.?\d*)/g, ': <span style="color:#d97706">$1</span>')
-    .replace(/:\s*(true|false|null)/g, ': <span style="color:#9333ea">$1</span>');
-}
+/* Warm palette: keyword = cyan, string = sage, number = rose, label = smoke. */
+const COL = { kw: '#74989a', str: '#7A9E8E', num: '#A67B73', dim: '#8A9490' };
 
 function highlightCurl(code: string): string {
   return code
-    .replace(/^(curl)/gm, '<span style="color:#9333ea">curl</span>')
-    .replace(/(-X\s+)(GET|POST|PUT|DELETE|PATCH)/g, '<span style="color:#9333ea">$1</span><span style="color:#d97706">$2</span>')
-    .replace(/(-H\s+)/g, '<span style="color:#9333ea">$1</span>')
-    .replace(/(-d\s+)/g, '<span style="color:#9333ea">$1</span>')
-    .replace(/"([^"]*)"/g, '<span style="color:#16a34a">"$1"</span>');
+    .replace(/^(curl)/gm, `<span style="color:${COL.kw}">curl</span>`)
+    .replace(/(-X\s+)(GET|POST|PUT|DELETE|PATCH)/g, `<span style="color:${COL.dim}">$1</span><span style="color:${COL.num}">$2</span>`)
+    .replace(/(-H\s+)/g, `<span style="color:${COL.dim}">$1</span>`)
+    .replace(/(-d\s+)/g, `<span style="color:${COL.dim}">$1</span>`)
+    .replace(/"([^"]*)"/g, `<span style="color:${COL.str}">"$1"</span>`);
 }
 
 function highlightPython(code: string): string {
   const keywords = ['from', 'import', 'print', 'client'];
-  let result = code.replace(/"([^"]*)"/g, '<span style="color:#16a34a">"$1"</span>');
+  let result = code.replace(/"([^"]*)"/g, `<span style="color:${COL.str}">"$1"</span>`);
   keywords.forEach((kw) => {
-    const regex = new RegExp(`\\b(${kw})\\b`, 'g');
-    result = result.replace(regex, '<span style="color:#9333ea">$1</span>');
+    result = result.replace(new RegExp(`\\b(${kw})\\b`, 'g'), `<span style="color:${COL.kw}">$1</span>`);
   });
-  result = result.replace(/(\d+\.?\d*)/g, '<span style="color:#d97706">$1</span>');
+  result = result.replace(/(\d+\.?\d*)/g, `<span style="color:${COL.num}">$1</span>`);
   return result;
 }
 
 function highlightTs(code: string): string {
   const keywords = ['const', 'await', 'fetch', 'method', 'headers', 'body'];
-  let result = code.replace(/'([^']*)'/g, '<span style="color:#16a34a">\'$1\'</span>');
-  result = result.replace(/"([^"]*)"/g, '<span style="color:#16a34a">"$1"</span>');
+  let result = code.replace(/'([^']*)'/g, `<span style="color:${COL.str}">'$1'</span>`);
+  result = result.replace(/"([^"]*)"/g, `<span style="color:${COL.str}">"$1"</span>`);
   keywords.forEach((kw) => {
-    const regex = new RegExp(`\\b(${kw})\\b`, 'g');
-    result = result.replace(regex, '<span style="color:#9333ea">$1</span>');
+    result = result.replace(new RegExp(`\\b(${kw})\\b`, 'g'), `<span style="color:${COL.kw}">$1</span>`);
   });
-  result = result.replace(/(?<![#"])(\d+\.?\d*)(?!")/g, '<span style="color:#d97706">$1</span>');
+  result = result.replace(/(?<![#"])(\d+\.?\d*)(?!")/g, `<span style="color:${COL.num}">$1</span>`);
   return result;
 }
 
@@ -176,65 +169,81 @@ export function RequestPreviewPanel(props: RequestPreviewPanelProps) {
 
   return (
     <div>
-      {/* Tab switcher */}
-      <div style={{ display: 'flex', gap: 4, marginBottom: 12 }}>
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            style={{
-              fontSize: 12,
-              fontFamily: 'Inter, system-ui, sans-serif',
-              fontWeight: activeTab === tab.id ? 500 : 400,
-              color: '#ffffff',
-              background: activeTab === tab.id ? '#f4f4f5' : 'transparent',
-              border: 'none',
-              borderRadius: 6,
-              padding: '4px 10px',
-              cursor: 'pointer',
-              transition: 'background 150ms ease',
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
+      {/* Language toggle */}
+      <div
+        role="tablist"
+        style={{
+          display: 'inline-flex',
+          gap: 0,
+          marginBottom: 14,
+          border: '1px solid var(--pg-border)',
+          borderRadius: 999,
+          padding: 3,
+          background: 'rgba(232,228,220,0.02)',
+        }}
+      >
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              role="tab"
+              aria-selected={isActive}
+              type="button"
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                fontSize: 11,
+                fontFamily: 'var(--pg-mono)',
+                letterSpacing: '0.04em',
+                color: isActive ? 'var(--pg-text)' : 'var(--pg-text2)',
+                background: isActive ? 'rgba(94,125,126,0.18)' : 'transparent',
+                border: 'none',
+                borderRadius: 999,
+                padding: '5px 12px',
+                cursor: 'pointer',
+                transition: 'all 140ms ease',
+              }}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Code block */}
       <div style={{ position: 'relative' }}>
         <button
+          type="button"
           onClick={handleCopy}
           style={{
             position: 'absolute',
-            top: 8,
-            right: 8,
+            top: 10,
+            right: 10,
             fontSize: 11,
-            fontFamily: 'Inter, system-ui, sans-serif',
-            color: 'var(--text2)',
-            background: '#f4f4f5',
-            border: '1px solid #e4e4e7',
+            fontFamily: 'var(--pg-sans)',
+            color: copied ? 'var(--pg-green)' : 'var(--pg-text2)',
+            background: 'rgba(15,18,16,0.6)',
+            border: '1px solid var(--pg-border)',
             borderRadius: 4,
-            padding: '3px 8px',
+            padding: '3px 10px',
             cursor: 'pointer',
-            transition: 'background 150ms ease',
+            transition: 'color 140ms ease, border-color 140ms ease',
             zIndex: 1,
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--pg-text3)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--pg-border)'; }}
         >
-          {copied ? 'Copied!' : 'Copy'}
+          {copied ? '✓ Copied' : 'Copy'}
         </button>
         <pre
           style={{
-            fontFamily: 'JetBrains Mono, Fira Code, monospace',
+            fontFamily: 'var(--pg-mono)',
             fontSize: 12,
-            lineHeight: 1.6,
-            color: '#ffffff',
-            background: 'var(--bg)',
-            border: '1px solid #e4e4e7',
-            borderRadius: 6,
-            padding: 12,
-            paddingTop: 14,
+            lineHeight: 1.65,
+            color: 'var(--pg-text)',
+            background: 'rgba(232,228,220,0.02)',
+            border: '1px solid var(--pg-border)',
+            borderRadius: 8,
+            padding: '14px 14px 14px 14px',
             overflowX: 'auto',
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-word',

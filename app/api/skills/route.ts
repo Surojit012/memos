@@ -4,7 +4,7 @@ import { createSkill, getAllSkills, getSkillById, removeSkillFromStore, upsertHy
 import { upsertSkillManifestRecord } from '@/lib/0g-manifest'
 import { uploadToStorage, getExplorerUrl } from '@/lib/0g-storage'
 import { ensureHydrated } from '@/lib/hydration'
-import { validatePlatformSecret } from '@/lib/auth'
+import { validateAgentApiKeyAsync, validatePlatformSecret, ensureAgentInStore } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,9 +21,14 @@ export async function POST(req: NextRequest) {
     await ensureHydrated()
     const body = await req.json()
 
-    // ── Security: Platform secret check ──
-    if (!validatePlatformSecret(req)) {
-      return NextResponse.json({ error: 'Unauthorized — Platform secret missing or invalid.' }, { status: 401 })
+    if (body.agentId) await ensureAgentInStore(body.agentId)
+
+    // ── Security: accept EITHER a valid agent API key (tied to body.agentId) OR the platform secret ──
+    const apiKey = req.headers.get('Authorization')?.replace('Bearer ', '')
+    const hasValidApiKey = apiKey && body.agentId && await validateAgentApiKeyAsync(body.agentId, apiKey)
+    const hasValidPlatformSecret = validatePlatformSecret(req)
+    if (!hasValidApiKey && !hasValidPlatformSecret) {
+      return NextResponse.json({ error: 'Unauthorized — provide a valid Agent API Key or platform secret.' }, { status: 401 })
     }
 
     if (!body.name || !body.prompt || body.price === undefined)
@@ -32,6 +37,23 @@ export async function POST(req: NextRequest) {
     // Paid skills require a publisher address for payout
     if (parseFloat(body.price) > 0 && !ethers.isAddress(body.publisherAddress || '')) {
       return NextResponse.json({ error: 'publisherAddress is required for paid skills' }, { status: 400 })
+    }
+
+    // ── Anti-spoofing: bind the skill's publisher to the AUTHENTICATED agent ──
+    // When the caller authed with an agent API key, they may only publish AS
+    // that agent — never attribute the skill to someone else's agentId. Only
+    // platform-secret callers (internal seeding/SDK) may set an arbitrary
+    // publisherAgentId.
+    if (hasValidApiKey) {
+      if (body.publisherAgentId && body.publisherAgentId !== body.agentId) {
+        return NextResponse.json(
+          { error: 'publisherAgentId must match your authenticated agentId.' },
+          { status: 403 }
+        )
+      }
+      body.publisherAgentId = body.agentId
+    } else if (!body.publisherAgentId) {
+      return NextResponse.json({ error: 'publisherAgentId required' }, { status: 400 })
     }
 
     // Step 1 — create in local store instantly
@@ -70,9 +92,36 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: 'skillId is required to update a skill.' }, { status: 400 })
     }
 
+    if (body.agentId) await ensureAgentInStore(body.agentId)
+
+    // ── Security: caller must present a valid agent API key OR the platform
+    // secret. Without this, ANYONE could rewrite any skill's prompt, price, or
+    // payout address. (This check was previously missing entirely.) ──
+    const apiKey = req.headers.get('Authorization')?.replace('Bearer ', '')
+    const hasValidApiKey = apiKey && body.agentId && await validateAgentApiKeyAsync(body.agentId, apiKey)
+    const hasValidPlatformSecret = validatePlatformSecret(req)
+    if (!hasValidApiKey && !hasValidPlatformSecret) {
+      return NextResponse.json({ error: 'Unauthorized — provide a valid Agent API Key or platform secret.' }, { status: 401 })
+    }
+
     const existing = getSkillById(body.skillId)
     if (!existing) {
       return NextResponse.json({ error: `Skill [${body.skillId}] not found.` }, { status: 404 })
+    }
+
+    // ── Ownership: an agent-key caller may only edit skills they published.
+    // Platform-secret callers (internal) may edit any skill. ──
+    if (hasValidApiKey && existing.publisherAgentId !== body.agentId) {
+      return NextResponse.json({ error: 'Forbidden — you can only update skills you published.' }, { status: 403 })
+    }
+
+    // ── Payout integrity (#8): if this update makes the skill paid, it MUST
+    // have a valid publisher payout address — otherwise payments go nowhere. ──
+    const nextPrice = body.price !== undefined ? body.price : existing.price
+    const nextPublisherAddress =
+      body.publisherAddress !== undefined ? body.publisherAddress : existing.publisherAddress
+    if (parseFloat(nextPrice) > 0 && !ethers.isAddress(nextPublisherAddress || '')) {
+      return NextResponse.json({ error: 'A valid publisherAddress is required for paid skills.' }, { status: 400 })
     }
 
     // Preserve the old version's 0G hash before overwriting
@@ -84,6 +133,7 @@ export async function PUT(req: NextRequest) {
     if (body.description) existing.description = body.description
     if (body.prompt) existing.prompt = body.prompt
     if (body.price !== undefined) existing.price = body.price
+    if (body.publisherAddress !== undefined) existing.publisherAddress = body.publisherAddress
     if (body.inputLabel) existing.inputLabel = body.inputLabel
     if (body.outputLabel) existing.outputLabel = body.outputLabel
     if (body.tags) existing.tags = body.tags

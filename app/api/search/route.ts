@@ -2,17 +2,25 @@ import { NextRequest, NextResponse } from 'next/server'
 import { embedTextWith0GCompute } from '@/lib/0g-compute'
 import { getMemoriesMissingEmbeddings, searchMemories, searchMemoriesByEmbedding, updateMemoryEmbedding } from '@/lib/store'
 import { ensureHydrated } from '@/lib/hydration'
-import { validatePlatformSecret } from '@/lib/auth'
+import { validateAgentApiKeyAsync, validatePlatformSecret, ensureAgentInStore } from '@/lib/auth'
+import { rateLimit } from '@/lib/rate-limit'
 
 export async function POST(req: NextRequest) {
   try {
+    const limited = rateLimit(req, { maxRequests: 30, windowMs: 60_000 })
+    if (limited) return limited
     await ensureHydrated()
     const { agentId, query } = await req.json()
     if (!agentId || !query?.trim()) return NextResponse.json({ error: 'agentId and query required' }, { status: 400 })
 
-    // ── Security: Platform secret check ──
-    if (!validatePlatformSecret(req)) {
-      return NextResponse.json({ error: 'Unauthorized — Platform secret missing or invalid.' }, { status: 401 })
+    await ensureAgentInStore(agentId)
+
+    // ── Security: accept EITHER a valid agent API key OR the platform secret ──
+    const apiKey = req.headers.get('Authorization')?.replace('Bearer ', '')
+    const hasValidApiKey = apiKey && await validateAgentApiKeyAsync(agentId, apiKey)
+    const hasValidPlatformSecret = validatePlatformSecret(req)
+    if (!hasValidApiKey && !hasValidPlatformSecret) {
+      return NextResponse.json({ error: 'Unauthorized — provide a valid Agent API Key or platform secret.' }, { status: 401 })
     }
 
     // Try semantic search via 0G Compute embeddings first

@@ -12,11 +12,11 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createMemory, getAgent, updateMemoryHash } from '@/lib/store'
+import { createMemory, updateMemoryHash } from '@/lib/store'
 import { upsertHydratedMemory } from '@/lib/store'
 import { uploadToStorage, getExplorerUrl } from '@/lib/0g-storage'
 import { upsertMemoryManifestRecord } from '@/lib/0g-manifest'
-import { ensureHydrated } from '@/lib/hydration'
+import { ensureHydrated, getAgentOrRestore } from '@/lib/hydration'
 import { validateAgentApiKey } from '@/lib/auth'
 import { recordAudit } from '@/lib/audit'
 
@@ -31,7 +31,7 @@ export async function POST(
   try {
     await ensureHydrated()
     const agentId = params.agentId
-    const agent = getAgent(agentId)
+    const agent = await getAgentOrRestore(agentId)
 
     if (!agent) {
       return NextResponse.json({ error: `Agent [${agentId}] not found.` }, { status: 404 })

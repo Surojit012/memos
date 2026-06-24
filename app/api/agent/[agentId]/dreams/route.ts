@@ -17,13 +17,13 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { getAgent, getMemories, createMemory, updateMemoryHash } from '@/lib/store'
+import { getMemories, createMemory, updateMemoryHash } from '@/lib/store'
 import { upsertHydratedMemory } from '@/lib/store'
 import { consolidateMemories } from '@/lib/intelligence/consolidation'
 import { calculateDecay } from '@/lib/intelligence/decay'
 import { uploadToStorage } from '@/lib/0g-storage'
 import { upsertMemoryManifestRecord } from '@/lib/0g-manifest'
-import { ensureHydrated } from '@/lib/hydration'
+import { ensureHydrated, getAgentOrRestore } from '@/lib/hydration'
 import { validateAgentApiKey, validatePlatformSecret } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
@@ -45,7 +45,7 @@ export async function POST(
   try {
     await ensureHydrated()
     const agentId = params.agentId
-    const agent = getAgent(agentId)
+    const agent = await getAgentOrRestore(agentId)
 
     if (!agent) {
       return NextResponse.json({ error: `Agent [${agentId}] not found.` }, { status: 404 })
@@ -146,17 +146,28 @@ export async function POST(
 
     console.log(`  ✅ Dream cycle complete: ${consolidatedFacts.length} facts consolidated, ${decayedCount} memories decayed (${durationMs}ms)\n`)
 
+    // Build a diagnostic message so the user understands WHY a cycle produced
+    // nothing — the two no-op reasons (too few episodic / no pattern) are very
+    // different and the user can't tell them apart otherwise.
+    let message: string
+    if (consolidatedFacts.length > 0) {
+      message = `Dream cycle complete. ${consolidatedFacts.length} new semantic facts extracted from ${episodicMemories.length} episodic memories.`
+    } else if (episodicMemories.length < 3) {
+      message = `Dream cycle complete. Consolidation needs at least 3 episodic memories — you have ${episodicMemories.length}. Store more memories of type "episodic" (specific events), then run again.`
+    } else {
+      message = `Dream cycle complete. Analyzed ${episodicMemories.length} episodic memories but found no shared pattern to generalize. ${decayedCount} memories decayed. Patterns emerge when several memories point to the same preference or behavior.`
+    }
+
     return NextResponse.json({
       success: true,
       agentId,
       consolidated: consolidatedFacts,
       consolidatedCount: consolidatedFacts.length,
+      episodicCount: episodicMemories.length,
       decayedCount,
       totalMemoriesProcessed: allMemories.length,
       durationMs,
-      message: consolidatedFacts.length > 0
-        ? `Dream cycle complete. ${consolidatedFacts.length} new semantic facts extracted from ${episodicMemories.length} episodic memories.`
-        : `Dream cycle complete. No new patterns found. ${decayedCount} memories decayed.`,
+      message,
     })
 
   } catch (err: any) {
@@ -171,7 +182,7 @@ export async function GET(
 ) {
   await ensureHydrated()
   const agentId = params.agentId
-  const agent = getAgent(agentId)
+  const agent = await getAgentOrRestore(agentId)
 
   if (!agent) {
     return NextResponse.json({ error: `Agent [${agentId}] not found.` }, { status: 404 })

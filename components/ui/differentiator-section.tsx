@@ -48,6 +48,15 @@ function DifferentiatorSection() {
       className="relative z-10 w-full overflow-visible py-20 lg:py-32"
     >
       <div className="container mx-auto px-4 md:px-6">
+        <div className="flex items-center gap-2 mb-12">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#ABD1C6]" />
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#ABD1C6]">
+            Traceability
+          </p>
+        </div>
+        <h2 className="text-3xl font-semibold tracking-tighter text-white md:text-5xl mb-14">
+          Every answer has a receipt.
+        </h2>
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.28fr)_minmax(320px,0.92fr)] lg:gap-16">
           <div>
             <p

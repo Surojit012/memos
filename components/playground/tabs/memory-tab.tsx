@@ -41,9 +41,9 @@ const SANDBOX_MEMORIES: MemoryRecord[] = [
 ];
 
 const TYPE_COLORS: Record<string, { bg: string; color: string }> = {
-  episodic: { bg: '#eff6ff', color: '#2563eb' },
-  semantic: { bg: '#faf5ff', color: '#9333ea' },
-  procedural: { bg: '#f0fdf4', color: '#16a34a' },
+  episodic: { bg: 'rgba(94,125,126,0.12)', color: '#74989a' },
+  semantic: { bg: 'rgba(166,123,115,0.12)', color: '#A67B73' },
+  procedural: { bg: 'rgba(122,158,142,0.10)', color: '#7A9E8E' },
 };
 
 /* ─── Helpers ─── */
@@ -283,11 +283,11 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             padding: '8px 12px',
             marginBottom: 8,
             borderRadius: 6,
-            border: `1px solid ${banner.type === 'network' ? '#d97706' : banner.type === '401' ? '#dc2626' : banner.type === '429' ? '#d97706' : '#dc2626'}`,
-            background: banner.type === 'network' || banner.type === '429' ? '#fffbeb' : '#fef2f2',
+            border: `1px solid ${banner.type === 'network' ? '#A67B73' : banner.type === '401' ? '#C67867' : banner.type === '429' ? '#A67B73' : '#C67867'}`,
+            background: banner.type === 'network' || banner.type === '429' ? 'rgba(166,123,115,0.08)' : 'rgba(198,120,103,0.06)',
             fontSize: 13,
-            fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#ffffff',
+            fontFamily: 'var(--pg-sans)',
+            color: 'var(--pg-text)',
           }}
         >
           <span>{banner.message}</span>
@@ -298,7 +298,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               border: 'none',
               cursor: 'pointer',
               fontSize: 16,
-              color: 'var(--text2)',
+              color: 'var(--pg-text2)',
               padding: '0 4px',
               lineHeight: 1,
             }}
@@ -316,9 +316,9 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             style={{
               display: 'block',
               fontSize: 13,
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--pg-sans)',
               fontWeight: 500,
-              color: '#ffffff',
+              color: 'var(--pg-text)',
               marginBottom: 4,
             }}
           >
@@ -332,11 +332,11 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             placeholder="What should your agent remember?"
             style={{
               width: '100%',
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--pg-sans)',
               fontSize: 13,
-              color: '#ffffff',
-              background: 'var(--surface)',
-              border: '1px solid #e4e4e7',
+              color: 'var(--pg-text)',
+              background: 'transparent',
+              border: '1px solid var(--pg-border)',
               borderRadius: 6,
               padding: '8px 10px',
               resize: 'vertical',
@@ -344,8 +344,8 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               boxSizing: 'border-box',
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--pg-cyan-hi)'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--pg-border)'; }}
           />
         </div>
 
@@ -357,9 +357,9 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               style={{
                 display: 'block',
                 fontSize: 13,
-                fontFamily: 'Inter, system-ui, sans-serif',
+                fontFamily: 'var(--pg-sans)',
                 fontWeight: 500,
-                color: '#ffffff',
+                color: 'var(--pg-text)',
                 marginBottom: 4,
               }}
             >
@@ -371,11 +371,11 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               onChange={(e) => setMemoryType(e.target.value as 'episodic' | 'semantic' | 'procedural')}
               style={{
                 width: '100%',
-                fontFamily: 'Inter, system-ui, sans-serif',
+                fontFamily: 'var(--pg-sans)',
                 fontSize: 13,
-                color: '#ffffff',
-                background: 'var(--surface)',
-                border: '1px solid #e4e4e7',
+                color: 'var(--pg-text)',
+                background: 'transparent',
+                border: '1px solid var(--pg-border)',
                 borderRadius: 6,
                 padding: '8px 10px',
                 outline: 'none',
@@ -396,14 +396,14 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               style={{
                 display: 'block',
                 fontSize: 13,
-                fontFamily: 'Inter, system-ui, sans-serif',
+                fontFamily: 'var(--pg-sans)',
                 fontWeight: 500,
-                color: '#ffffff',
+                color: 'var(--pg-text)',
                 marginBottom: 4,
               }}
             >
               Importance{' '}
-              <span style={{ fontWeight: 400, color: 'var(--text2)' }}>{importance}</span>
+              <span style={{ fontWeight: 400, color: 'var(--pg-text2)' }}>{importance}</span>
             </label>
             <input
               id="memory-importance"
@@ -415,7 +415,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               onChange={(e) => setImportance(Number(e.target.value))}
               style={{
                 width: '100%',
-                accentColor: '#ffffff',
+                accentColor: 'var(--pg-text)',
                 cursor: 'pointer',
               }}
             />
@@ -429,9 +429,9 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             style={{
               display: 'block',
               fontSize: 13,
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--pg-sans)',
               fontWeight: 500,
-              color: '#ffffff',
+              color: 'var(--pg-text)',
               marginBottom: 4,
             }}
           >
@@ -445,19 +445,19 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             placeholder="tag1, tag2 (comma separated)"
             style={{
               width: '100%',
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--pg-sans)',
               fontSize: 13,
-              color: '#ffffff',
-              background: 'var(--surface)',
-              border: '1px solid #e4e4e7',
+              color: 'var(--pg-text)',
+              background: 'transparent',
+              border: '1px solid var(--pg-border)',
               borderRadius: 6,
               padding: '8px 10px',
               outline: 'none',
               boxSizing: 'border-box',
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--pg-cyan-hi)'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--pg-border)'; }}
           />
         </div>
 
@@ -469,17 +469,17 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             width: '100%',
             height: 40,
             fontSize: 14,
-            fontFamily: 'Inter, system-ui, sans-serif',
+            fontFamily: 'var(--pg-sans)',
             fontWeight: 500,
-            color: 'var(--surface)',
-            background: submitting ? 'var(--text2)' : '#ffffff',
+            color: 'var(--pg-bg)',
+            background: submitting ? 'rgba(94,125,126,0.4)' : 'var(--pg-cyan)',
             border: 'none',
             borderRadius: 6,
             cursor: submitting ? 'not-allowed' : 'pointer',
             transition: 'background 150ms ease',
           }}
-          onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = '#27272a'; }}
-          onMouseLeave={(e) => { if (!submitting) e.currentTarget.style.background = '#ffffff'; }}
+          onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = 'var(--pg-cyan-hi)'; }}
+          onMouseLeave={(e) => { if (!submitting) e.currentTarget.style.background = 'var(--pg-cyan)'; }}
         >
           {submitting ? 'Storing...' : 'Store Memory'}
         </button>
@@ -488,8 +488,8 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
           <p
             style={{
               fontSize: 13,
-              fontFamily: 'Inter, system-ui, sans-serif',
-              color: '#dc2626',
+              fontFamily: 'var(--pg-sans)',
+              color: '#C67867',
               marginTop: 8,
               marginBottom: 0,
             }}
@@ -500,16 +500,16 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
       </form>
 
       {/* Divider */}
-      <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: '20px 0 16px' }} />
+      <hr style={{ border: 'none', borderTop: '1px solid var(--pg-border)', margin: '20px 0 16px' }} />
 
       {/* Memory List Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
         <span
           style={{
             fontSize: 14,
-            fontFamily: 'Inter, system-ui, sans-serif',
+            fontFamily: 'var(--pg-sans)',
             fontWeight: 500,
-            color: '#ffffff',
+            color: 'var(--pg-text)',
           }}
         >
           Stored Memories
@@ -517,9 +517,9 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
         <span
           style={{
             fontSize: 12,
-            fontFamily: 'Inter, system-ui, sans-serif',
-            color: 'var(--text2)',
-            background: '#f4f4f5',
+            fontFamily: 'var(--pg-sans)',
+            color: 'var(--pg-text2)',
+            background: 'rgba(232,228,220,0.04)',
             borderRadius: 6,
             padding: '2px 8px',
           }}
@@ -530,15 +530,28 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
 
       {/* Loading state */}
       {loadingList && (
-        <div style={{ textAlign: 'center', padding: 20, color: '#a1a1aa', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif' }}>
+        <div style={{ textAlign: 'center', padding: 20, color: 'var(--pg-text3)', fontSize: 13, fontFamily: 'var(--pg-sans)' }}>
           Loading memories...
         </div>
       )}
 
       {/* Empty state */}
       {!loadingList && memories.length === 0 && (
-        <div style={{ textAlign: 'center', padding: 20, color: '#a1a1aa', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif' }}>
-          No memories stored yet. Add one above.
+        <div
+          style={{
+            border: '1px dashed var(--pg-border)',
+            borderRadius: 10,
+            padding: '28px 20px',
+            textAlign: 'center',
+          }}
+        >
+          <p style={{ fontFamily: 'var(--pg-serif)', fontStyle: 'italic', fontSize: 18, color: 'var(--pg-text2)', margin: '0 0 10px' }}>
+            No memories yet.
+          </p>
+          <p style={{ fontSize: 13, color: 'var(--pg-text3)', lineHeight: 1.6, margin: 0, maxWidth: 380, marginInline: 'auto' }}>
+            Write something in the Content field above and hit <strong style={{ color: 'var(--pg-text2)' }}>Store Memory</strong>.
+            Once you have a few, try Search (⌕) to find them semantically, or RAG (✦) to ask the LLM questions grounded in what you've stored.
+          </p>
         </div>
       )}
 
@@ -552,10 +565,10 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             <div
               key={mem.id}
               style={{
-                border: '1px solid #e4e4e7',
+                border: '1px solid var(--pg-border)',
                 borderRadius: 6,
                 padding: 12,
-                background: 'var(--surface)',
+                background: 'transparent',
                 position: 'relative',
               }}
             >
@@ -563,8 +576,8 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               <p
                 style={{
                   fontSize: 13,
-                  fontFamily: 'Inter, system-ui, sans-serif',
-                  color: '#ffffff',
+                  fontFamily: 'var(--pg-sans)',
+                  color: 'var(--pg-text)',
                   lineHeight: 1.5,
                   margin: '0 0 8px',
                   overflow: 'hidden',
@@ -583,7 +596,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 <span
                   style={{
                     fontSize: 11,
-                    fontFamily: 'Inter, system-ui, sans-serif',
+                    fontFamily: 'var(--pg-sans)',
                     fontWeight: 500,
                     color: typeColor.color,
                     background: typeColor.bg,
@@ -603,7 +616,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                         width: 6,
                         height: 6,
                         borderRadius: '50%',
-                        background: n <= mem.importance ? '#ffffff' : 'var(--border)',
+                        background: n <= mem.importance ? 'var(--pg-text)' : 'var(--pg-border)',
                         display: 'inline-block',
                       }}
                     />
@@ -616,9 +629,9 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                     key={tag}
                     style={{
                       fontSize: 11,
-                      fontFamily: 'Inter, system-ui, sans-serif',
-                      color: 'var(--text2)',
-                      background: '#f4f4f5',
+                      fontFamily: 'var(--pg-sans)',
+                      color: 'var(--pg-text2)',
+                      background: 'rgba(232,228,220,0.04)',
                       borderRadius: 4,
                       padding: '2px 6px',
                     }}
@@ -631,8 +644,8 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 <span
                   style={{
                     fontSize: 11,
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    color: '#a1a1aa',
+                    fontFamily: 'var(--pg-sans)',
+                    color: 'var(--pg-text3)',
                     marginLeft: 'auto',
                   }}
                 >
@@ -653,13 +666,13 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                   border: 'none',
                   cursor: isDeleting ? 'not-allowed' : 'pointer',
                   fontSize: 14,
-                  color: isDeleting ? '#a1a1aa' : 'var(--text2)',
+                  color: isDeleting ? 'var(--pg-text3)' : 'var(--pg-text2)',
                   padding: '2px 4px',
                   lineHeight: 1,
                   transition: 'color 150ms ease',
                 }}
-                onMouseEnter={(e) => { if (!isDeleting) e.currentTarget.style.color = '#dc2626'; }}
-                onMouseLeave={(e) => { if (!isDeleting) e.currentTarget.style.color = 'var(--text2)'; }}
+                onMouseEnter={(e) => { if (!isDeleting) e.currentTarget.style.color = '#C67867'; }}
+                onMouseLeave={(e) => { if (!isDeleting) e.currentTarget.style.color = 'var(--pg-text2)'; }}
               >
                 {isDeleting ? '⟳' : '✕'}
               </button>

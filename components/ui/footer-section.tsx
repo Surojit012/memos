@@ -9,7 +9,7 @@ export function FooterSection() {
   const [cols, setCols] = useState(0);
   const [rows, setRows] = useState(0);
 
-  const phrases = ["memos", "0G Storage", "0G compute", "0G"];
+  const phrases = ["memos", "0G Storage", "0G Compute", "0G"];
   const [phraseIdx, setPhraseIdx] = useState(0);
 
   useEffect(() => {
@@ -94,17 +94,14 @@ export function FooterSection() {
         <div className="grid grid-cols-2 gap-12 md:gap-24 text-sm">
           <div className="flex flex-col gap-3">
             <h3 className="text-white font-medium mb-2">Platform</h3>
-            <a href="#" className="text-neutral-400 hover:text-white transition-colors">Documentation</a>
-            <a href="#" className="text-neutral-400 hover:text-white transition-colors">SDK</a>
-            <a href="#" className="text-neutral-400 hover:text-white transition-colors">Storage</a>
-            <a href="#" className="text-neutral-400 hover:text-white transition-colors">Compute</a>
+            <a href="https://memos.mintlify.app/" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">Documentation</a>
+            <a href="https://www.npmjs.com/package/memos-sdk" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">TypeScript SDK</a>
+            <a href="https://pypi.org/project/memos-ai/" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">Python SDK</a>
+            <a href="#built-on-0g" className="text-neutral-400 hover:text-white transition-colors">Infrastructure</a>
           </div>
           <div className="flex flex-col gap-3">
-            <h3 className="text-white font-medium mb-2">Company</h3>
-            <a href="#" className="text-neutral-400 hover:text-white transition-colors">About</a>
-            <a href="#" className="text-neutral-400 hover:text-white transition-colors">Blog</a>
-            <a href="#" className="text-neutral-400 hover:text-white transition-colors">Twitter</a>
-            <a href="#" className="text-neutral-400 hover:text-white transition-colors">GitHub</a>
+            <h3 className="text-white font-medium mb-2">Open Source</h3>
+            <a href="https://github.com/Surojit012/memos" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">GitHub</a>
           </div>
         </div>
       </div>
@@ -137,8 +134,8 @@ export function FooterSection() {
       <div className="flex flex-col md:flex-row justify-between items-center p-8 md:p-12 w-full max-w-7xl mx-auto z-10 text-xs text-neutral-500">
         <p>© 2026 memos. All rights reserved.</p>
         <div className="flex gap-6 mt-4 md:mt-0">
-          <a href="#" className="hover:text-neutral-300 transition-colors">Privacy Policy</a>
-          <a href="#" className="hover:text-neutral-300 transition-colors">Terms of Service</a>
+          <a href="/privacy" className="hover:text-neutral-300 transition-colors">Privacy Policy</a>
+          <a href="/terms" className="hover:text-neutral-300 transition-colors">Terms of Service</a>
         </div>
       </div>
     </footer>

@@ -233,13 +233,15 @@ class MemosClient:
             json={},
         )
         data = self._handle_response(response)
+        # The API returns: totalMemoriesProcessed / consolidatedCount /
+        # durationMs / message / consolidated (list of strings).
         return DreamResult(
-            memories_analyzed=data.get("memoriesAnalyzed", 0),
-            patterns_found=data.get("patternsFound", 0),
-            new_memories_created=data.get("newMemoriesCreated", 0),
-            dream_summary=data.get("dreamSummary", ""),
-            new_memories=data.get("newMemories", []),
-            duration=data.get("duration", 0),
+            memories_analyzed=data.get("totalMemoriesProcessed", 0),
+            patterns_found=data.get("consolidatedCount", 0),
+            new_memories_created=data.get("consolidatedCount", 0),
+            dream_summary=data.get("message", ""),
+            new_memories=data.get("consolidated", []),
+            duration=data.get("durationMs", 0),
         )
 
     def list_skills(self) -> List[Skill]:
@@ -280,15 +282,16 @@ class MemosClient:
             json={
                 "agentId": self.agent_id,
                 "skillId": skill_id,
-                "input": input,
+                "userInput": input,
             },
         )
         data = self._handle_response(response)
         return SkillResult(
-            skill_id=data.get("skillId", skill_id),
-            result=data.get("result", ""),
+            skill_id=skill_id,
+            result=data.get("output", ""),
             tokens_used=data.get("tokensUsed", 0),
-            duration=data.get("duration", 0),
+            model=data.get("model", ""),
+            compute_provider=data.get("computeProvider", ""),
         )
 
     def run_pipeline(self, steps: List[dict], input: str) -> dict:  # type: ignore[type-arg]
@@ -306,7 +309,7 @@ class MemosClient:
             json={
                 "agentId": self.agent_id,
                 "steps": steps,
-                "input": input,
+                "initialInput": input,
             },
         )
         return self._handle_response(response)

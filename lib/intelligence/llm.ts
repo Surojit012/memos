@@ -5,9 +5,8 @@
  * 
  * Priority order:
  * 1. 0G Router API (ZG_ROUTER_API_KEY) — decentralized inference via 0G Compute
- * 2. Fireworks API (FIREWORKS_API_KEY) — fast fallback
- * 3. OpenAI API (OPENAI_API_KEY) — legacy fallback
- * 4. Local mock — only when NO keys are configured
+ * 2. Fireworks API (FIREWORKS_API_KEY) — fallback
+ * 3. Local mock — only when NO keys are configured
  */
 
 interface ComputeParams {
@@ -21,8 +20,9 @@ export async function computeInference(params: ComputeParams): Promise<string> {
   const zgKey = process.env.ZG_ROUTER_API_KEY;
   if (zgKey && zgKey !== 'sk-your_router_key_here') {
     try {
-      const model = process.env.ZG_ROUTER_MODEL || 'qwen/qwen-2.5-7b-instruct';
-      const res = await fetch('https://router-api.0g.ai/v1/chat/completions', {
+      const model = process.env.ZG_ROUTER_MODEL || 'qwen2.5-omni';
+      const baseUrl = process.env.ZG_ROUTER_BASE_URL || 'https://router-api-testnet.integratenetwork.work/v1';
+      const res = await fetch(`${baseUrl}/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export async function computeInference(params: ComputeParams): Promise<string> {
           'Authorization': `Bearer ${fwKey}`,
         },
         body: JSON.stringify({
-          model: 'accounts/fireworks/models/llama-v3p3-70b-instruct',
+          model: process.env.FIREWORKS_MODEL || 'accounts/fireworks/models/glm-5p2',
           messages: [
             { role: 'system', content: params.systemPrompt },
             { role: 'user', content: params.userPrompt }
@@ -88,37 +88,8 @@ export async function computeInference(params: ComputeParams): Promise<string> {
     }
   }
 
-  // ── Provider 3: OpenAI API (legacy fallback) ──
-  const openaiKey = process.env.OPENAI_API_KEY;
-  if (openaiKey) {
-    try {
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${openaiKey}`
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [
-            { role: 'system', content: params.systemPrompt },
-            { role: 'user', content: params.userPrompt }
-          ],
-          temperature: params.temperature || 0.1
-        })
-      });
-      
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error?.message || 'OpenAI error');
-      
-      return data.choices[0].message.content.trim();
-    } catch (e: any) {
-      console.warn(`[OpenAI] Inference failed: ${e.message}`);
-    }
-  }
-
-  // ── Provider 4: Local mock (no keys configured) ──
-  console.warn('[Intelligence] No inference provider available. Set ZG_ROUTER_API_KEY, FIREWORKS_API_KEY, or OPENAI_API_KEY.');
+  // ── Provider 3: Local mock (no keys configured) ──
+  console.warn('[Intelligence] No inference provider available. Set ZG_ROUTER_API_KEY or FIREWORKS_API_KEY.');
   console.log('[Mock] Running local inference simulation...');
   await new Promise(r => setTimeout(r, 500)); 
 

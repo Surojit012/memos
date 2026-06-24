@@ -1,34 +1,34 @@
 'use client';
 
-import { useState } from 'react';
-
 interface SidebarNavProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
 }
 
 const TABS = [
-  { id: 'memory', label: 'Memory' },
-  { id: 'search', label: 'Search' },
-  { id: 'rag', label: 'RAG Chat' },
-  { id: 'dream', label: 'Dream' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'pipeline', label: 'Pipeline' },
-  { id: 'identity', label: 'Identity' },
-  { id: 'explorer', label: 'API Explorer' },
+  { id: 'memory',   label: 'Memory',   glyph: '◉' },
+  { id: 'search',   label: 'Search',   glyph: '⌕' },
+  { id: 'rag',      label: 'RAG',      glyph: '✦' },
+  { id: 'dream',    label: 'Dream',    glyph: '☾' },
+  { id: 'skills',   label: 'Skills',   glyph: '⌬' },
+  { id: 'pipeline', label: 'Pipeline', glyph: '⇶' },
+  { id: 'identity', label: 'Identity', glyph: '⬢' },
+  { id: 'explorer', label: 'Explorer', glyph: '⌘' },
 ] as const;
 
 export function SidebarNav({ activeTab, setActiveTab }: SidebarNavProps) {
   return (
     <nav
+      aria-label="Playground sections"
       style={{
-        width: 220,
-        minWidth: 220,
-        borderRight: '1px solid #e4e4e7',
-        background: 'var(--surface)',
-        paddingTop: 12,
+        width: 64,
+        minWidth: 64,
+        background: 'transparent',
+        borderRight: '1px solid var(--pg-border)',
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'stretch',
+        padding: '14px 0',
         gap: 2,
       }}
     >
@@ -37,40 +37,73 @@ export function SidebarNav({ activeTab, setActiveTab }: SidebarNavProps) {
         return (
           <button
             key={tab.id}
+            type="button"
             onClick={() => setActiveTab(tab.id)}
-            style={{
-              width: '100%',
-              height: 36,
-              paddingLeft: 12,
-              paddingRight: 12,
-              fontSize: 13,
-              fontFamily: 'Inter, system-ui, sans-serif',
-              fontWeight: isActive ? 500 : 400,
-              color: '#ffffff',
-              background: isActive ? '#f4f4f5' : 'transparent',
-              border: 'none',
-              borderLeft: isActive ? '2px solid #18181b' : '2px solid transparent',
-              textAlign: 'left',
-              cursor: 'pointer',
-              transition: 'background 150ms ease',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-            onMouseEnter={(e) => {
-              if (!isActive) {
-                e.currentTarget.style.background = '#f9f9f9';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!isActive) {
-                e.currentTarget.style.background = 'transparent';
-              }
-            }}
+            aria-current={isActive ? 'page' : undefined}
+            className="pg-rail-item"
+            data-active={isActive ? 'true' : 'false'}
+            title={tab.label}
           >
-            {tab.label}
+            <span
+              aria-hidden
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 8,
+                bottom: 8,
+                width: 2,
+                background: isActive ? 'var(--pg-cyan)' : 'transparent',
+                borderRadius: 0,
+              }}
+            />
+            <span style={{ fontSize: 18, lineHeight: 1, fontFamily: 'var(--pg-serif)' }}>
+              {tab.glyph}
+            </span>
+            <span className="pg-rail-label">{tab.label}</span>
           </button>
         );
       })}
+
+      <style>{`
+        .pg-rail-item {
+          position: relative;
+          height: 48px;
+          background: transparent;
+          border: none;
+          color: var(--pg-text2);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+          transition: color 140ms ease, background 140ms ease;
+        }
+        .pg-rail-item:hover { color: var(--pg-text); background: rgba(232,228,220,0.03); }
+        .pg-rail-item[data-active="true"] { color: var(--pg-text); }
+        .pg-rail-label {
+          position: absolute;
+          left: 64px;
+          top: 50%;
+          transform: translateY(-50%) translateX(-4px);
+          background: var(--pg-bg);
+          border: 1px solid var(--pg-border);
+          padding: 4px 10px;
+          font-size: 12px;
+          font-family: var(--pg-sans);
+          color: var(--pg-text);
+          border-radius: 4px;
+          opacity: 0;
+          pointer-events: none;
+          white-space: nowrap;
+          transition: opacity 120ms ease, transform 120ms ease;
+          z-index: 40;
+        }
+        .pg-rail-item:hover .pg-rail-label,
+        .pg-rail-item:focus-visible .pg-rail-label {
+          opacity: 1;
+          transform: translateY(-50%) translateX(0);
+        }
+      `}</style>
     </nav>
   );
 }
@@ -78,13 +111,14 @@ export function SidebarNav({ activeTab, setActiveTab }: SidebarNavProps) {
 export function MobileTabBar({ activeTab, setActiveTab }: SidebarNavProps) {
   return (
     <div
+      role="tablist"
       style={{
         display: 'flex',
         overflowX: 'auto',
-        gap: 6,
-        padding: '8px 12px',
-        borderBottom: '1px solid #e4e4e7',
-        background: 'var(--surface)',
+        gap: 4,
+        padding: '10px 16px',
+        borderBottom: '1px solid var(--pg-border)',
+        background: 'var(--pg-bg)',
         WebkitOverflowScrolling: 'touch',
       }}
     >
@@ -93,19 +127,22 @@ export function MobileTabBar({ activeTab, setActiveTab }: SidebarNavProps) {
         return (
           <button
             key={tab.id}
+            role="tab"
+            aria-selected={isActive}
+            type="button"
             onClick={() => setActiveTab(tab.id)}
             style={{
               whiteSpace: 'nowrap',
               padding: '6px 12px',
               fontSize: 12,
-              fontFamily: 'Inter, system-ui, sans-serif',
-              fontWeight: isActive ? 500 : 400,
-              color: isActive ? '#ffffff' : 'var(--text2)',
-              background: isActive ? '#f4f4f5' : 'transparent',
-              border: '1px solid ' + (isActive ? 'var(--border)' : 'transparent'),
-              borderRadius: 6,
+              fontFamily: 'var(--pg-sans)',
+              fontWeight: isActive ? 600 : 400,
+              color: isActive ? 'var(--pg-text)' : 'var(--pg-text2)',
+              background: isActive ? 'rgba(94,125,126,0.16)' : 'transparent',
+              border: '1px solid ' + (isActive ? 'var(--pg-cyan)' : 'var(--pg-border)'),
+              borderRadius: 999,
               cursor: 'pointer',
-              transition: 'all 150ms ease',
+              transition: 'all 140ms ease',
               flexShrink: 0,
             }}
           >

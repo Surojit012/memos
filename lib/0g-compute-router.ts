@@ -17,7 +17,12 @@
  * 3. Set ZG_ROUTER_API_KEY=sk-... in .env.local
  */
 
-const ROUTER_BASE_URL = 'https://router-api.0g.ai/v1'
+// Base URL differs between mainnet and testnet — they are fully separate
+// environments with different keys. Mainnet: https://router-api.0g.ai/v1.
+// Testnet (pc.testnet.0g.ai): the partner-hosted router below. Override with
+// ZG_ROUTER_BASE_URL in .env.local to switch networks.
+const ROUTER_BASE_URL =
+  process.env.ZG_ROUTER_BASE_URL || 'https://router-api-testnet.integratenetwork.work/v1'
 
 function getRouterApiKey(): string {
   const key = process.env.ZG_ROUTER_API_KEY
@@ -46,7 +51,7 @@ export async function routerChatCompletion(
   computeNode: string
 }> {
   const apiKey = getRouterApiKey()
-  const model = options?.model || process.env.ZG_ROUTER_MODEL || 'deepseek-ai/DeepSeek-V3'
+  const model = options?.model || process.env.ZG_ROUTER_MODEL || 'qwen2.5-omni'
 
   const body: any = {
     model,

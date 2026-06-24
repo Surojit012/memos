@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPaymentVerification, getSkillById, markPaymentConsumed, markPaymentVerified, recordSkillExecution } from '@/lib/store'
+import { getPaymentVerification, getSkillById, markPaymentConsumed, markPaymentVerified, recordSkillExecution, reservePaymentTxHash, releasePaymentTxHash } from '@/lib/store'
 import { verifySkillPaymentTransaction } from '@/lib/payments'
+import { isPaymentConsumedDurable, markPaymentConsumedDurable } from '@/lib/db/payments'
 import { ensureHydrated } from '@/lib/hydration'
+import { validatePlatformSecret, validateAgentApiKeyAsync, ensureAgentInStore } from '@/lib/auth'
+import { rateLimit } from '@/lib/rate-limit'
 import { uploadToStorage, getExplorerUrl } from '@/lib/0g-storage'
 import { ExecutionReceipt, ComputeProvider } from '@/lib/types'
 import { executeSkillWith0GCompute, toUserFacingComputeError } from '@/lib/0g-compute-inference'
@@ -9,11 +12,43 @@ import { executeSkillWithRouter, toUserFacingRouterError } from '@/lib/0g-comput
 import { createHash } from 'crypto'
 import { v4 as uuid } from 'uuid'
 
+// Cap user input so a single call can't balloon LLM cost or memory (#6).
+const MAX_USER_INPUT_CHARS = 12_000
+
 export async function POST(req: NextRequest) {
+  // Set once a paid payment is reserved-but-not-yet-consumed. Any failure path
+  // (execution error or unexpected throw) releases it so the user can retry
+  // with the same valid payment rather than paying twice.
+  let unconsumedTxHash: string | null = null
+  const releaseUnconsumed = () => {
+    if (unconsumedTxHash) {
+      releasePaymentTxHash(unconsumedTxHash)
+      unconsumedTxHash = null
+    }
+  }
+
   try {
+    // ── Rate limiting (#5): each skill execution hits a paid LLM, so cap it. ──
+    const limited = rateLimit(req, { maxRequests: 20, windowMs: 60_000 })
+    if (limited) return limited
+
     await ensureHydrated()
-    const { skillId, userInput, paymentProof, computeProvider: requestedProvider, zgProviderAddress } = await req.json()
+    const { skillId, userInput, paymentProof, computeProvider: requestedProvider, zgProviderAddress, agentId } = await req.json()
     if (!skillId || !userInput) return NextResponse.json({ error: 'skillId and userInput required' }, { status: 400 })
+    if (typeof userInput !== 'string' || userInput.length > MAX_USER_INPUT_CHARS) {
+      return NextResponse.json(
+        { error: `userInput must be a string of at most ${MAX_USER_INPUT_CHARS} characters.` },
+        { status: 400 }
+      )
+    }
+
+    if (agentId) await ensureAgentInStore(agentId)
+    const apiKey = req.headers.get('Authorization')?.replace('Bearer ', '')
+    const hasValidApiKey = agentId && apiKey && await validateAgentApiKeyAsync(agentId, apiKey)
+    const hasValidPlatformSecret = validatePlatformSecret(req)
+    if (!hasValidApiKey && !hasValidPlatformSecret) {
+      return NextResponse.json({ error: 'Unauthorized — provide a valid Agent API Key or platform secret.' }, { status: 401 })
+    }
     const skill = getSkillById(skillId)
     if (!skill) return NextResponse.json({ error: 'Skill not found' }, { status: 404 })
 
@@ -31,16 +66,35 @@ export async function POST(req: NextRequest) {
         }, { status: 402 })
       }
 
-      const existingVerification = getPaymentVerification(txHash)
-      if (existingVerification?.consumedAt) {
+      // (#3) Durable replay check — survives restarts/redeploys.
+      if (await isPaymentConsumedDurable(txHash)) {
+        return NextResponse.json({ error: 'This payment has already been used for an execution.' }, { status: 409 })
+      }
+      // Legacy in-memory record check (kept for parity).
+      if (getPaymentVerification(txHash)?.consumedAt) {
         return NextResponse.json({ error: 'This payment has already been used for an execution.' }, { status: 409 })
       }
 
+      // (#2) Atomically CLAIM the txHash BEFORE the slow on-chain verify, so two
+      // concurrent requests can't both slip through the check above. The loser
+      // of the race gets 409; the winner proceeds and releases on failure.
+      if (!reservePaymentTxHash(txHash)) {
+        return NextResponse.json({ error: 'This payment is already being processed.' }, { status: 409 })
+      }
+      // Reserved but not yet consumed — track for release on any failure below.
+      unconsumedTxHash = txHash
+
       try {
         verifiedPayment = await verifySkillPaymentTransaction(skill, txHash)
-        markPaymentVerified(existingVerification || verifiedPayment)
-        markPaymentConsumed(txHash)
+        markPaymentVerified(verifiedPayment)
+        // NOTE: we intentionally do NOT consume the payment yet. The txHash stays
+        // RESERVED (blocking concurrent reuse) but is only marked consumed once
+        // the LLM execution below actually succeeds. If execution fails, we
+        // release the reservation so the user can retry with the same valid
+        // payment instead of paying twice for a service-side error.
       } catch (payErr: any) {
+        // Verification failed — release the reservation so a legit retry works.
+        releaseUnconsumed()
         return NextResponse.json({
           error: `Payment verification failed: ${payErr.message}`,
           hint: 'Make sure the transaction confirmed on 0G Chain and matches the skill price.',
@@ -78,6 +132,7 @@ export async function POST(req: NextRequest) {
           verified: result.verified,
         }
       } catch (error) {
+        releaseUnconsumed() // execution failed — let the paid user retry
         return NextResponse.json({
           error: toUserFacingComputeError(error),
           computeProvider: '0g-compute',
@@ -95,6 +150,7 @@ export async function POST(req: NextRequest) {
         tokensUsed = result.tokensUsed
         computeNode = '0g-router'
       } catch (error) {
+        releaseUnconsumed() // execution failed — let the paid user retry
         return NextResponse.json({
           error: toUserFacingRouterError(error),
           computeProvider: '0g-router',
@@ -107,6 +163,7 @@ export async function POST(req: NextRequest) {
       // ════════════════════════════════════════════════════
       const fireworksKey = process.env.FIREWORKS_API_KEY
       if (!fireworksKey || fireworksKey === 'your_fireworks_key_here') {
+        releaseUnconsumed() // can't execute — let the paid user retry elsewhere
         return NextResponse.json({
           error: 'FIREWORKS_API_KEY is not configured. Add it to .env.local or choose a different compute provider.',
           computeProvider: 'fireworks',
@@ -135,7 +192,17 @@ export async function POST(req: NextRequest) {
       tokensUsed = response.usage?.total_tokens ?? 0
       computeNode = 'fireworks-serverless'
     } else {
+      releaseUnconsumed() // never executed — let the paid user retry
       return NextResponse.json({ error: 'Invalid compute provider selected.' }, { status: 400 })
+    }
+
+    // ── Execution succeeded — NOW consume the payment (in-memory + durable). ──
+    // Past this point the user has their output, so the payment is rightfully
+    // spent and must not be replayable.
+    if (skillPrice > 0 && unconsumedTxHash) {
+      markPaymentConsumed(unconsumedTxHash)
+      await markPaymentConsumedDurable(unconsumedTxHash, skill.id)
+      unconsumedTxHash = null // consumed; keep the in-memory reservation held
     }
 
     recordSkillExecution(skillId)
@@ -186,7 +253,12 @@ export async function POST(req: NextRequest) {
         explorerUrl: receiptStorageHash ? getExplorerUrl(receiptStorageHash) : undefined,
       },
     })
-  } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 500 }) }
+  } catch (e: any) {
+    // Unexpected failure after a payment was reserved (e.g. provider threw):
+    // release it so the user isn't charged for an execution that never landed.
+    releaseUnconsumed()
+    return NextResponse.json({ error: e.message }, { status: 500 })
+  }
 }
 
 /**

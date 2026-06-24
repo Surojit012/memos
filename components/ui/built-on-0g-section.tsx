@@ -10,19 +10,19 @@ const infrastructureCards = [
     eyebrow: "0G STORAGE",
     strong: "Persistent",
     light: "memory",
-    body: "Stores agent memories, module manifests, and runtime checkpoints.",
+    body: "Every memory, skill, and agent snapshot persists on 0G — survives restarts, scales without a database.",
   },
   {
     eyebrow: "0G COMPUTE",
     strong: "Reasoning",
     light: "layer",
-    body: "Runs embeddings, inference, and dream consolidation through replaceable compute adapters.",
+    body: "Embeddings, inference, and memory consolidation run on decentralized compute — no single-vendor lock-in.",
   },
   {
     eyebrow: "0G CHAIN",
     strong: "Verifiable",
     light: "proofs",
-    body: "Anchors identity and transaction proofs without turning memos into a blockchain app.",
+    body: "Agent identity and payment receipts are anchored on-chain — verifiable by anyone, owned by no one.",
   },
 ];
 
@@ -60,8 +60,8 @@ function BuiltOn0GSection() {
             }}
             className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-neutral-400 md:text-lg"
           >
-            memos connects persistent agent cognition to 0G Storage,
-            Compute, and Chain through replaceable adapters.
+            memos runs on 0G&apos;s decentralized stack — storage for memories,
+            compute for reasoning, chain for trust.
           </motion.p>
 
           <div className="mx-auto mt-14 grid w-full max-w-6xl gap-8 md:grid-cols-3">

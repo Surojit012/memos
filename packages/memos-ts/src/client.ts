@@ -133,7 +133,16 @@ export class MemosClient {
    * Trigger a dream consolidation cycle.
    */
   async triggerDream(): Promise<DreamResult> {
-    return this._request<DreamResult>('POST', `/api/agent/${encodeURIComponent(this.agentId)}/dreams`, {})
+    const data = await this._request<any>('POST', `/api/agent/${encodeURIComponent(this.agentId)}/dreams`, {})
+    // Map the API response fields → DreamResult.
+    return {
+      memoriesAnalyzed: data.totalMemoriesProcessed ?? 0,
+      patternsFound: data.consolidatedCount ?? 0,
+      newMemoriesCreated: data.consolidatedCount ?? 0,
+      dreamSummary: data.message ?? '',
+      newMemories: data.consolidated ?? [],
+      duration: data.durationMs ?? 0
+    }
   }
 
   /**
@@ -148,11 +157,19 @@ export class MemosClient {
    * Execute a skill.
    */
   async executeSkill(skillId: string, input: string): Promise<SkillResult> {
-    return this._request<SkillResult>('POST', '/api/execute', {
+    const data = await this._request<any>('POST', '/api/execute', {
       agentId: this.agentId,
       skillId,
-      input
+      userInput: input
     })
+    // Map the API response (output/model/tokensUsed) → SkillResult.
+    return {
+      skillId,
+      result: data.output ?? '',
+      tokensUsed: data.tokensUsed ?? 0,
+      model: data.model ?? '',
+      computeProvider: data.computeProvider ?? ''
+    }
   }
 
   /**
@@ -162,7 +179,7 @@ export class MemosClient {
     return this._request<PipelineResult>('POST', '/api/pipeline', {
       agentId: this.agentId,
       steps,
-      input
+      initialInput: input
     })
   }
 

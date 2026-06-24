@@ -50,9 +50,9 @@ const SANDBOX_RESULT: DreamResult = {
 };
 
 const TYPE_COLORS: Record<string, { bg: string; color: string }> = {
-  episodic: { bg: '#eff6ff', color: '#2563eb' },
-  semantic: { bg: '#faf5ff', color: '#9333ea' },
-  procedural: { bg: '#f0fdf4', color: '#16a34a' },
+  episodic: { bg: 'rgba(94,125,126,0.12)', color: '#74989a' },
+  semantic: { bg: 'rgba(166,123,115,0.12)', color: '#A67B73' },
+  procedural: { bg: 'rgba(122,158,142,0.10)', color: '#7A9E8E' },
 };
 
 /* ─── Component ─── */
@@ -147,7 +147,20 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
           return;
         }
 
-        setResult(data as DreamResult);
+        // Map API field names → DreamResult interface
+        const mapped: DreamResult = {
+          memoriesAnalyzed: data.totalMemoriesProcessed ?? 0,
+          patternsFound: data.consolidatedCount ?? 0,
+          newMemoriesCreated: data.consolidatedCount ?? 0,
+          dreamSummary: data.message ?? '',
+          duration: data.durationMs ?? 0,
+          newMemories: (data.consolidated ?? []).map((content: string, i: number) => ({
+            id: `dream_consolidated_${i}`,
+            content,
+            type: 'semantic',
+          })),
+        };
+        setResult(mapped);
         onResponseUpdate({ response: data, error: null, isLoading: false, statusCode: res.status });
       } else {
         await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -171,7 +184,7 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
   /* ─── Render: Loading count ─── */
   if (loadingCount) {
     return (
-      <div style={{ textAlign: 'center', padding: 40, color: '#a1a1aa', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif' }}>
+      <div style={{ textAlign: 'center', padding: 40, color: 'var(--pg-text3)', fontSize: 13, fontFamily: 'var(--pg-sans)' }}>
         Checking memory count...
       </div>
     );
@@ -182,31 +195,31 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
     return (
       <div
         style={{
-          borderLeft: '3px solid #2563eb',
-          background: '#eff6ff',
+          borderLeft: '3px solid var(--pg-cyan)',
+          background: 'rgba(94,125,126,0.12)',
           borderRadius: 6,
           padding: 16,
         }}
       >
-        <p style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', margin: '0 0 12px', lineHeight: 1.5 }}>
+        <p style={{ fontSize: 14, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text)', margin: '0 0 12px', lineHeight: 1.5 }}>
           Dream consolidation requires at least 3 memories. You currently have <strong>{memoryCount}</strong> stored.
         </p>
         <button
           onClick={() => setActiveTab('memory')}
           style={{
             fontSize: 13,
-            fontFamily: 'Inter, system-ui, sans-serif',
+            fontFamily: 'var(--pg-sans)',
             fontWeight: 500,
-            color: '#2563eb',
-            background: 'var(--surface)',
-            border: '1px solid #bfdbfe',
+            color: '#74989a',
+            background: 'transparent',
+            border: '1px solid var(--pg-border)',
             borderRadius: 6,
             padding: '8px 16px',
             cursor: 'pointer',
             transition: 'background 150ms ease',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = '#eff6ff'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(94,125,126,0.12)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
         >
           Go to Memory Tab
         </button>
@@ -220,15 +233,15 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
       <div>
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-          <span style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#16a34a' }}>
+          <span style={{ fontSize: 16, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: '#7A9E8E' }}>
             Dream Complete ✓
           </span>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa' }}>
+          <span style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text3)' }}>
             {result.duration}ms
           </span>
         </div>
 
-        <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: '0 0 12px' }} />
+        <hr style={{ border: 'none', borderTop: '1px solid var(--pg-border)', margin: '0 0 12px' }} />
 
         {/* Stats */}
         <div style={{ display: 'flex', gap: 16, marginBottom: 12, flexWrap: 'wrap' }}>
@@ -237,46 +250,52 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
             ['Patterns found', result.patternsFound],
             ['New memories', result.newMemoriesCreated],
           ].map(([label, val]) => (
-            <div key={String(label)} style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>
-              {label}: <span style={{ fontWeight: 500, color: '#ffffff' }}>{val}</span>
+            <div key={String(label)} style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)' }}>
+              {label}: <span style={{ fontWeight: 500, color: 'var(--pg-text)' }}>{val}</span>
             </div>
           ))}
         </div>
 
-        <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: '0 0 12px' }} />
+        <hr style={{ border: 'none', borderTop: '1px solid var(--pg-border)', margin: '0 0 12px' }} />
 
         {/* Summary */}
         <div style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#a1a1aa', marginBottom: 6, fontWeight: 500, fontFamily: 'Inter, system-ui, sans-serif' }}>
+          <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--pg-text3)', marginBottom: 6, fontWeight: 500, fontFamily: 'var(--pg-sans)' }}>
             Summary
           </div>
-          <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text)', lineHeight: 1.6, margin: 0 }}>
             {result.dreamSummary}
           </p>
         </div>
 
-        <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: '0 0 12px' }} />
+        <hr style={{ border: 'none', borderTop: '1px solid var(--pg-border)', margin: '0 0 12px' }} />
 
         {/* New memories */}
         <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#a1a1aa', marginBottom: 8, fontWeight: 500, fontFamily: 'Inter, system-ui, sans-serif' }}>
+          <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--pg-text3)', marginBottom: 8, fontWeight: 500, fontFamily: 'var(--pg-sans)' }}>
             New Memories
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {result.newMemories.map((mem) => {
-              const tc = TYPE_COLORS[mem.type] ?? TYPE_COLORS.semantic;
-              return (
-                <div key={mem.id} style={{ border: '1px solid #e4e4e7', borderRadius: 6, padding: 12, background: 'var(--surface)' }}>
-                  <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', lineHeight: 1.5, margin: '0 0 6px' }}>
-                    {mem.content}
-                  </p>
-                  <span style={{ fontSize: 11, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: tc.color, background: tc.bg, borderRadius: 4, padding: '2px 6px' }}>
-                    {mem.type}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+          {result.newMemories.length === 0 ? (
+            <p style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text3)', margin: 0, fontStyle: 'italic' }}>
+              No new patterns extracted this cycle. Store more episodic memories and run again.
+            </p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {result.newMemories.map((mem) => {
+                const tc = TYPE_COLORS[mem.type] ?? TYPE_COLORS.semantic;
+                return (
+                  <div key={mem.id} style={{ border: '1px solid var(--pg-border)', borderRadius: 6, padding: 12, background: 'rgba(232,228,220,0.03)' }}>
+                    <p style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text)', lineHeight: 1.5, margin: '0 0 6px' }}>
+                      {mem.content}
+                    </p>
+                    <span style={{ fontSize: 11, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: tc.color, background: tc.bg, borderRadius: 4, padding: '2px 6px' }}>
+                      {mem.type}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Run another */}
@@ -286,17 +305,17 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
             width: '100%',
             height: 40,
             fontSize: 14,
-            fontFamily: 'Inter, system-ui, sans-serif',
+            fontFamily: 'var(--pg-sans)',
             fontWeight: 500,
-            color: '#ffffff',
-            background: 'var(--surface)',
-            border: '1px solid #e4e4e7',
+            color: 'var(--pg-text)',
+            background: 'transparent',
+            border: '1px solid var(--pg-border)',
             borderRadius: 6,
             cursor: 'pointer',
             transition: 'background 150ms ease',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(232,228,220,0.04)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
         >
           Run Another Dream
         </button>
@@ -307,7 +326,7 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
   /* ─── Render: Trigger UI ─── */
   return (
     <div>
-      <p style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', lineHeight: 1.6, margin: '0 0 16px' }}>
+      <p style={{ fontSize: 14, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)', lineHeight: 1.6, margin: '0 0 16px' }}>
         Dream consolidation analyzes your episodic memories, finds patterns, and creates new semantic memories — similar to how human sleep consolidates learning.
       </p>
 
@@ -318,22 +337,22 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
           width: '100%',
           height: 40,
           fontSize: 14,
-          fontFamily: 'Inter, system-ui, sans-serif',
+          fontFamily: 'var(--pg-sans)',
           fontWeight: 500,
-          color: 'var(--surface)',
-          background: running ? 'var(--text2)' : '#ffffff',
+          color: 'var(--pg-bg)',
+          background: running ? 'var(--pg-text2)' : 'var(--pg-text)',
           border: 'none',
           borderRadius: 6,
           cursor: running ? 'not-allowed' : 'pointer',
           transition: 'background 150ms ease',
         }}
-        onMouseEnter={(e) => { if (!running) e.currentTarget.style.background = '#27272a'; }}
-        onMouseLeave={(e) => { if (!running) e.currentTarget.style.background = '#ffffff'; }}
+        onMouseEnter={(e) => { if (!running) e.currentTarget.style.background = 'var(--pg-cyan-hi)'; }}
+        onMouseLeave={(e) => { if (!running) e.currentTarget.style.background = 'var(--pg-cyan)'; }}
       >
         {running ? 'Dreaming...' : 'Start Dream Cycle'}
       </button>
 
-      <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', marginTop: 8, textAlign: 'center' }}>
+      <p style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text3)', marginTop: 8, textAlign: 'center' }}>
         This may take 10–30 seconds
       </p>
 
@@ -343,12 +362,12 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
           style={{
             marginTop: 16,
             padding: 12,
-            background: '#f4f4f5',
+            background: 'rgba(232,228,220,0.04)',
             borderRadius: 6,
             textAlign: 'center',
             fontSize: 13,
-            fontFamily: 'Inter, system-ui, sans-serif',
-            color: 'var(--text2)',
+            fontFamily: 'var(--pg-sans)',
+            color: 'var(--pg-text2)',
             opacity: loadingOpacity,
             transition: 'opacity 300ms ease',
           }}
@@ -359,7 +378,7 @@ export function DreamTab({ isLive, agentId, apiKey, setActiveTab, onRequestUpdat
 
       {/* Error */}
       {error && (
-        <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#dc2626', marginTop: 12 }}>
+        <p style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: '#C67867', marginTop: 12 }}>
           {error}
         </p>
       )}

@@ -74,11 +74,13 @@ describe('MemosClient', () => {
   })
 
   test('triggerDream returns DreamResult', async () => {
-    mockFetch(200, { memoriesAnalyzed: 5, patternsFound: 2, newMemoriesCreated: 1, dreamSummary: 'test', newMemories: [], duration: 1200 })
+    // Mock the REAL /api/agent/[id]/dreams response shape.
+    mockFetch(200, { totalMemoriesProcessed: 5, consolidatedCount: 1, message: 'test', consolidated: ['a fact'], durationMs: 1200 })
     const client = new MemosClient({ apiKey: 'key', agentId: 'agent' })
     const result = await client.triggerDream()
     expect(result.memoriesAnalyzed).toBe(5)
     expect(result.newMemoriesCreated).toBe(1)
+    expect(result.newMemories).toEqual(['a fact'])
   })
 
   test('request times out and throws MemosError', async () => {

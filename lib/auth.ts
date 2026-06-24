@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { createHmac } from 'crypto'
-import { getAgent, getWalletNonce, incrementWalletNonce } from './store'
+import { getAgent, upsertHydratedAgent, getWalletNonce, incrementWalletNonce } from './store'
+import type { AgentIdentity } from './types'
 
 /**
  * Verifies an Ethereum message signature.
@@ -91,6 +92,73 @@ function isDev(): boolean {
 }
 
 /**
+ * Resurrect a Privy-provisioned agent from Supabase into the in-memory store.
+ *
+ * Privy provisioning writes the (agentId, apiKey) mapping into the `users` table
+ * but never seeds the in-memory store. After a dev-server restart, or for any
+ * Privy user whose `/api/auth/provision` call has been short-circuited by
+ * sessionStorage caching, `getAgent()` will miss and every auth check fails.
+ *
+ * This is the bridge: pull the DB record, mint an AgentIdentity shell, and
+ * upsert it so the rest of the app sees a valid agent.
+ *
+ * Safe to call when the agent already exists in RAM — it returns without I/O
+ * for that case.
+ */
+export async function ensureAgentInStore(agentId: string): Promise<AgentIdentity | null> {
+  const cached = getAgent(agentId)
+  if (cached) return cached
+
+  try {
+    // Lazy import to avoid pulling Supabase into modules that never need it.
+    const { getUserByAgentId } = await import('./db/client')
+    const user = await getUserByAgentId(agentId)
+    if (!user) return null
+
+    const synthetic: AgentIdentity = {
+      agentId: user.agent_id,
+      name: user.agent_id,
+      createdAt: new Date(user.created_at).getTime() || Date.now(),
+      memoryCount: 0,
+      skillsPublished: 0,
+      totalReads: 0,
+      totalEarned: 0,
+      storageUsed: 0,
+      openClawConnected: false,
+      apiKey: user.api_key,
+      ownerAddress: user.privy_user_id, // tag with the Privy identity for ownership checks
+    }
+    upsertHydratedAgent(synthetic)
+
+    // Restore the agent's memories + skills from their 0G manifest pointer.
+    // Privy agents aren't on-chain, so this Supabase-stored hash is how their
+    // brain survives a server restart. Memories still live on 0G Storage.
+    if (user.manifest_hash) {
+      try {
+        const { loadAgentManifest } = await import('./0g-manifest')
+        const manifest = await loadAgentManifest(user.manifest_hash)
+        if (manifest) {
+          const { upsertHydratedMemory, upsertHydratedSkill } = await import('./store')
+          manifest.memories?.forEach((m) => upsertHydratedMemory(m))
+          manifest.skills?.forEach((s) => upsertHydratedSkill(s))
+          console.log(
+            `⚡ Restored ${manifest.memories?.length ?? 0} memories, ` +
+            `${manifest.skills?.length ?? 0} skills for [${agentId}] from 0G manifest`
+          )
+        }
+      } catch (mErr) {
+        console.warn(`[auth] manifest restore failed for [${agentId}]:`, (mErr as Error).message)
+      }
+    }
+
+    return synthetic
+  } catch (err) {
+    console.warn('[auth] ensureAgentInStore: DB lookup failed:', (err as Error).message)
+    return null
+  }
+}
+
+/**
  * Validate an HMAC API key.
  * Checks against both the HMAC-generated key AND the stored key (backwards compat).
  */
@@ -106,6 +174,36 @@ export function validateAgentApiKey(agentId: string, apiKey: string): boolean {
     const expectedKey = generateHmacApiKey(agentId, agent.ownerAddress)
     return expectedKey === apiKey
   }
+
+  return false
+}
+
+/**
+ * Multi-key validation (Phase 8): checks the hashed `api_keys` table first
+ * (Stripe/OpenAI-style named keys), then falls back to legacy single-key
+ * validation. On a hit, fire-and-forget records usage so the dashboard can
+ * show last_used_at and per-key request counts without blocking the request.
+ *
+ * Async because the multi-key path requires a DB lookup. Legacy paths that
+ * can't easily go async should keep calling the sync `validateAgentApiKey`.
+ */
+export async function validateAgentApiKeyAsync(agentId: string, apiKey: string): Promise<boolean> {
+  if (!apiKey) return false
+
+  // 1. Multi-key table — hashed lookup.
+  try {
+    const { hashApiKey, findActiveApiKeyByHash, recordApiKeyUsage } = await import('./db/api-keys')
+    const hit = await findActiveApiKeyByHash(hashApiKey(apiKey))
+    if (hit && hit.agent_id === agentId) {
+      void recordApiKeyUsage(hit.id, hit.agent_id) // fire-and-forget; also buckets daily usage
+      return true
+    }
+  } catch (err) {
+    console.warn('[auth] multi-key lookup failed, falling back:', (err as Error).message)
+  }
+
+  // 2. Legacy single-key path (in-memory store + HMAC + Privy DB).
+  if (validateAgentApiKey(agentId, apiKey)) return true
 
   return false
 }

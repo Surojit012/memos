@@ -29,9 +29,9 @@ interface ErrorBanner {
 /* ─── Constants ─── */
 
 const TYPE_COLORS: Record<string, { bg: string; color: string }> = {
-  episodic: { bg: '#eff6ff', color: '#2563eb' },
-  semantic: { bg: '#faf5ff', color: '#9333ea' },
-  procedural: { bg: '#f0fdf4', color: '#16a34a' },
+  episodic: { bg: 'rgba(94,125,126,0.12)', color: '#74989a' },
+  semantic: { bg: 'rgba(166,123,115,0.12)', color: '#A67B73' },
+  procedural: { bg: 'rgba(122,158,142,0.10)', color: '#7A9E8E' },
 };
 
 const SANDBOX_RESPONSE = {
@@ -143,17 +143,17 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             padding: '8px 12px',
             marginBottom: 8,
             borderRadius: 6,
-            border: '1px solid #d97706',
-            background: '#fffbeb',
+            border: '1px solid rgba(166,123,115,0.4)',
+            background: 'rgba(166,123,115,0.08)',
             fontSize: 13,
-            fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#ffffff',
+            fontFamily: 'var(--pg-sans)',
+            color: 'var(--pg-text)',
           }}
         >
           <span>{banner.message}</span>
           <button
             onClick={() => dismissBanner(banner.id)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: 'var(--text2)', padding: '0 4px', lineHeight: 1 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: 'var(--pg-text2)', padding: '0 4px', lineHeight: 1 }}
           >
             ×
           </button>
@@ -166,7 +166,7 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
         <div style={{ marginBottom: 12 }}>
           <label
             htmlFor="search-query"
-            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}
+            style={{ display: 'block', fontSize: 13, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)', marginBottom: 4 }}
           >
             Query
           </label>
@@ -178,26 +178,26 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             placeholder="Search agent memories..."
             style={{
               width: '100%',
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--pg-sans)',
               fontSize: 13,
-              color: '#ffffff',
-              background: 'var(--surface)',
-              border: '1px solid #e4e4e7',
+              color: 'var(--pg-text)',
+              background: 'transparent',
+              border: '1px solid var(--pg-border)',
               borderRadius: 6,
               padding: '8px 10px',
               outline: 'none',
               boxSizing: 'border-box',
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--pg-cyan-hi)'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--pg-border)'; }}
           />
         </div>
 
         {/* Mode toggle */}
         <div style={{ marginBottom: 12 }}>
           <label
-            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}
+            style={{ display: 'block', fontSize: 13, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)', marginBottom: 4 }}
           >
             Mode
           </label>
@@ -208,11 +208,11 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               style={{
                 flex: 1,
                 fontSize: 13,
-                fontFamily: 'Inter, system-ui, sans-serif',
+                fontFamily: 'var(--pg-sans)',
                 fontWeight: 500,
-                color: searchType === 'keyword' ? 'var(--surface)' : 'var(--text2)',
-                background: searchType === 'keyword' ? '#ffffff' : 'var(--surface)',
-                border: searchType === 'keyword' ? '1px solid #18181b' : '1px solid #e4e4e7',
+                color: searchType === 'keyword' ? 'var(--pg-bg)' : 'var(--pg-text2)',
+                background: searchType === 'keyword' ? 'var(--pg-text)' : 'transparent',
+                border: searchType === 'keyword' ? '1px solid var(--pg-cyan)' : '1px solid var(--pg-border)',
                 borderRadius: '6px 0 0 6px',
                 padding: '8px 12px',
                 cursor: 'pointer',
@@ -227,11 +227,11 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
               style={{
                 flex: 1,
                 fontSize: 13,
-                fontFamily: 'Inter, system-ui, sans-serif',
+                fontFamily: 'var(--pg-sans)',
                 fontWeight: 500,
-                color: searchType === 'semantic' ? 'var(--surface)' : 'var(--text2)',
-                background: searchType === 'semantic' ? '#ffffff' : 'var(--surface)',
-                border: searchType === 'semantic' ? '1px solid #18181b' : '1px solid #e4e4e7',
+                color: searchType === 'semantic' ? 'var(--pg-bg)' : 'var(--pg-text2)',
+                background: searchType === 'semantic' ? 'var(--pg-text)' : 'transparent',
+                border: searchType === 'semantic' ? '1px solid var(--pg-cyan)' : '1px solid var(--pg-border)',
                 borderRadius: '0 6px 6px 0',
                 padding: '8px 12px',
                 cursor: 'pointer',
@@ -248,13 +248,13 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
         {searchType === 'semantic' && (
           <div
             style={{
-              background: '#f4f4f5',
+              background: 'rgba(232,228,220,0.04)',
               borderRadius: 6,
               padding: 10,
               marginBottom: 12,
               fontSize: 13,
-              fontFamily: 'Inter, system-ui, sans-serif',
-              color: 'var(--text2)',
+              fontFamily: 'var(--pg-sans)',
+              color: 'var(--pg-text2)',
               lineHeight: 1.5,
             }}
           >
@@ -270,17 +270,17 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
             width: '100%',
             height: 40,
             fontSize: 14,
-            fontFamily: 'Inter, system-ui, sans-serif',
+            fontFamily: 'var(--pg-sans)',
             fontWeight: 500,
-            color: 'var(--surface)',
-            background: submitting || !query.trim() ? 'var(--text2)' : '#ffffff',
+            color: 'var(--pg-bg)',
+            background: submitting || !query.trim() ? 'var(--pg-text2)' : 'var(--pg-text)',
             border: 'none',
             borderRadius: 6,
             cursor: submitting || !query.trim() ? 'not-allowed' : 'pointer',
             transition: 'background 150ms ease',
           }}
-          onMouseEnter={(e) => { if (!submitting && query.trim()) e.currentTarget.style.background = '#27272a'; }}
-          onMouseLeave={(e) => { if (!submitting && query.trim()) e.currentTarget.style.background = '#ffffff'; }}
+          onMouseEnter={(e) => { if (!submitting && query.trim()) e.currentTarget.style.background = 'var(--pg-cyan-hi)'; }}
+          onMouseLeave={(e) => { if (!submitting && query.trim()) e.currentTarget.style.background = 'var(--pg-cyan)'; }}
         >
           {submitting ? 'Searching...' : 'Search Memories'}
         </button>
@@ -289,15 +289,22 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
       {/* Results */}
       {results !== null && (
         <>
-          <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: '20px 0 16px' }} />
+          <hr style={{ border: 'none', borderTop: '1px solid var(--pg-border)', margin: '20px 0 16px' }} />
 
-          <div style={{ marginBottom: 12, fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>
-            Found <span style={{ fontWeight: 500, color: '#ffffff' }}>{totalFound}</span> memories
+          <div style={{ marginBottom: 12, fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)' }}>
+            Found <span style={{ fontWeight: 500, color: 'var(--pg-text)' }}>{totalFound}</span> memories
           </div>
 
           {results.length === 0 && (
-            <div style={{ textAlign: 'center', padding: 20, color: '#a1a1aa', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif' }}>
-              No memories matched your search.
+            <div style={{ border: '1px dashed var(--pg-border)', borderRadius: 10, padding: '24px 20px', textAlign: 'center' }}>
+              <p style={{ fontFamily: 'var(--pg-serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--pg-text2)', margin: '0 0 8px' }}>
+                Nothing matched.
+              </p>
+              <p style={{ fontSize: 13, color: 'var(--pg-text3)', margin: 0, lineHeight: 1.6 }}>
+                {totalFound === 0
+                  ? 'Your agent has no stored memories yet. Go to the Memory tab (◉) and add some first.'
+                  : 'Try broader terms — search uses semantic embedding similarity, not exact keyword matching.'}
+              </p>
             </div>
           )}
 
@@ -310,23 +317,23 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                 <div
                   key={r.id}
                   style={{
-                    border: '1px solid #e4e4e7',
+                    border: '1px solid var(--pg-border)',
                     borderRadius: 6,
                     padding: 12,
-                    background: 'var(--surface)',
+                    background: 'transparent',
                   }}
                 >
                   {/* Content */}
-                  <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#ffffff', lineHeight: 1.5, margin: '0 0 8px' }}>
+                  <p style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text)', lineHeight: 1.5, margin: '0 0 8px' }}>
                     {r.content}
                   </p>
 
                   {/* Score bar */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                    <div style={{ flex: 1, height: 4, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
-                      <div style={{ width: `${scorePercent}%`, height: '100%', background: '#ffffff', borderRadius: 2 }} />
+                    <div style={{ flex: 1, height: 4, background: 'var(--pg-border)', borderRadius: 2, overflow: 'hidden' }}>
+                      <div style={{ width: `${scorePercent}%`, height: '100%', background: 'var(--pg-cyan)', borderRadius: 2 }} />
                     </div>
-                    <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', whiteSpace: 'nowrap' }}>
+                    <span style={{ fontSize: 12, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text3)', whiteSpace: 'nowrap' }}>
                       {scorePercent}% match
                     </span>
                   </div>
@@ -336,7 +343,7 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                     <span
                       style={{
                         fontSize: 11,
-                        fontFamily: 'Inter, system-ui, sans-serif',
+                        fontFamily: 'var(--pg-sans)',
                         fontWeight: 500,
                         color: typeColor.color,
                         background: typeColor.bg,
@@ -352,9 +359,9 @@ export function SearchTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
                         key={tag}
                         style={{
                           fontSize: 11,
-                          fontFamily: 'Inter, system-ui, sans-serif',
-                          color: 'var(--text2)',
-                          background: '#f4f4f5',
+                          fontFamily: 'var(--pg-sans)',
+                          color: 'var(--pg-text2)',
+                          background: 'rgba(232,228,220,0.04)',
                           borderRadius: 4,
                           padding: '2px 6px',
                         }}

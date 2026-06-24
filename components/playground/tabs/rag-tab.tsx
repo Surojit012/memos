@@ -29,7 +29,7 @@ interface RagTabProps {
 
 const INITIAL_MESSAGE: Message = {
   role: 'assistant',
-  content: "Hello! I'm your agent's memory interface. Ask me anything — I'll answer using stored memories and cite my sources.",
+  content: "I answer questions using your agent's stored memories. If you haven't stored any yet, switch to the Memory tab (◉) and add a few — then come back and ask me something.",
 };
 
 const SANDBOX_RESPONSES = [
@@ -62,10 +62,10 @@ function SourcePill({ source }: { source: Source }) {
       <span
         style={{
           fontSize: 12,
-          fontFamily: 'JetBrains Mono, Fira Code, monospace',
-          color: 'var(--text2)',
-          background: '#f4f4f5',
-          border: '1px solid #e4e4e7',
+          fontFamily: 'var(--pg-mono)',
+          color: 'var(--pg-text2)',
+          background: 'rgba(232,228,220,0.04)',
+          border: '1px solid var(--pg-border)',
           borderRadius: 4,
           padding: '2px 8px',
           cursor: 'default',
@@ -80,13 +80,13 @@ function SourcePill({ source }: { source: Source }) {
             bottom: '100%',
             left: 0,
             marginBottom: 6,
-            background: 'var(--surface)',
-            border: '1px solid #e4e4e7',
+            background: 'transparent',
+            border: '1px solid var(--pg-border)',
             borderRadius: 6,
             padding: '8px 10px',
             fontSize: 12,
-            fontFamily: 'Inter, system-ui, sans-serif',
-            color: '#ffffff',
+            fontFamily: 'var(--pg-sans)',
+            color: 'var(--pg-text)',
             lineHeight: 1.5,
             maxWidth: 280,
             width: 'max-content',
@@ -173,7 +173,10 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
           return;
         }
 
-        const answer = data.answer || 'The agent found no relevant memories to answer this. Try adding more memories in the Memory tab.';
+        const noContext = /no memory context|no relevant memories/i.test(data.answer ?? '');
+        const answer = noContext
+          ? "No stored memories matched your question. Go to the Memory tab (◉), store something relevant, then come back and ask again."
+          : (data.answer || 'No answer returned.');
         const sources: Source[] = data.sources ?? [];
         const assistantMsg: Message = { role: 'assistant', content: answer, sources };
         setMessages((prev) => [...prev, assistantMsg]);
@@ -216,16 +219,16 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
           onClick={handleClear}
           style={{
             fontSize: 12,
-            fontFamily: 'Inter, system-ui, sans-serif',
-            color: 'var(--text2)',
+            fontFamily: 'var(--pg-sans)',
+            color: 'var(--pg-text2)',
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             padding: '2px 4px',
             transition: 'color 150ms ease',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text2)'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--pg-text)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--pg-text2)'; }}
         >
           Clear conversation
         </button>
@@ -257,12 +260,12 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
                 maxWidth: '80%',
                 padding: '10px 14px',
                 borderRadius: msg.role === 'user' ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
-                background: msg.role === 'user' ? '#ffffff' : '#f4f4f5',
-                color: msg.role === 'user' ? 'var(--surface)' : '#ffffff',
+                background: msg.role === 'user' ? 'var(--pg-text)' : 'rgba(232,228,220,0.04)',
+                color: msg.role === 'user' ? 'var(--pg-bg)' : 'var(--pg-text)',
                 fontSize: 13,
-                fontFamily: 'Inter, system-ui, sans-serif',
+                fontFamily: 'var(--pg-sans)',
                 lineHeight: 1.6,
-                borderLeft: msg.isError ? '3px solid #dc2626' : 'none',
+                borderLeft: msg.isError ? '3px solid var(--pg-danger, #C67867)' : 'none',
               }}
             >
               <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{msg.content}</p>
@@ -275,7 +278,7 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
                       fontSize: 11,
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
-                      color: '#a1a1aa',
+                      color: 'var(--pg-text3)',
                       marginBottom: 6,
                       fontWeight: 500,
                     }}
@@ -301,10 +304,10 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
                 maxWidth: '80%',
                 padding: '10px 14px',
                 borderRadius: '12px 12px 12px 2px',
-                background: '#f4f4f5',
-                color: '#a1a1aa',
+                background: 'rgba(232,228,220,0.04)',
+                color: 'var(--pg-text3)',
                 fontSize: 13,
-                fontFamily: 'Inter, system-ui, sans-serif',
+                fontFamily: 'var(--pg-sans)',
               }}
             >
               <span className="rag-loading-dots">
@@ -337,7 +340,7 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
       {/* Input area */}
       <div
         style={{
-          borderTop: '1px solid #e4e4e7',
+          borderTop: '1px solid var(--pg-border)',
           paddingTop: 12,
           display: 'flex',
           gap: 8,
@@ -352,11 +355,11 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
           placeholder="Ask about your agent's memories..."
           style={{
             flex: 1,
-            fontFamily: 'Inter, system-ui, sans-serif',
+            fontFamily: 'var(--pg-sans)',
             fontSize: 13,
-            color: '#ffffff',
-            background: 'var(--surface)',
-            border: '1px solid #e4e4e7',
+            color: 'var(--pg-text)',
+            background: 'transparent',
+            border: '1px solid var(--pg-border)',
             borderRadius: 6,
             padding: '8px 10px',
             resize: 'none',
@@ -364,8 +367,8 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
             boxSizing: 'border-box',
             transition: 'border-color 150ms ease',
           }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
-          onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--pg-cyan-hi)'; }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--pg-border)'; }}
         />
         <button
           onClick={handleSend}
@@ -374,18 +377,18 @@ export function RagTab({ isLive, agentId, apiKey, onRequestUpdate, onResponseUpd
             height: 40,
             padding: '0 16px',
             fontSize: 13,
-            fontFamily: 'Inter, system-ui, sans-serif',
+            fontFamily: 'var(--pg-sans)',
             fontWeight: 500,
-            color: 'var(--surface)',
-            background: !input.trim() || isLoading ? 'var(--text2)' : '#ffffff',
+            color: 'var(--pg-bg)',
+            background: !input.trim() || isLoading ? 'var(--pg-text2)' : 'var(--pg-text)',
             border: 'none',
             borderRadius: 6,
             cursor: !input.trim() || isLoading ? 'not-allowed' : 'pointer',
             transition: 'background 150ms ease',
             flexShrink: 0,
           }}
-          onMouseEnter={(e) => { if (input.trim() && !isLoading) e.currentTarget.style.background = '#27272a'; }}
-          onMouseLeave={(e) => { if (input.trim() && !isLoading) e.currentTarget.style.background = '#ffffff'; }}
+          onMouseEnter={(e) => { if (input.trim() && !isLoading) e.currentTarget.style.background = 'var(--pg-cyan-hi)'; }}
+          onMouseLeave={(e) => { if (input.trim() && !isLoading) e.currentTarget.style.background = 'var(--pg-cyan)'; }}
         >
           Send
         </button>

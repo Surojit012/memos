@@ -29,10 +29,10 @@ interface IdentityTabProps {
 /* ─── Constants ─── */
 
 const TIER_COLORS: Record<string, { bg: string; color: string }> = {
-  new: { bg: '#f4f4f5', color: 'var(--text2)' },
-  established: { bg: '#dbeafe', color: '#1d4ed8' },
-  trusted: { bg: '#dcfce7', color: '#15803d' },
-  expert: { bg: '#f3e8ff', color: '#7e22ce' },
+  new: { bg: 'rgba(232,228,220,0.04)', color: 'var(--pg-text2)' },
+  established: { bg: 'rgba(94,125,126,0.14)', color: '#74989a' },
+  trusted: { bg: 'rgba(122,158,142,0.10)', color: '#7A9E8E' },
+  expert: { bg: 'rgba(166,123,115,0.14)', color: '#A67B73' },
 };
 
 /* ─── Copyable value row ─── */
@@ -50,12 +50,12 @@ function CopyRow({ label, value, masked }: { label: string; value: string; maske
   const displayValue = masked && !revealed ? '••••••••••••' : value;
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f4f4f5' }}>
-      <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', flexShrink: 0 }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--pg-border)' }}>
+      <span style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)', flexShrink: 0 }}>
         {label}
       </span>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-        <span style={{ fontSize: 13, fontFamily: 'JetBrains Mono, Fira Code, monospace', color: '#ffffff', wordBreak: 'break-all', textAlign: 'right', maxWidth: 220 }}>
+        <span style={{ fontSize: 13, fontFamily: 'var(--pg-mono)', color: 'var(--pg-text)', wordBreak: 'break-all', textAlign: 'right', maxWidth: 220 }}>
           {displayValue}
         </span>
         {masked && (
@@ -63,18 +63,18 @@ function CopyRow({ label, value, masked }: { label: string; value: string; maske
             onClick={() => setRevealed((p) => !p)}
             style={{
               fontSize: 11,
-              fontFamily: 'Inter, system-ui, sans-serif',
-              color: 'var(--text2)',
-              background: '#f4f4f5',
-              border: '1px solid #e4e4e7',
+              fontFamily: 'var(--pg-sans)',
+              color: 'var(--pg-text2)',
+              background: 'rgba(232,228,220,0.04)',
+              border: '1px solid var(--pg-border)',
               borderRadius: 4,
               padding: '2px 6px',
               cursor: 'pointer',
               transition: 'background 150ms ease',
               flexShrink: 0,
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(232,228,220,0.06)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(232,228,220,0.04)'; }}
           >
             {revealed ? 'Hide' : 'Reveal'}
           </button>
@@ -83,18 +83,18 @@ function CopyRow({ label, value, masked }: { label: string; value: string; maske
           onClick={handleCopy}
           style={{
             fontSize: 11,
-            fontFamily: 'Inter, system-ui, sans-serif',
-            color: 'var(--text2)',
-            background: '#f4f4f5',
-            border: '1px solid #e4e4e7',
+            fontFamily: 'var(--pg-sans)',
+            color: 'var(--pg-text2)',
+            background: 'rgba(232,228,220,0.04)',
+            border: '1px solid var(--pg-border)',
             borderRadius: 4,
             padding: '2px 6px',
             cursor: 'pointer',
             transition: 'background 150ms ease',
             flexShrink: 0,
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(232,228,220,0.06)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(232,228,220,0.04)'; }}
         >
           {copied ? 'Copied!' : '⧉'}
         </button>
@@ -222,27 +222,27 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
 
     return (
       <div>
-        <div style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 12 }}>
+        <div style={{ fontSize: 16, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)', marginBottom: 12 }}>
           Your Agent Identity
         </div>
-        <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: '0 0 8px' }} />
+        <hr style={{ border: 'none', borderTop: '1px solid var(--pg-border)', margin: '0 0 8px' }} />
 
         <CopyRow label="Agent ID" value={agentId} />
         <CopyRow label="API Key" value={apiKey} masked />
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f4f4f5' }}>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Reputation Score</span>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--pg-border)' }}>
+          <span style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)' }}>Reputation Score</span>
+          <span style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)' }}>
             {loadingRep ? '...' : `${reputation.score}/100`}
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f4f4f5' }}>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Tier</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--pg-border)' }}>
+          <span style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)' }}>Tier</span>
           <span
             style={{
               fontSize: 12,
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--pg-sans)',
               fontWeight: 500,
               color: tierColor.color,
               background: tierColor.bg,
@@ -255,8 +255,8 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)' }}>Interactions</span>
-          <span style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
+          <span style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)' }}>Interactions</span>
+          <span style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)' }}>
             {loadingRep ? '...' : reputation.totalInteractions}
           </span>
         </div>
@@ -267,13 +267,13 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
   /* ─── Render: Registration result ─── */
   if (regResult) {
     return (
-      <div style={{ border: '1px solid #16a34a', background: '#dcfce7', borderRadius: 8, padding: 16 }}>
-        <div style={{ fontSize: 16, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#166534', marginBottom: 12 }}>
+      <div style={{ border: '1px solid rgba(122,158,142,0.36)', background: 'rgba(122,158,142,0.10)', borderRadius: 8, padding: 16 }}>
+        <div style={{ fontSize: 16, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: '#7A9E8E', marginBottom: 12 }}>
           Agent Created
         </div>
         <CopyRow label="Agent ID" value={regResult.agentId} />
         <CopyRow label="API Key" value={regResult.apiKey} />
-        <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#d97706', marginTop: 12, marginBottom: 0, lineHeight: 1.5 }}>
+        <p style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: '#A67B73', marginTop: 12, marginBottom: 0, lineHeight: 1.5 }}>
           Save your API key — it will not be shown again after you leave this tab.
         </p>
       </div>
@@ -287,7 +287,7 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
         <div style={{ marginBottom: 12 }}>
           <label
             htmlFor="identity-name"
-            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}
+            style={{ display: 'block', fontSize: 13, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)', marginBottom: 4 }}
           >
             Agent Name
           </label>
@@ -299,26 +299,26 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
             placeholder="My AI Assistant"
             style={{
               width: '100%',
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--pg-sans)',
               fontSize: 13,
-              color: '#ffffff',
-              background: 'var(--surface)',
-              border: '1px solid #e4e4e7',
+              color: 'var(--pg-text)',
+              background: 'transparent',
+              border: '1px solid var(--pg-border)',
               borderRadius: 6,
               padding: '8px 10px',
               outline: 'none',
               boxSizing: 'border-box',
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--pg-cyan-hi)'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--pg-border)'; }}
           />
         </div>
 
         <div style={{ marginBottom: 12 }}>
           <label
             htmlFor="identity-desc"
-            style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}
+            style={{ display: 'block', fontSize: 13, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)', marginBottom: 4 }}
           >
             Description
           </label>
@@ -330,11 +330,11 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
             placeholder="What does this agent do?"
             style={{
               width: '100%',
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--pg-sans)',
               fontSize: 13,
-              color: '#ffffff',
-              background: 'var(--surface)',
-              border: '1px solid #e4e4e7',
+              color: 'var(--pg-text)',
+              background: 'transparent',
+              border: '1px solid var(--pg-border)',
               borderRadius: 6,
               padding: '8px 10px',
               resize: 'vertical',
@@ -342,8 +342,8 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
               boxSizing: 'border-box',
               transition: 'border-color 150ms ease',
             }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--pg-cyan-hi)'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--pg-border)'; }}
           />
         </div>
 
@@ -354,23 +354,23 @@ export function IdentityTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
             width: '100%',
             height: 40,
             fontSize: 14,
-            fontFamily: 'Inter, system-ui, sans-serif',
+            fontFamily: 'var(--pg-sans)',
             fontWeight: 500,
-            color: 'var(--surface)',
-            background: registering || !name.trim() ? 'var(--text2)' : '#ffffff',
+            color: 'var(--pg-bg)',
+            background: registering || !name.trim() ? 'var(--pg-text2)' : 'var(--pg-text)',
             border: 'none',
             borderRadius: 6,
             cursor: registering || !name.trim() ? 'not-allowed' : 'pointer',
             transition: 'background 150ms ease',
           }}
-          onMouseEnter={(e) => { if (!registering && name.trim()) e.currentTarget.style.background = '#27272a'; }}
-          onMouseLeave={(e) => { if (!registering && name.trim()) e.currentTarget.style.background = '#ffffff'; }}
+          onMouseEnter={(e) => { if (!registering && name.trim()) e.currentTarget.style.background = 'var(--pg-cyan-hi)'; }}
+          onMouseLeave={(e) => { if (!registering && name.trim()) e.currentTarget.style.background = 'var(--pg-cyan)'; }}
         >
           {registering ? 'Registering...' : 'Register Agent'}
         </button>
 
         {error && (
-          <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#dc2626', marginTop: 8 }}>
+          <p style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: '#C67867', marginTop: 8 }}>
             {error}
           </p>
         )}

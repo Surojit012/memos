@@ -19,8 +19,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { getAgent, getMemoryById, getAllAgents } from '@/lib/store'
-import { ensureHydrated } from '@/lib/hydration'
+import { getMemoryById, getAllAgents } from '@/lib/store'
+import { ensureHydrated, getAgentOrRestore } from '@/lib/hydration'
 import { validateAgentApiKey, validatePlatformSecret } from '@/lib/auth'
 import { SharedMemoryGrant } from '@/lib/types'
 import { v4 as uuid } from 'uuid'
@@ -41,7 +41,7 @@ export async function POST(
     const { toAgentId, memoryIds, message, expiresInHours } = body
 
     // Validate sender
-    const fromAgent = getAgent(fromAgentId)
+    const fromAgent = await getAgentOrRestore(fromAgentId)
     if (!fromAgent) {
       return NextResponse.json({ error: `Sender agent [${fromAgentId}] not found.` }, { status: 404 })
     }
@@ -63,7 +63,7 @@ export async function POST(
     if (toAgentId === fromAgentId) {
       return NextResponse.json({ error: 'Cannot share memories with yourself.' }, { status: 400 })
     }
-    const toAgent = getAgent(toAgentId)
+    const toAgent = await getAgentOrRestore(toAgentId)
     if (!toAgent) {
       return NextResponse.json({ error: `Recipient agent [${toAgentId}] not found.` }, { status: 404 })
     }
@@ -125,7 +125,7 @@ export async function GET(
   try {
     await ensureHydrated()
     const agentId = params.agentId
-    const agent = getAgent(agentId)
+    const agent = await getAgentOrRestore(agentId)
 
     if (!agent) {
       return NextResponse.json({ error: `Agent [${agentId}] not found.` }, { status: 404 })

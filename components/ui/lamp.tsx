@@ -21,7 +21,7 @@ function LampContainer({
       style={{ zIndex: 20 }}
     >
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-20 flex h-[360px] w-full scale-y-125 items-center justify-center isolate md:h-[430px]"
+        className="pointer-events-none absolute inset-x-0 top-0 z-20 flex h-[360px] w-full scale-y-125 items-center justify-center isolate overflow-x-clip overflow-y-visible md:h-[430px]"
         style={{ zIndex: 20 }}
       >
         <motion.div

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAgent, getMemories, updateAgentHash } from '@/lib/store'
+import { getMemories, updateAgentHash } from '@/lib/store'
 import { enqueueWrite } from '@/lib/write-queue'
 import { uploadToStorage } from '@/lib/0g-storage'
+import { ensureHydrated, getAgentOrRestore } from '@/lib/hydration'
 
 // Endpoint to create a snapshot or list snapshots for an agent
 // POST /api/agent/[agentId]/snapshot = Create
@@ -12,8 +13,9 @@ export async function POST(
   { params }: { params: { agentId: string } }
 ) {
   try {
+    await ensureHydrated()
     const agentId = params.agentId
-    const agent = getAgent(agentId)
+    const agent = await getAgentOrRestore(agentId)
 
     if (!agent) {
       return NextResponse.json({ error: 'Agent not found' }, { status: 404 })
@@ -64,8 +66,9 @@ export async function GET(
   { params }: { params: { agentId: string } }
 ) {
   try {
+    await ensureHydrated()
     const agentId = params.agentId
-    const agent = getAgent(agentId)
+    const agent = await getAgentOrRestore(agentId)
 
     if (!agent) {
       return NextResponse.json({ error: 'Agent not found' }, { status: 404 })

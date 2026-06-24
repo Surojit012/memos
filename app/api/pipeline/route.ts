@@ -22,6 +22,8 @@ import { getSkillById, recordSkillExecution } from '@/lib/store'
 import { ensureHydrated } from '@/lib/hydration'
 import { uploadToStorage, getExplorerUrl } from '@/lib/0g-storage'
 import { computeInference } from '@/lib/intelligence/llm'
+import { validatePlatformSecret, validateAgentApiKeyAsync, ensureAgentInStore } from '@/lib/auth'
+import { rateLimit } from '@/lib/rate-limit'
 import { createHash } from 'crypto'
 import { v4 as uuid } from 'uuid'
 
@@ -45,8 +47,21 @@ interface PipelineStepResult {
 
 export async function POST(req: NextRequest) {
   try {
+    // Pipelines chain N skill executions — even more LLM-cost-sensitive, so a
+    // tighter cap than single execute.
+    const limited = rateLimit(req, { maxRequests: 10, windowMs: 60_000 })
+    if (limited) return limited
     await ensureHydrated()
     const { steps, initialInput, agentId } = await req.json()
+
+    if (agentId) await ensureAgentInStore(agentId)
+
+    const apiKey = req.headers.get('Authorization')?.replace('Bearer ', '')
+    const hasValidApiKey = agentId && apiKey && await validateAgentApiKeyAsync(agentId, apiKey)
+    const hasValidPlatformSecret = validatePlatformSecret(req)
+    if (!hasValidApiKey && !hasValidPlatformSecret) {
+      return NextResponse.json({ error: 'Unauthorized — provide a valid Agent API Key or platform secret.' }, { status: 401 })
+    }
 
     if (!steps || !Array.isArray(steps) || steps.length === 0) {
       return NextResponse.json({ error: 'steps array is required (at least 1 step).' }, { status: 400 })

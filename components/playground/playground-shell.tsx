@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { AgentContextBar } from './agent-context-bar';
 import { SidebarNav, MobileTabBar } from './sidebar-nav';
-import { ThreePanelLayout } from './three-panel-layout';
+import { ComposerLayout } from './composer-layout';
+import { CommandBar } from './command-bar';
 import { RequestPreviewPanel } from './request-preview-panel';
 import { ResponsePanel } from './response-panel';
 import { MemoryTab } from './tabs/memory-tab';
@@ -20,9 +21,11 @@ interface PlaygroundShellProps {
   setActiveTab: (tab: string) => void;
   isLive: boolean;
   agentId: string | null;
+  agentName: string | null;
   apiKey: string | null;
   onLogin: () => void;
   onLogout: () => void;
+  onRename: () => void;
 }
 
 interface RequestState {
@@ -44,9 +47,11 @@ export function PlaygroundShell({
   setActiveTab,
   isLive,
   agentId,
+  agentName,
   apiKey,
   onLogin,
   onLogout,
+  onRename,
 }: PlaygroundShellProps) {
   const [requestState, setRequestState] = useState<RequestState>({
     method: 'POST',
@@ -62,6 +67,10 @@ export function PlaygroundShell({
     statusCode: null,
   });
 
+  const [snippetsOpen, setSnippetsOpen] = useState(false);
+
+  const inputColRef = useRef<HTMLDivElement | null>(null);
+
   const handleRequestUpdate = useCallback((req: RequestState) => {
     setRequestState(req);
   }, []);
@@ -70,179 +79,151 @@ export function PlaygroundShell({
     setResponseState(res);
   }, []);
 
-  /* Render tab content (input panel) */
+  // Run = submit the primary form inside the active tab, or click its
+  // primary action button. Keeps each tab's logic untouched.
+  const runActiveTab = useCallback(() => {
+    const root = inputColRef.current;
+    if (!root) return;
+
+    const form = root.querySelector('form') as HTMLFormElement | null;
+    if (form) {
+      if (typeof form.requestSubmit === 'function') form.requestSubmit();
+      else form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      return;
+    }
+    const btn = root.querySelector<HTMLButtonElement>(
+      'button[type="submit"], button[data-pg-run="true"], button.pg-primary-action'
+    );
+    if (btn && !btn.disabled) btn.click();
+  }, []);
+
+  // Cmd/Ctrl + Enter from anywhere in the canvas runs.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        e.preventDefault();
+        runActiveTab();
+      }
+      if (e.key === 'Escape' && snippetsOpen) {
+        setSnippetsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [runActiveTab, snippetsOpen]);
+
+  // When user switches tabs, close the snippets drawer.
+  useEffect(() => { setSnippetsOpen(false); }, [activeTab]);
+
   function renderTabContent(): React.ReactNode {
+    const common = {
+      isLive,
+      agentId,
+      apiKey,
+      onRequestUpdate: handleRequestUpdate,
+      onResponseUpdate: handleResponseUpdate,
+    };
     switch (activeTab) {
-      case 'memory':
-        return (
-          <MemoryTab
-            isLive={isLive}
-            agentId={agentId}
-            apiKey={apiKey}
-            onRequestUpdate={handleRequestUpdate}
-            onResponseUpdate={handleResponseUpdate}
-          />
-        );
-      case 'search':
-        return (
-          <SearchTab
-            isLive={isLive}
-            agentId={agentId}
-            apiKey={apiKey}
-            onRequestUpdate={handleRequestUpdate}
-            onResponseUpdate={handleResponseUpdate}
-          />
-        );
-      case 'rag':
-        return (
-          <RagTab
-            isLive={isLive}
-            agentId={agentId}
-            apiKey={apiKey}
-            onRequestUpdate={handleRequestUpdate}
-            onResponseUpdate={handleResponseUpdate}
-          />
-        );
-      case 'dream':
-        return (
-          <DreamTab
-            isLive={isLive}
-            agentId={agentId}
-            apiKey={apiKey}
-            setActiveTab={setActiveTab}
-            onRequestUpdate={handleRequestUpdate}
-            onResponseUpdate={handleResponseUpdate}
-          />
-        );
-      case 'skills':
-        return (
-          <SkillsTab
-            isLive={isLive}
-            agentId={agentId}
-            apiKey={apiKey}
-            onRequestUpdate={handleRequestUpdate}
-            onResponseUpdate={handleResponseUpdate}
-          />
-        );
-      case 'pipeline':
-        return (
-          <PipelineTab
-            isLive={isLive}
-            agentId={agentId}
-            apiKey={apiKey}
-            onRequestUpdate={handleRequestUpdate}
-            onResponseUpdate={handleResponseUpdate}
-          />
-        );
-      case 'identity':
-        return (
-          <IdentityTab
-            isLive={isLive}
-            agentId={agentId}
-            apiKey={apiKey}
-            onRequestUpdate={handleRequestUpdate}
-            onResponseUpdate={handleResponseUpdate}
-          />
-        );
-      case 'explorer':
-        return (
-          <ApiExplorerTab
-            isLive={isLive}
-            agentId={agentId}
-            apiKey={apiKey}
-            onRequestUpdate={handleRequestUpdate}
-            onResponseUpdate={handleResponseUpdate}
-          />
-        );
+      case 'memory':   return <MemoryTab {...common} />;
+      case 'search':   return <SearchTab {...common} />;
+      case 'rag':      return <RagTab {...common} />;
+      case 'dream':    return <DreamTab {...common} setActiveTab={setActiveTab} />;
+      case 'skills':   return <SkillsTab {...common} />;
+      case 'pipeline': return <PipelineTab {...common} />;
+      case 'identity': return <IdentityTab {...common} />;
+      case 'explorer': return <ApiExplorerTab {...common} />;
       default:
         return (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: 200,
-              color: '#a1a1aa',
-              fontSize: 13,
-              fontFamily: 'Inter, system-ui, sans-serif',
-            }}
-          >
-            {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} tab — coming in a future phase.
+          <div style={{ color: 'var(--pg-text2)', fontSize: 13, padding: '40px 0', textAlign: 'center' }}>
+            {activeTab} — coming soon.
           </div>
         );
     }
   }
 
+  const canRun = useMemo(() => true, []);
+
   return (
     <div
+      data-pg
       style={{
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
-        background: 'var(--bg)',
-        fontFamily: 'Inter, system-ui, sans-serif',
+        background: 'var(--pg-bg)',
       }}
     >
       <AgentContextBar
         isLive={isLive}
         agentId={agentId}
+        agentName={agentName}
         onLogin={onLogin}
         onLogout={onLogout}
+        onRename={onRename}
       />
 
       <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
-        {/* Desktop sidebar */}
         <div className="playground-sidebar-desktop">
           <SidebarNav activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
 
-        {/* Main content area */}
         <div
           style={{
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
             minWidth: 0,
-            padding: 16,
-            gap: 12,
+            background: 'var(--pg-bg)',
           }}
         >
-          {/* Mobile tab bar */}
           <div className="playground-sidebar-mobile" style={{ display: 'none' }}>
             <MobileTabBar activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
 
-          <ThreePanelLayout
-            inputLabel={activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-            inputPanel={renderTabContent()}
-            requestPanel={
-              <RequestPreviewPanel
-                method={requestState.method}
-                endpoint={requestState.endpoint}
-                headers={requestState.headers}
-                body={requestState.body}
-                agentId={agentId}
-                apiKey={apiKey}
-              />
-            }
-            responsePanel={
-              <ResponsePanel
-                response={responseState.response}
-                error={responseState.error}
-                isLoading={responseState.isLoading}
-                statusCode={responseState.statusCode}
-              />
-            }
+          <CommandBar
+            method={requestState.method}
+            endpoint={requestState.endpoint}
+            isLoading={responseState.isLoading}
+            canRun={canRun}
+            onRun={runActiveTab}
+            onToggleSnippets={() => setSnippetsOpen((p) => !p)}
+            snippetsOpen={snippetsOpen}
           />
+
+          <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+            <ComposerLayout
+              snippetsOpen={snippetsOpen}
+              onCloseSnippets={() => setSnippetsOpen(false)}
+              inputPanel={<div ref={inputColRef}>{renderTabContent()}</div>}
+              responsePanel={
+                <ResponsePanel
+                  response={responseState.response}
+                  error={responseState.error}
+                  isLoading={responseState.isLoading}
+                  statusCode={responseState.statusCode}
+                />
+              }
+              snippetsPanel={
+                <RequestPreviewPanel
+                  method={requestState.method}
+                  endpoint={requestState.endpoint}
+                  headers={requestState.headers}
+                  body={requestState.body}
+                  agentId={agentId}
+                  apiKey={apiKey}
+                />
+              }
+            />
+          </div>
         </div>
       </div>
 
       <style>{`
-        @media (min-width: 768px) {
+        @media (min-width: 880px) {
           .playground-sidebar-desktop { display: flex; }
           .playground-sidebar-mobile { display: none !important; }
         }
-        @media (max-width: 767px) {
+        @media (max-width: 879px) {
           .playground-sidebar-desktop { display: none !important; }
           .playground-sidebar-mobile { display: block !important; }
         }

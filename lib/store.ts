@@ -613,6 +613,25 @@ export function markPaymentConsumed(txHash: string) {
   if (existing) existing.consumedAt = Date.now()
 }
 
+// ── Atomic, in-process payment reservation (double-spend guard) ──────────────
+// Node runs this synchronously on a single thread, so check-and-set here is
+// race-free WITHIN a process. `reservePaymentTxHash` claims a txHash before the
+// (slow, async) on-chain verification runs, closing the TOCTOU window where two
+// concurrent requests could each pass a "not consumed yet" check. Cross-restart
+// durability is handled separately in lib/db/payments.ts.
+const reservedPaymentTxHashes = new Set<string>()
+
+export function reservePaymentTxHash(txHash: string): boolean {
+  const key = txHash.toLowerCase()
+  if (reservedPaymentTxHashes.has(key)) return false
+  reservedPaymentTxHashes.add(key)
+  return true
+}
+
+export function releasePaymentTxHash(txHash: string): void {
+  reservedPaymentTxHashes.delete(txHash.toLowerCase())
+}
+
 export function removeMemoryFromStore(id: string) {
   const index = memories.findIndex(memory => memory.id === id)
   if (index >= 0) memories.splice(index, 1)

@@ -49,7 +49,178 @@
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Playground canvas — scoped tokens & primitives.
+   Lives only inside [data-pg]. Escapes the shadcn HSL --border
+   collision so `var(--pg-border)` resolves to a real hex value.
+   ───────────────────────────────────────────────────────────── */
+[data-pg] {
+  --pg-bg:      #0F1210;
+  --pg-surface: #14181610;        /* 6% surface lift, kept ghostly */
+  --pg-panel:   #15191710;        /* legacy alias */
+  --pg-border:  #2A302C;
+  --pg-border-soft: rgba(232, 228, 220, 0.06);
+  --pg-cyan:    #5E7D7E;
+  --pg-cyan-hi: #74989a;
+  --pg-green:   #7A9E8E;
+  --pg-rose:    #A67B73;
+  --pg-text:    #E8E4DC;
+  --pg-text2:   #8A9490;
+  --pg-text3:   #5C6764;
+  --pg-danger:  #C67867;
+
+  --pg-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --pg-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  --pg-serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+
+  --pg-r-sm: 4px;
+  --pg-r:    6px;
+  --pg-r-md: 10px;
+  --pg-r-lg: 14px;
+  --pg-r-xl: 20px;
+
+  color: var(--pg-text);
+  font-family: var(--pg-sans);
+  background: var(--pg-bg);
+  font-feature-settings: 'ss01', 'cv11';
+}
+
+[data-pg] *::selection {
+  background: var(--pg-cyan);
+  color: var(--pg-text);
+}
+
+[data-pg] *:focus-visible {
+  outline: 2px solid var(--pg-cyan-hi);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Scrollbar — invisible until you touch it. */
+[data-pg] ::-webkit-scrollbar { width: 10px; height: 10px; }
+[data-pg] ::-webkit-scrollbar-track { background: transparent; }
+[data-pg] ::-webkit-scrollbar-thumb {
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+[data-pg] *:hover::-webkit-scrollbar-thumb {
+  background: rgba(232, 228, 220, 0.08);
+  background-clip: content-box;
+}
+
+/* Default form-control styling inside the canvas so inline-styled
+   tabs no longer paint light-mode borders onto dark surfaces. */
+[data-pg] input,
+[data-pg] textarea,
+[data-pg] select {
+  background: rgba(232, 228, 220, 0.025);
+  border-color: var(--pg-border) !important;
+  color: var(--pg-text);
+  caret-color: var(--pg-cyan-hi);
+}
+[data-pg] input::placeholder,
+[data-pg] textarea::placeholder { color: var(--pg-text3); }
+
+/* The hairline below the command bar — one allowed seam. */
+.pg-seam { border-bottom: 1px solid var(--pg-border); }
+
+/* The signature: endpoint title set in Instrument Serif italic. */
+.pg-endpoint {
+  font-family: var(--pg-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  color: var(--pg-text);
+}
+.pg-endpoint-method {
+  font-family: var(--pg-mono);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pg-text2);
+  padding: 4px 8px;
+  border: 1px solid var(--pg-border);
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-right: 14px;
+  position: relative;
+  top: -4px;
+}
+
+/* The single piece of motion. Used for in-flight requests. */
+@keyframes pg-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.pg-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(166, 123, 115, 0.18), transparent);
+  animation: pg-shimmer 1.4s linear infinite;
+  pointer-events: none;
+}
+
+/* Buttons — primary "Run" and secondary "ghost". */
+.pg-btn {
+  font-family: var(--pg-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  border-radius: var(--pg-r);
+  padding: 8px 14px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--pg-text);
+}
+.pg-btn-primary {
+  background: var(--pg-cyan);
+  color: #0F1210;
+  font-weight: 600;
+}
+.pg-btn-primary:hover { background: var(--pg-cyan-hi); }
+.pg-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.pg-btn-ghost {
+  border-color: var(--pg-border);
+  color: var(--pg-text2);
+}
+.pg-btn-ghost:hover { color: var(--pg-text); border-color: var(--pg-text3); }
+
+.pg-kbd {
+  font-family: var(--pg-mono);
+  font-size: 11px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: rgba(15, 18, 16, 0.4);
+  border: 1px solid rgba(232, 228, 220, 0.12);
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-pg] *,
+  [data-pg] *::before,
+  [data-pg] *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+

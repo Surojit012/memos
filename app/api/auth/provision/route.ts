@@ -3,6 +3,7 @@ import { PrivyClient } from '@privy-io/server-auth';
 import crypto from 'crypto';
 
 import { getUserByPrivyId, createUser } from '@/lib/db/client';
+import { ensureAgentInStore } from '@/lib/auth';
 
 const privyClient = new PrivyClient(
   process.env.NEXT_PUBLIC_PRIVY_APP_ID!,
@@ -30,8 +31,12 @@ export async function POST(req: Request) {
     // Check if user already exists
     const existingUser = await getUserByPrivyId(userId);
     if (existingUser) {
+      // Seed the in-memory store so subsequent API calls don't 401 after a
+      // dev-server restart (which wipes RAM but leaves sessionStorage intact).
+      await ensureAgentInStore(existingUser.agent_id);
       return NextResponse.json({
         agentId: existingUser.agent_id,
+        agentName: existingUser.agent_name ?? null,
         apiKey: existingUser.api_key,
         isNewUser: false,
         onboardingComplete: existingUser.onboarding_complete ?? false,
@@ -50,8 +55,13 @@ export async function POST(req: Request) {
     // Persist the mapping
     await createUser(userId, agentId, apiKey);
 
+    // Seed the in-memory store immediately so the first API call from the
+    // freshly provisioned client doesn't race the DB-bridge lookup.
+    await ensureAgentInStore(agentId);
+
     return NextResponse.json({
       agentId,
+      agentName: null,
       apiKey,
       isNewUser: true,
       onboardingComplete: false,

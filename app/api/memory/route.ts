@@ -4,8 +4,9 @@ import { embedTextWith0GCompute } from '@/lib/0g-compute'
 import { upsertMemoryManifestRecord } from '@/lib/0g-manifest'
 import { uploadToStorage, getExplorerUrl } from '@/lib/0g-storage'
 import { ensureHydrated } from '@/lib/hydration'
-import { validateAgentApiKey, validatePlatformSecret } from '@/lib/auth'
+import { validateAgentApiKeyAsync, validatePlatformSecret, ensureAgentInStore } from '@/lib/auth'
 import { rateLimit } from '@/lib/rate-limit'
+import { waitUntil } from '@vercel/functions'
 
 // Intelligence Layer
 import { detectConflict } from '@/lib/intelligence/conflicts'
@@ -17,11 +18,14 @@ export async function GET(req: NextRequest) {
   const agentId = searchParams.get('agentId')
   if (!agentId) return NextResponse.json(getPlatformStats())
 
+  // Bridge Privy-provisioned agents from DB into the in-memory store on demand.
+  await ensureAgentInStore(agentId)
+
   // ── Security: HMAC API Key Validation for Wallet Isolation ──
   const agent = getAgent(agentId)
   if (agent && agent.ownerAddress) {
     const apiKey = req.headers.get('Authorization')?.replace('Bearer ', '')
-    const hasValidApiKey = apiKey && validateAgentApiKey(agentId, apiKey)
+    const hasValidApiKey = apiKey && await validateAgentApiKeyAsync(agentId, apiKey)
     const hasValidPlatformSecret = validatePlatformSecret(req)
     if (!hasValidApiKey && !hasValidPlatformSecret) {
       return NextResponse.json({ error: 'Unauthorized — Agent API Key is invalid or missing.' }, { status: 401 })
@@ -47,9 +51,15 @@ export async function POST(req: NextRequest) {
     if (!body.agentId)
       return NextResponse.json({ error: 'agentId required' }, { status: 400 })
 
-    // ── Security: Platform secret check ──
-    if (!validatePlatformSecret(req)) {
-      return NextResponse.json({ error: 'Unauthorized — Platform secret missing or invalid.' }, { status: 401 })
+    // Bridge Privy-provisioned agents from DB into the in-memory store on demand.
+    await ensureAgentInStore(body.agentId)
+
+    // ── Security: accept EITHER a valid agent API key OR the platform secret ──
+    const apiKey = req.headers.get('Authorization')?.replace('Bearer ', '')
+    const hasValidApiKey = apiKey && await validateAgentApiKeyAsync(body.agentId, apiKey)
+    const hasValidPlatformSecret = validatePlatformSecret(req)
+    if (!hasValidApiKey && !hasValidPlatformSecret) {
+      return NextResponse.json({ error: 'Unauthorized — provide a valid Agent API Key or platform secret.' }, { status: 401 })
     }
 
     // ── Security: Agent must exist (prevents injection into unregistered agents) ──
@@ -58,12 +68,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         error: `Agent [${body.agentId}] not found. Register via POST /api/identity first.`,
       }, { status: 404 })
-    }
-
-    // ── Security: Optional API key validation ──
-    const apiKey = req.headers.get('Authorization')?.replace('Bearer ', '')
-    if (apiKey && !validateAgentApiKey(body.agentId, apiKey)) {
-      return NextResponse.json({ error: 'Unauthorized — Agent API Key is invalid.' }, { status: 401 })
     }
 
     if (!body.content?.trim())
@@ -96,10 +100,15 @@ export async function POST(req: NextRequest) {
       hasConflict: conflictAnalysis.hasConflict,
     })
 
-    // Step 2+3 — embed via 0G Compute THEN upload to 0G Storage
+    // Step 2+3 — embed via 0G Compute THEN upload to 0G Storage.
     // Embedding is computed BEFORE upload so the vector is permanently
     // stored inside the 0G blob (not just in RAM).
-    ;(async () => {
+    //
+    // CRITICAL: this background work is the durability path — it's what gets the
+    // memory onto 0G and saves the Supabase manifest pointer. It MUST be wrapped
+    // in waitUntil, otherwise on Vercel the function freezes the moment we return
+    // and the memory never persists (it only ever lived in RAM → lost on restart).
+    const persist = (async () => {
       try {
         // 2a. Generate embedding via 0G Compute
         const { embedding, model } = await embedTextWith0GCompute(memory.content)
@@ -119,18 +128,21 @@ export async function POST(req: NextRequest) {
         updateMemoryHash(memory.id, hash)
         const hydratedMemory = { ...memory, storageHash: hash }
         upsertHydratedMemory(hydratedMemory)
-        void upsertMemoryManifestRecord(hydratedMemory)
+        // Queue the agent manifest flush (uploads brain snapshot to 0G + saves
+        // the Supabase pointer). Await it so the durable pointer is written
+        // before the serverless function is allowed to freeze.
+        await upsertMemoryManifestRecord(hydratedMemory)
         console.log(`✓ Memory ${memory.id} stored on 0G: ${hash}`)
         console.log(`  Explorer: ${getExplorerUrl(hash)}`)
         console.log(`  Embedding included: ${!!memory.embedding} (${memory.embedding?.length || 0}d vector)`)
       } catch (err: any) {
         console.error(`✗ 0G upload failed for memory ${memory.id}: ${err.message}`)
       }
-
-      // ── Intelligence: Consolidation & Decay ──
-      // Moved to dedicated endpoint: POST /api/agent/[agentId]/dreams
-      // Agents now explicitly trigger "sleep cycles" for batch processing.
     })()
+
+    // Keep the function alive until persistence finishes (serverless-safe).
+    // Throws outside a Vercel request scope (local dev) — the promise still runs.
+    try { waitUntil(persist) } catch { /* local dev — long-lived process keeps it alive */ }
 
     return NextResponse.json({ memory }, { status: 201 })
   } catch (e: any) {

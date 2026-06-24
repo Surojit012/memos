@@ -60,7 +60,8 @@ class SkillResult:
     skill_id: str
     result: str
     tokens_used: int
-    duration: int
+    model: str = ""
+    compute_provider: str = ""
 
 
 @dataclass

@@ -13,6 +13,8 @@ export interface UserRecord {
   id: number;
   privy_user_id: string;
   agent_id: string;
+  agent_name: string | null;
+  manifest_hash: string | null;
   api_key: string;
   api_key_created_at: string;
   created_at: string;
@@ -99,6 +101,44 @@ export async function updateUserApiKey(
 
   if (error) {
     throw new Error(`[db] updateUserApiKey failed: ${error.message}`);
+  }
+  return data as UserRecord;
+}
+
+/**
+ * Save the latest 0G manifest hash for an agent. This is the durable pointer
+ * we use to re-download the agent's memories from 0G Storage after a restart.
+ * Keyed by agent_id; no-ops harmlessly for agents not in the users table
+ * (e.g. on-chain wallet agents).
+ */
+export async function updateManifestHash(agentId: string, manifestHash: string): Promise<void> {
+  const { error } = await getClient()
+    .from('users')
+    .update({ manifest_hash: manifestHash, updated_at: new Date().toISOString() })
+    .eq('agent_id', agentId);
+
+  if (error) {
+    throw new Error(`[db] updateManifestHash failed: ${error.message}`);
+  }
+}
+
+/**
+ * Set or update a user's agent display name. Cosmetic only — the agent_id
+ * (the real auth key) is never touched here.
+ */
+export async function updateAgentName(
+  privyUserId: string,
+  agentName: string
+): Promise<UserRecord> {
+  const { data, error } = await getClient()
+    .from('users')
+    .update({ agent_name: agentName.trim().slice(0, 120), updated_at: new Date().toISOString() })
+    .eq('privy_user_id', privyUserId)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(`[db] updateAgentName failed: ${error.message}`);
   }
   return data as UserRecord;
 }

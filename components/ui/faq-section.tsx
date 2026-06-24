@@ -7,11 +7,11 @@ import { OriginButton } from "@/components/ui/origin-button";
 const faqs = [
   {
     question: "Is memos just a LangGraph wrapper?",
-    answer: "No. LangGraph owns execution state, thread state, and checkpoint lifecycle. memos owns cognition — the memory architecture, dream consolidation, reasoning with citations, and module installation. We use LangGraph as an execution runtime only.",
+    answer: "No. LangGraph handles execution flow — how tasks run. memos handles cognition — what the agent remembers, how it consolidates knowledge, and how it cites its sources. They complement each other; memos sits on top as the memory and reasoning layer.",
   },
   {
     question: "What's the difference between Mock Mode and Real Mode?",
-    answer: "Mock Mode simulates 0G storage, compute, and chain adapters locally — useful for development and demos without live infrastructure. Real Mode connects to actual 0G infrastructure for production deployments. Both modes expose identical interfaces.",
+    answer: "Mock Mode runs entirely on your machine — simulated storage, compute, and chain, no live connection needed. Great for development, testing, and offline demos. Real Mode connects to live 0G infrastructure for production. The API is identical in both modes, so switching is a one-line env change.",
   },
   {
     question: "What data actually goes on-chain?",
@@ -157,12 +157,12 @@ export function FaqSection() {
               <div className="text-sm text-neutral-400">
                 <p>Got more questions?</p>
                 <p>
-                  <a href="#" className="text-white hover:text-[#ABD1C6] transition-colors underline underline-offset-4">Read the docs.</a>
+                  <a href="https://memos.mintlify.app/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#ABD1C6] transition-colors underline underline-offset-4">Read the docs.</a>
                 </p>
               </div>
               <div className="self-start">
                 <OriginButton>
-                  <a href="#" className="flex items-center">
+                  <a href="https://memos.mintlify.app/" target="_blank" rel="noopener noreferrer" className="flex items-center">
                     View Documentation <span className="ml-2">→</span>
                   </a>
                 </OriginButton>

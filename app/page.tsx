@@ -1,17 +1,8 @@
 'use client';
 
-/*
-  PHASE 8 ANALYSIS:
-  1. Hero CTA: single OriginButton "Get started →" inside MemoryPaths component (now accepts children prop)
-  2. Navbar: Floating glassmorphic Nav component defined inline (lines 20-91) — keeping it, adding LandingNavbar as fixed white bar
-  3. Section order: Preloader → Nav → MemoryPaths → ProblemComparisonSlider → HowItWorksSection → DifferentiatorSection → BuiltOn0GSection → FaqSection → FooterSection
-  4. Footer: FooterSection exists at end
-*/
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/hooks/use-auth';
 import { BuiltOn0GSection } from '@/components/ui/built-on-0g-section';
 import { DifferentiatorSection } from '@/components/ui/differentiator-section';
 import { HowItWorksSection } from '@/components/ui/how-it-works-section';
@@ -60,11 +51,22 @@ function Nav({ visible }: { visible: boolean }) {
           <ul className="hidden sm:flex gap-8 list-none">
             <li>
               <a
-                href="/profile"
+                href="https://memos.mintlify.app/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-sm text-neutral-400 no-underline hover:text-neutral-100 transition-colors
                   focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4a7a62] focus-visible:rounded"
               >
-                Profile
+                Docs
+              </a>
+            </li>
+            <li>
+              <a
+                href="/playground"
+                className="text-sm text-neutral-400 no-underline hover:text-neutral-100 transition-colors
+                  focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4a7a62] focus-visible:rounded"
+              >
+                Playground
               </a>
             </li>
           </ul>
@@ -81,30 +83,17 @@ function Nav({ visible }: { visible: boolean }) {
 export default function Home() {
   const [preloaderDone, setPreloaderDone] = useState(false);
   const [isAtBottom, setIsAtBottom] = useState(false);
-  const router = useRouter();
-  const auth = useAuth();
-
   useEffect(() => {
     const handleScroll = () => {
-      // Check if user reached bottom of the page
       const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 20;
       setIsAtBottom(bottom);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Run once on mount to check initial state
     handleScroll();
-    
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const handleGetStarted = () => {
-    if (auth.isAuthenticated) {
-      router.push('/dashboard');
-    } else {
-      auth.login();
-    }
-  };
 
   return (
     <>
@@ -116,40 +105,7 @@ export default function Home() {
 
       <main style={{ paddingTop: 60 }}>
         {/* Hero — MemoryPaths component with animated SVG background */}
-        <MemoryPaths title="memos">
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <button
-              onClick={() => router.push('/playground')}
-              style={{
-                backgroundColor: '#18181b',
-                color: 'white',
-                padding: '12px 24px',
-                borderRadius: '6px',
-                fontSize: '15px',
-                fontWeight: 500,
-                border: 'none',
-                cursor: 'pointer',
-              }}
-            >
-              Login
-            </button>
-            <button
-              onClick={() => router.push('/playground')}
-              style={{
-                backgroundColor: 'white',
-                color: '#18181b',
-                padding: '12px 24px',
-                borderRadius: '6px',
-                fontSize: '15px',
-                fontWeight: 500,
-                border: '1px solid #e4e4e7',
-                cursor: 'pointer',
-              }}
-            >
-              Get Started
-            </button>
-          </div>
-        </MemoryPaths>
+        <MemoryPaths title="memos" />
 
         <div className="border-t border-neutral-900">
           <ProblemComparisonSlider />

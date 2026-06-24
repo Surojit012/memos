@@ -97,9 +97,9 @@ function ProblemComparisonSlider() {
                   </div>
                   <div className="space-y-2 text-neutral-300">
                     <p><span className="text-neutral-500">user:</span> what were we working on yesterday?</p>
-                    <p><span className="text-emerald-400">agent:</span> You were debugging the Sui Move</p>
-                    <p>registry contract — the Table inner UID</p>
-                    <p>lookup bug. Want me to pick that back up?</p>
+                    <p><span className="text-emerald-400">agent:</span> You were refactoring the auth</p>
+                    <p>middleware — the token refresh race condition.</p>
+                    <p>I have the fix half-done. Want me to finish it?</p>
                     <p className="pt-2 text-neutral-600">→ retrieved from memory:0091, memory:0094</p>
                   </div>
                 </div>

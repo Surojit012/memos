@@ -17,9 +17,11 @@ import {
   upsertHydratedAgent,
   isStoreSeeded,
   loadSeedData,
+  getAgent,
 } from './store'
 import { startWriteQueue } from './write-queue'
 import { getAllAgentIdsFromRegistry, getAgentFromRegistry } from './registry'
+import type { AgentIdentity } from './types'
 
 let hydrationState: 'idle' | 'hydrating' | 'done' = 'idle'
 let hydrationPromise: Promise<void> | null = null
@@ -142,6 +144,39 @@ async function performHydration(): Promise<void> {
     stats.lastHydratedAt = Date.now()
     startWriteQueue()
   }
+}
+
+/**
+ * Look up an agent by id, restoring it from the on-chain registry into RAM
+ * if it isn't already cached. Use this instead of a bare `getAgent()` in
+ * `[agentId]` API routes — on a fresh serverless instance the agent may not
+ * yet be hydrated, and a RAM-only lookup would 404 a perfectly valid agent.
+ */
+export async function getAgentOrRestore(agentId: string): Promise<AgentIdentity | undefined> {
+  const cached = getAgent(agentId)
+  if (cached) return cached
+
+  const regAgent = await getAgentFromRegistry(agentId)
+  if (regAgent) {
+    upsertHydratedAgent(regAgent)
+    console.log(`⚡ Restored Agent [${agentId}] from on-chain registry into RAM`)
+    return regAgent
+  }
+
+  // Fall back to Privy-provisioned agents in Supabase.
+  // These users don't live on-chain but are still real agents from the app's perspective.
+  try {
+    const { ensureAgentInStore } = await import('./auth')
+    const dbAgent = await ensureAgentInStore(agentId)
+    if (dbAgent) {
+      console.log(`⚡ Restored Agent [${agentId}] from Privy DB into RAM`)
+      return dbAgent
+    }
+  } catch (err) {
+    console.warn('[hydration] DB fallback failed:', (err as Error).message)
+  }
+
+  return undefined
 }
 
 export function getHydrationStatus(): HydrationStatus {

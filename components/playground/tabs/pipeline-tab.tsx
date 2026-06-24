@@ -199,8 +199,8 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
                 style={{
                   width: 60,
                   fontSize: 12,
-                  fontFamily: 'JetBrains Mono, Fira Code, monospace',
-                  color: '#a1a1aa',
+                  fontFamily: 'var(--pg-mono)',
+                  color: 'var(--pg-text3)',
                   flexShrink: 0,
                 }}
               >
@@ -211,11 +211,11 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
                 onChange={(e) => updateStepSkill(step.id, e.target.value)}
                 style={{
                   flex: 1,
-                  fontFamily: 'Inter, system-ui, sans-serif',
+                  fontFamily: 'var(--pg-sans)',
                   fontSize: 13,
-                  color: '#ffffff',
-                  background: 'var(--surface)',
-                  border: '1px solid #e4e4e7',
+                  color: 'var(--pg-text)',
+                  background: 'transparent',
+                  border: '1px solid var(--pg-border)',
                   borderRadius: 6,
                   padding: '6px 8px',
                   outline: 'none',
@@ -232,7 +232,7 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
                 disabled={steps.length <= 1}
                 style={{
                   fontSize: 16,
-                  color: steps.length <= 1 ? 'var(--border)' : 'var(--text2)',
+                  color: steps.length <= 1 ? 'var(--pg-border)' : 'var(--pg-text2)',
                   background: 'none',
                   border: 'none',
                   cursor: steps.length <= 1 ? 'not-allowed' : 'pointer',
@@ -240,8 +240,8 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
                   lineHeight: 1,
                   transition: 'color 150ms ease',
                 }}
-                onMouseEnter={(e) => { if (steps.length > 1) e.currentTarget.style.color = '#dc2626'; }}
-                onMouseLeave={(e) => { if (steps.length > 1) e.currentTarget.style.color = 'var(--text2)'; }}
+                onMouseEnter={(e) => { if (steps.length > 1) e.currentTarget.style.color = '#C67867'; }}
+                onMouseLeave={(e) => { if (steps.length > 1) e.currentTarget.style.color = 'var(--pg-text2)'; }}
               >
                 ×
               </button>
@@ -256,22 +256,22 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
             disabled={steps.length >= 5 || skills.length === 0}
             style={{
               fontSize: 13,
-              fontFamily: 'Inter, system-ui, sans-serif',
-              color: steps.length >= 5 ? '#a1a1aa' : '#ffffff',
-              background: 'var(--surface)',
-              border: '1px solid #e4e4e7',
+              fontFamily: 'var(--pg-sans)',
+              color: steps.length >= 5 ? 'var(--pg-text3)' : 'var(--pg-text)',
+              background: 'transparent',
+              border: '1px solid var(--pg-border)',
               borderRadius: 6,
               padding: '6px 14px',
               cursor: steps.length >= 5 ? 'not-allowed' : 'pointer',
               transition: 'background 150ms ease',
             }}
-            onMouseEnter={(e) => { if (steps.length < 5) e.currentTarget.style.background = '#f4f4f5'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
+            onMouseEnter={(e) => { if (steps.length < 5) e.currentTarget.style.background = 'rgba(232,228,220,0.04)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
           >
             + Add Step
           </button>
           {steps.length >= 5 && (
-            <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa' }}>
+            <span style={{ fontSize: 12, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text3)' }}>
               (Maximum 5 steps)
             </span>
           )}
@@ -282,7 +282,7 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
       <div style={{ marginBottom: 12 }}>
         <label
           htmlFor="pipeline-input"
-          style={{ display: 'block', fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff', marginBottom: 4 }}
+          style={{ display: 'block', fontSize: 13, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)', marginBottom: 4 }}
         >
           Starting Input
         </label>
@@ -294,11 +294,11 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
           placeholder="Enter the starting input for the pipeline..."
           style={{
             width: '100%',
-            fontFamily: 'Inter, system-ui, sans-serif',
+            fontFamily: 'var(--pg-sans)',
             fontSize: 13,
-            color: '#ffffff',
-            background: 'var(--surface)',
-            border: '1px solid #e4e4e7',
+            color: 'var(--pg-text)',
+            background: 'transparent',
+            border: '1px solid var(--pg-border)',
             borderRadius: 6,
             padding: '8px 10px',
             resize: 'none',
@@ -306,8 +306,8 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
             boxSizing: 'border-box',
             transition: 'border-color 150ms ease',
           }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = '#ffffff'; }}
-          onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--pg-cyan-hi)'; }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--pg-border)'; }}
         />
       </div>
 
@@ -319,24 +319,24 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
           width: '100%',
           height: 40,
           fontSize: 14,
-          fontFamily: 'Inter, system-ui, sans-serif',
+          fontFamily: 'var(--pg-sans)',
           fontWeight: 500,
-          color: 'var(--surface)',
-          background: steps.length === 0 || !initialInput.trim() || running ? 'var(--text2)' : '#ffffff',
+          color: 'var(--pg-bg)',
+          background: steps.length === 0 || !initialInput.trim() || running ? 'var(--pg-text2)' : 'var(--pg-text)',
           border: 'none',
           borderRadius: 6,
           cursor: steps.length === 0 || !initialInput.trim() || running ? 'not-allowed' : 'pointer',
           transition: 'background 150ms ease',
         }}
-        onMouseEnter={(e) => { if (steps.length > 0 && initialInput.trim() && !running) e.currentTarget.style.background = '#27272a'; }}
-        onMouseLeave={(e) => { if (steps.length > 0 && initialInput.trim() && !running) e.currentTarget.style.background = '#ffffff'; }}
+        onMouseEnter={(e) => { if (steps.length > 0 && initialInput.trim() && !running) e.currentTarget.style.background = 'var(--pg-cyan-hi)'; }}
+        onMouseLeave={(e) => { if (steps.length > 0 && initialInput.trim() && !running) e.currentTarget.style.background = 'var(--pg-cyan)'; }}
       >
         {running ? 'Running...' : 'Run Pipeline'}
       </button>
 
       {/* Error */}
       {error && (
-        <p style={{ fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif', color: '#dc2626', marginTop: 8 }}>
+        <p style={{ fontSize: 13, fontFamily: 'var(--pg-sans)', color: '#C67867', marginTop: 8 }}>
           {error}
         </p>
       )}
@@ -344,7 +344,7 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
       {/* Results timeline */}
       {result && (
         <div style={{ marginTop: 20 }}>
-          <hr style={{ border: 'none', borderTop: '1px solid #e4e4e7', margin: '0 0 16px' }} />
+          <hr style={{ border: 'none', borderTop: '1px solid var(--pg-border)', margin: '0 0 16px' }} />
 
           {result.steps.map((step, i) => {
             const isExpanded = expandedSteps.has(step.stepNumber);
@@ -354,16 +354,16 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
                 <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                   {/* Bullet */}
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, paddingTop: 4 }}>
-                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ffffff' }} />
+                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--pg-cyan)' }} />
                   </div>
 
                   {/* Content */}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                      <span style={{ fontSize: 14, fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 500, color: '#ffffff' }}>
+                      <span style={{ fontSize: 14, fontFamily: 'var(--pg-sans)', fontWeight: 500, color: 'var(--pg-text)' }}>
                         Step {step.stepNumber} — {step.skillName}
                       </span>
-                      <span style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa', flexShrink: 0 }}>
+                      <span style={{ fontSize: 12, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text3)', flexShrink: 0 }}>
                         {step.duration}ms
                       </span>
                     </div>
@@ -371,20 +371,20 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
                     {/* Truncated or expanded */}
                     {!isExpanded ? (
                       <>
-                        <div style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          <span style={{ fontWeight: 500, color: '#a1a1aa' }}>Input: </span>{step.input}
+                        <div style={{ fontSize: 12, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          <span style={{ fontWeight: 500, color: 'var(--pg-text3)' }}>Input: </span>{step.input}
                         </div>
-                        <div style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          <span style={{ fontWeight: 500, color: '#a1a1aa' }}>Output: </span>{step.output}
+                        <div style={{ fontSize: 12, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)', marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          <span style={{ fontWeight: 500, color: 'var(--pg-text3)' }}>Output: </span>{step.output}
                         </div>
                       </>
                     ) : (
                       <>
-                        <div style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', marginBottom: 4, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                          <span style={{ fontWeight: 500, color: '#a1a1aa' }}>Input: </span>{step.input}
+                        <div style={{ fontSize: 12, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)', marginBottom: 4, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                          <span style={{ fontWeight: 500, color: 'var(--pg-text3)' }}>Input: </span>{step.input}
                         </div>
-                        <div style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: 'var(--text2)', marginBottom: 4, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                          <span style={{ fontWeight: 500, color: '#a1a1aa' }}>Output: </span>{step.output}
+                        <div style={{ fontSize: 12, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text2)', marginBottom: 4, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                          <span style={{ fontWeight: 500, color: 'var(--pg-text3)' }}>Output: </span>{step.output}
                         </div>
                       </>
                     )}
@@ -393,16 +393,16 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
                       onClick={() => toggleExpand(step.stepNumber)}
                       style={{
                         fontSize: 11,
-                        fontFamily: 'Inter, system-ui, sans-serif',
-                        color: 'var(--text2)',
+                        fontFamily: 'var(--pg-sans)',
+                        color: 'var(--pg-text2)',
                         background: 'none',
                         border: 'none',
                         cursor: 'pointer',
                         padding: 0,
                         transition: 'color 150ms ease',
                       }}
-                      onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff'; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text2)'; }}
+                      onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--pg-text)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--pg-text2)'; }}
                     >
                       {isExpanded ? 'Collapse ▲' : 'Expand ▼'}
                     </button>
@@ -411,7 +411,7 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
 
                 {/* Connector line */}
                 {i < result.steps.length - 1 && (
-                  <div style={{ width: 1, height: 16, background: 'var(--border)', marginLeft: 3.5 }} />
+                  <div style={{ width: 1, height: 16, background: 'var(--pg-border)', marginLeft: 3.5 }} />
                 )}
               </div>
             );
@@ -419,24 +419,24 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
 
           {/* Final output */}
           <div style={{ marginTop: 16 }}>
-            <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#a1a1aa', marginBottom: 6, fontWeight: 500, fontFamily: 'Inter, system-ui, sans-serif' }}>
+            <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--pg-text3)', marginBottom: 6, fontWeight: 500, fontFamily: 'var(--pg-sans)' }}>
               Final Output
             </div>
             <div
               style={{
-                background: '#f4f4f5',
+                background: 'rgba(232,228,220,0.04)',
                 borderRadius: 6,
                 padding: 12,
                 fontSize: 13,
-                fontFamily: 'Inter, system-ui, sans-serif',
-                color: '#ffffff',
+                fontFamily: 'var(--pg-sans)',
+                color: 'var(--pg-text)',
                 lineHeight: 1.6,
                 marginBottom: 8,
               }}
             >
               {result.finalOutput}
             </div>
-            <div style={{ fontSize: 12, fontFamily: 'Inter, system-ui, sans-serif', color: '#a1a1aa' }}>
+            <div style={{ fontSize: 12, fontFamily: 'var(--pg-sans)', color: 'var(--pg-text3)' }}>
               Total: {result.totalDuration}ms
             </div>
           </div>
@@ -449,17 +449,17 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
               height: 40,
               marginTop: 16,
               fontSize: 14,
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--pg-sans)',
               fontWeight: 500,
-              color: '#ffffff',
-              background: 'var(--surface)',
-              border: '1px solid #e4e4e7',
+              color: 'var(--pg-text)',
+              background: 'transparent',
+              border: '1px solid var(--pg-border)',
               borderRadius: 6,
               cursor: 'pointer',
               transition: 'background 150ms ease',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#f4f4f5'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(232,228,220,0.04)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
           >
             Run Another Pipeline
           </button>

@@ -3,19 +3,24 @@ import { searchMemoriesByEmbedding, searchMemories } from '@/lib/store'
 import { embedTextWith0GCompute } from '@/lib/0g-compute'
 import { computeInference } from '@/lib/intelligence/llm'
 import { ensureHydrated } from '@/lib/hydration'
-import { validatePlatformSecret, validateAgentApiKey } from '@/lib/auth'
+import { validatePlatformSecret, validateAgentApiKeyAsync, ensureAgentInStore } from '@/lib/auth'
+import { rateLimit } from '@/lib/rate-limit'
 
 export async function POST(req: NextRequest) {
   try {
+    const limited = rateLimit(req, { maxRequests: 20, windowMs: 60_000 })
+    if (limited) return limited
     await ensureHydrated()
     const { agentId, query } = await req.json()
     if (!agentId || !query?.trim()) return NextResponse.json({ error: 'agentId and query required' }, { status: 400 })
 
-    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '') || ''
+    await ensureAgentInStore(agentId)
+
+    const apiKey = req.headers.get('Authorization')?.replace('Bearer ', '')
+    const hasValidApiKey = apiKey && await validateAgentApiKeyAsync(agentId, apiKey)
     const hasValidPlatformSecret = validatePlatformSecret(req)
-    
-    if (!hasValidPlatformSecret && (!authHeader || !validateAgentApiKey(agentId, authHeader))) {
-      return NextResponse.json({ error: 'Unauthorized — Invalid API Key or Platform Secret' }, { status: 401 })
+    if (!hasValidApiKey && !hasValidPlatformSecret) {
+      return NextResponse.json({ error: 'Unauthorized — provide a valid Agent API Key or platform secret.' }, { status: 401 })
     }
 
     // 1. Try to Embed query for precise search

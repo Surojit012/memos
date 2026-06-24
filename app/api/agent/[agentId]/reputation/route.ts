@@ -14,8 +14,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { getAgent, getMemories, getAllSkills } from '@/lib/store'
-import { ensureHydrated } from '@/lib/hydration'
+import { getMemories, getAllSkills } from '@/lib/store'
+import { ensureHydrated, getAgentOrRestore } from '@/lib/hydration'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,7 +34,7 @@ export async function GET(
   try {
     await ensureHydrated()
     const agentId = params.agentId
-    const agent = getAgent(agentId)
+    const agent = await getAgentOrRestore(agentId)
 
     if (!agent) {
       return NextResponse.json({ error: `Agent [${agentId}] not found.` }, { status: 404 })

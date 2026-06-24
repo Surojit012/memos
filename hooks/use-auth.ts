@@ -4,6 +4,7 @@ import { usePrivy } from '@privy-io/react-auth';
 import { useState, useEffect, useCallback } from 'react';
 
 const STORAGE_KEY_AGENT_ID = 'memos_agent_id';
+const STORAGE_KEY_AGENT_NAME = 'memos_agent_name';
 const STORAGE_KEY_API_KEY = 'memos_api_key';
 const STORAGE_KEY_ONBOARDING_COMPLETE = 'memos_onboarding_complete';
 const STORAGE_KEY_IS_NEW_USER = 'memos_is_new_user';
@@ -25,6 +26,7 @@ export function useAuth() {
   const getAccessToken = hasPrivy ? privyContext.getAccessToken : async () => null;
 
   const [agentId, setAgentId] = useState<string | null>(null);
+  const [agentName, setAgentName] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [provisioning, setProvisioning] = useState(false);
   const [isNewUser, setIsNewUser] = useState(false);
@@ -41,6 +43,7 @@ export function useAuth() {
     if (cachedAgentId && cachedApiKey) {
       setAgentId(cachedAgentId);
       setApiKey(cachedApiKey);
+      setAgentName(sessionStorage.getItem(STORAGE_KEY_AGENT_NAME) || null);
       setOnboardingComplete(sessionStorage.getItem(STORAGE_KEY_ONBOARDING_COMPLETE) === 'true');
       setIsNewUser(sessionStorage.getItem(STORAGE_KEY_IS_NEW_USER) === 'true');
       return;
@@ -71,10 +74,13 @@ export function useAuth() {
 
         setAgentId(data.agentId);
         setApiKey(data.apiKey);
+        setAgentName(data.agentName ?? null);
         setIsNewUser(data.isNewUser ?? false);
         setOnboardingComplete(data.onboardingComplete ?? false);
 
         sessionStorage.setItem(STORAGE_KEY_AGENT_ID, data.agentId);
+        if (data.agentName) sessionStorage.setItem(STORAGE_KEY_AGENT_NAME, data.agentName);
+        else sessionStorage.removeItem(STORAGE_KEY_AGENT_NAME);
         sessionStorage.setItem(STORAGE_KEY_API_KEY, data.apiKey);
         sessionStorage.setItem(STORAGE_KEY_ONBOARDING_COMPLETE, String(data.onboardingComplete ?? false));
         sessionStorage.setItem(STORAGE_KEY_IS_NEW_USER, String(data.isNewUser ?? false));
@@ -95,6 +101,33 @@ export function useAuth() {
     setApiKey(newKey);
     sessionStorage.setItem(STORAGE_KEY_API_KEY, newKey);
   }, []);
+
+  // Set or rename the agent's display name. Returns true on success so the
+  // caller can show inline feedback. The agent_id is never changed.
+  const renameAgent = useCallback(async (name: string): Promise<boolean> => {
+    const trimmed = name.trim();
+    if (!trimmed) return false;
+    try {
+      const token = await getAccessToken();
+      if (!token) return false;
+      const res = await fetch('/api/auth/agent-name', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ privyToken: token, name: trimmed }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Failed to save name (${res.status}).`);
+      }
+      const data = await res.json();
+      setAgentName(data.agentName);
+      sessionStorage.setItem(STORAGE_KEY_AGENT_NAME, data.agentName);
+      return true;
+    } catch (err) {
+      console.error('[useAuth] renameAgent error:', err);
+      throw err;
+    }
+  }, [getAccessToken]);
 
   const completeOnboarding = useCallback(async () => {
     try {
@@ -120,10 +153,12 @@ export function useAuth() {
 
   const logout = useCallback(async () => {
     sessionStorage.removeItem(STORAGE_KEY_AGENT_ID);
+    sessionStorage.removeItem(STORAGE_KEY_AGENT_NAME);
     sessionStorage.removeItem(STORAGE_KEY_API_KEY);
     sessionStorage.removeItem(STORAGE_KEY_ONBOARDING_COMPLETE);
     sessionStorage.removeItem(STORAGE_KEY_IS_NEW_USER);
     setAgentId(null);
+    setAgentName(null);
     setApiKey(null);
     setIsNewUser(false);
     setOnboardingComplete(false);
@@ -137,12 +172,14 @@ export function useAuth() {
     ready,
     privyUser,
     agentId,
+    agentName,
     apiKey,
     isNewUser,
     onboardingComplete,
     login,
     logout,
     updateApiKey,
+    renameAgent,
     getAccessToken,
     completeOnboarding,
   };

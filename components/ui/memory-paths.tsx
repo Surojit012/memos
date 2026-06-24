@@ -152,27 +152,25 @@ export function MemoryPaths({
                     {children ? (
                         children
                     ) : (
-                        <div
-                            className="inline-block group relative bg-gradient-to-b from-white/10 to-white/5
-                            p-px rounded-2xl backdrop-blur-lg
-                            overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-                        >
+                        <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
                             <OriginButton
-                                className="rounded-[1.15rem] px-8 py-6 text-base font-medium backdrop-blur-md
+                                href="/playground"
+                                className="rounded-full px-6 py-3 text-sm font-medium
                                 bg-neutral-950/90 hover:bg-neutral-900
-                                text-white transition-all duration-300
-                                group-hover:-translate-y-0.5 border border-white/10
-                                hover:shadow-md"
+                                text-white transition-all duration-200
+                                border border-white/10 hover:border-white/20"
                             >
-                                <span className="opacity-90 group-hover:opacity-100 transition-opacity">
-                                    Get started
-                                </span>
-                                <span
-                                    className="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5
-                                    transition-all duration-300"
-                                >
-                                    →
-                                </span>
+                                Open Playground
+                                <span className="ml-2">→</span>
+                            </OriginButton>
+                            <OriginButton
+                                href="https://memos.mintlify.app/"
+                                className="rounded-full px-6 py-3 text-sm font-medium
+                                text-neutral-300 hover:text-white
+                                border border-white/15 hover:border-white/30
+                                transition-all duration-200"
+                            >
+                                Read the docs
                             </OriginButton>
                         </div>
                     )}

@@ -22,7 +22,7 @@ const panelHeaderStyle: React.CSSProperties = {
 };
 
 const panelStyle: React.CSSProperties = {
-  border: '1px solid #e4e4e7',
+  border: '1px solid var(--pg-border)',
   borderRadius: 8,
   background: 'var(--surface)',
   padding: 16,
@@ -45,8 +45,8 @@ export function ThreePanelLayout({
     fontSize: 12,
     fontFamily: 'Inter, system-ui, sans-serif',
     color: 'var(--text2)',
-    background: '#f4f4f5',
-    border: '1px solid #e4e4e7',
+    background: 'rgba(232,228,220,0.04)',
+    border: '1px solid var(--pg-border)',
     borderRadius: 6,
     padding: '6px 12px',
     cursor: 'pointer',

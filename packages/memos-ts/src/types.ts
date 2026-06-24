@@ -46,7 +46,8 @@ export interface SkillResult {
   skillId: string
   result: string
   tokensUsed: number
-  duration: number
+  model: string
+  computeProvider: string
 }
 
 export interface DreamResult {
@@ -54,7 +55,7 @@ export interface DreamResult {
   patternsFound: number
   newMemoriesCreated: number
   dreamSummary: string
-  newMemories: Partial<Memory>[]
+  newMemories: string[]
   duration: number
 }
 
