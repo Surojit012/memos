@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { Logo } from '@/components/ui/logo';
 
 interface AgentContextBarProps {
   isLive: boolean;
@@ -39,18 +40,30 @@ export function AgentContextBar({ isLive, agentId, agentName, onLogin, onLogout,
         padding: '0 20px',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
-        <span
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Link
+          href="/"
           style={{
-            fontFamily: 'var(--pg-serif)',
-            fontStyle: 'italic',
-            fontSize: 20,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            textDecoration: 'none',
             color: 'var(--pg-text)',
-            letterSpacing: '-0.01em',
           }}
+          title="Back to home"
         >
-          memos
-        </span>
+          <Logo className="w-5 h-5" />
+          <span
+            style={{
+              fontFamily: 'var(--pg-serif)',
+              fontStyle: 'italic',
+              fontSize: 20,
+              letterSpacing: '-0.01em',
+            }}
+          >
+            memos
+          </span>
+        </Link>
         <span
           style={{
             fontFamily: 'var(--pg-mono)',
