@@ -106,7 +106,7 @@ export function MemoryTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
   /* ─── Load memories on mount ─── */
   useEffect(() => {
     if (!isLive) {
-      setMemories(SANDBOX_MEMORIES);
+      setMemories([]);
       return;
     }
     if (!agentId || !apiKey) return;
