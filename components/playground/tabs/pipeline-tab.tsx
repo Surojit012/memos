@@ -72,7 +72,7 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
   /* ─── Load skills on mount ─── */
   useEffect(() => {
     if (!isLive) {
-      setSkills(SANDBOX_SKILLS);
+      setSkills([]);
       return;
     }
 
@@ -83,9 +83,9 @@ export function PipelineTab({ isLive, agentId, apiKey, onRequestUpdate, onRespon
         const data = await res.json();
         if (cancelled) return;
         const list: Skill[] = Array.isArray(data) ? data : data.skills ?? [];
-        setSkills(list.length > 0 ? list : SANDBOX_SKILLS);
+        setSkills(list);
       } catch {
-        if (!cancelled) setSkills(SANDBOX_SKILLS);
+        if (!cancelled) setSkills([]);
       }
     };
     load();

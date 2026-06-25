@@ -103,7 +103,7 @@ export function SkillsTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
   /* ─── Load skills ─── */
   const loadSkills = useCallback(async () => {
     if (!isLive) {
-      setSkills(SANDBOX_SKILLS);
+      setSkills([]);
       return;
     }
     setLoadingSkills(true);
@@ -111,9 +111,9 @@ export function SkillsTab({ isLive, agentId, apiKey, onRequestUpdate, onResponse
       const res = await fetch('/api/skills', { cache: 'no-store' });
       const data = await res.json();
       const list: Skill[] = Array.isArray(data) ? data : data.skills ?? [];
-      setSkills(list.length > 0 ? list : SANDBOX_SKILLS);
+      setSkills(list);
     } catch {
-      setSkills(SANDBOX_SKILLS);
+      setSkills([]);
     } finally {
       setLoadingSkills(false);
     }

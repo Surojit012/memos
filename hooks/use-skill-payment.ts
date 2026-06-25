@@ -44,25 +44,48 @@ export function useSkillPayment() {
         throw new Error('No wallet connected. Log in with a wallet to pay for this skill.');
       }
 
-      // 3. Make sure the wallet is on the 0G testnet chain. Privy prompts the
-      //    user to add/switch if needed.
-      onStatus?.('Switching to the 0G testnet…');
-      try {
-        await wallet.switchChain(chainId);
-      } catch {
-        /* user may already be on the chain, or will be prompted during send */
-      }
-
-      // 4. Open the wallet's provider and HARD-VERIFY the active chain before we
-      //    move any funds. If the wallet is still on a different network (e.g. a
-      //    real mainnet), abort — we must never send a payment off the intended
-      //    0G testnet, even if switchChain silently failed.
+      // 3. Get the wallet's provider early — we need it for both chain switching and tx.
       const eip1193 = await wallet.getEthereumProvider();
+      const targetChainId = Number(chainId);
+
+      // 4. Switch to the 0G testnet. If the chain isn't known to the wallet,
+      //    add it first via wallet_addEthereumChain, then switch again.
+      onStatus?.('Switching to the 0G testnet…');
+      const switchToTarget = async () => {
+        try {
+          await wallet.switchChain(targetChainId);
+        } catch {
+          // Chain unknown to wallet — add it, then switch.
+          try {
+            await eip1193.request({
+              method: 'wallet_addEthereumChain',
+              params: [{
+                chainId: '0x' + targetChainId.toString(16),
+                chainName: '0G Galileo Testnet',
+                nativeCurrency: { name: 'OG', symbol: 'OG', decimals: 18 },
+                rpcUrls: ['https://evmrpc-testnet.0g.ai'],
+                blockExplorerUrls: ['https://chainscan-galileo.0g.ai'],
+              }],
+            });
+          } catch {
+            // wallet_addEthereumChain may auto-switch; ignore errors here
+          }
+          // Try switching one more time after adding
+          try {
+            await wallet.switchChain(targetChainId);
+          } catch {
+            // Will be caught by the verification below
+          }
+        }
+      };
+      await switchToTarget();
+
+      // 5. Hard-verify the active chain. If still wrong after auto-switch, abort.
       const provider = new ethers.BrowserProvider(eip1193);
       const activeChainId = Number((await provider.getNetwork()).chainId);
-      if (activeChainId !== Number(chainId)) {
+      if (activeChainId !== targetChainId) {
         throw new Error(
-          `Wrong network: your wallet is on chain ${activeChainId}, but payments must be on the 0G testnet (chain ${chainId}). Switch networks in your wallet and try again.`
+          `Could not switch to the 0G testnet (chain ${targetChainId}). Please add the 0G Galileo network to your wallet manually and try again.`
         );
       }
 
